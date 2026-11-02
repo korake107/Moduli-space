@@ -33,6 +33,8 @@ INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tools/bm.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tools/bm.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amscls/amsthm.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amscls/amsthm.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/generic/iftex/iftex.sty
@@ -257,6 +259,18 @@ INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/environ/environ.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/environ/environ.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbtheorems.code.tex
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbskins.code.tex
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill.image.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill.image.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill-common.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill-common.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.code.tex
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.code.tex
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbskinsjigsaw.code.tex
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/pdfcol/pdfcol.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/pdfcol/pdfcol.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-dvipdfmx.def
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-dvipdfmx.def
 INPUT ./test.aux
@@ -365,6 +379,8 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisr-v.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisr-v.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisr-v.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmti10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/ueuf.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/ueuf.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/ueuf.fd
@@ -373,6 +389,7 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm7.t
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm5.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm7.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
@@ -382,7 +399,6 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmmib10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.tfm
 INPUT test.aux
 INPUT ./test.out
 INPUT ./test.out

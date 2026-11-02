@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.2-u2.02-251130-2.6 (utf8.uptex) (TeX Live 2026) (preloaded format=uplatex 2026.10.19)  2 NOV 2026 19:12
+This is e-upTeX, Version 3.141592653-p4.1.2-u2.02-251130-2.6 (utf8.uptex) (TeX Live 2026) (preloaded format=uplatex 2026.10.19)  3 NOV 2026 01:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -130,13 +130,24 @@ Package bm Info: No bold for \OMX/cmex/m/n, using \pmb.
 Package bm Info: No bold for \U/msa/m/n, using \pmb.
 Package bm Info: No bold for \U/msb/m/n, using \pmb.
 LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 149.
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks23
+\thm@bodyfont=\toks24
+\thm@headfont=\toks25
+\thm@notefont=\toks26
+\thm@headpunct=\toks27
+\thm@preskip=\skip55
+\thm@postskip=\skip56
+\thm@headsep=\skip57
+\dth@everypar=\toks28
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2026-01-29 v7.01p Hypertext links for LaTeX
  (/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
-\KV@toks@=\toks23
+\KV@toks@=\toks29
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
 ) (/usr/local/texlive/2026/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
@@ -235,9 +246,9 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
 )
-\Hy@SectionHShift=\skip55
+\Hy@SectionHShift=\skip58
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks24
+\pgfutil@everybye=\toks30
 \pgfutil@tempdima=\dimen183
 \pgfutil@tempdimb=\dimen184
 ) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
@@ -264,10 +275,10 @@ File: dvipdfmx.def 2025/09/29 v5.0n Graphics/color driver for dvipdfmx
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
  (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks25
-\pgfkeys@temptoks=\toks26
+\pgfkeys@pathtoks=\toks31
+\pgfkeys@temptoks=\toks32
  (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
-\pgfkeys@tmptoks=\toks27
+\pgfkeys@tmptoks=\toks33
 ))
 \pgf@x=\dimen187
 \pgf@y=\dimen188
@@ -285,9 +296,9 @@ Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
 \c@pgf@countb=\count311
 \c@pgf@countc=\count312
 \c@pgf@countd=\count313
-\t@pgf@toka=\toks28
-\t@pgf@tokb=\toks29
-\t@pgf@tokc=\toks30
+\t@pgf@toka=\toks34
+\t@pgf@tokb=\toks35
+\t@pgf@tokc=\toks36
 \pgf@sys@id@count=\count314
  (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2025-08-29 v3.1.11a (3.1.11a)
@@ -326,9 +337,9 @@ Package: pgfcore 2025-08-29 v3.1.11a (3.1.11a)
 \pgfmath@dimen=\dimen197
 \pgfmath@count=\count318
 \pgfmath@box=\box74
-\pgfmath@toks=\toks31
-\pgfmath@stack@operand=\toks32
-\pgfmath@stack@operation=\toks33
+\pgfmath@toks=\toks37
+\pgfmath@stack@operand=\toks38
+\pgfmath@stack@operation=\toks39
 ) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
 \c@pgfmathroundto@lastzeros=\count319
 )) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/math/pgfint.code.tex) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
@@ -411,8 +422,8 @@ Package: pgfcomp-version-1-18 2025-08-29 v3.1.11a (3.1.11a)
 Package: pgffor 2025-08-29 v3.1.11a (3.1.11a)
 \pgffor@iter=\dimen280
 \pgffor@skip=\dimen281
-\pgffor@stack=\toks34
-\pgffor@toks=\toks35
+\pgffor@stack=\toks40
+\pgffor@toks=\toks41
 )) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
  (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
@@ -449,8 +460,8 @@ File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 Package: tikz-feynhand 2019/08/19v1.1.0Feynman diagrams with TikZ (LaTex manual version)
  (/usr/local/texlive/2026/texmf-dist/tex/latex/pgfopts/pgfopts.sty
 Package: pgfopts 2014/07/10 v2.1a LaTeX package options with pgfkeys
-\pgfopts@list@add@a@toks=\toks36
-\pgfopts@list@add@b@toks=\toks37
+\pgfopts@list@add@a@toks=\toks42
+\pgfopts@list@add@b@toks=\toks43
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/tikz-feynhand/tikzlibraryfeynhand.code.tex (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
 File: pgflibraryarrows.meta.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfarrowinset=\dimen291
@@ -473,10 +484,10 @@ File: tikzlibrarycalc.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 ) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.markings.code.tex (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.markings.code.tex)) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathmorphing.code.tex (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathmorphing.code.tex)) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathreplacing.code.tex (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathreplacing.code.tex)) (/usr/local/texlive/2026/texmf-dist/tex/latex/pgf/frontendlayer/libraries/tikzlibraryexternal.code.tex (/usr/local/texlive/2026/texmf-dist/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
 with kernel methods
-) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzexternalshared.code.tex)) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypatterns.code.tex
+) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzexternalshared.code.tex))
+(/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypatterns.code.tex
 File: tikzlibrarypatterns.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-
-(/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/pgflibrarypatterns.code.tex
+ (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/pgflibrarypatterns.code.tex
 File: pgflibrarypatterns.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2025-08-29 v3.1.11a (3.1.11a)
@@ -485,11 +496,11 @@ File: tikzlibraryshapes.geometric.code.tex 2025-08-29 v3.1.11a (3.1.11a)
  (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
 File: pgflibraryshapes.geometric.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )) (/usr/local/texlive/2026/texmf-dist/tex/latex/tikz-feynhand/tikzfeynhand.keys.code.tex
-\feynhanddotsize=\skip56
-\feynhandblobsize=\skip57
-\feynhandlinesize=\skip58
-\feynhandarrowsize=\skip59
-\feynhandtopsep=\skip60
+\feynhanddotsize=\skip59
+\feynhandblobsize=\skip60
+\feynhandlinesize=\skip61
+\feynhandarrowsize=\skip62
+\feynhandtopsep=\skip63
 )) (/usr/local/texlive/2026/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/graphs/tikzlibrarygraphs.code.tex
 File: tikzlibrarygraphs.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \tikz@lib@auto@number=\count333
@@ -498,8 +509,8 @@ File: tikzlibrarygraphs.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
  (/usr/local/texlive/2026/texmf-dist/tex/latex/tools/verbatim.sty
 Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
-\every@verbatim=\toks38
-\verbatim@line=\toks39
+\every@verbatim=\toks44
+\verbatim@line=\toks45
 \verbatim@in@stream=\read3
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/environ/environ.sty
 Package: environ 2014/05/04 v0.3 A new way to define environments
@@ -519,11 +530,40 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \tcb@temp=\box91
 \tcb@temp=\box92
 \tcb@temp=\box93
-) (/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-dvipdfmx.def
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbtheorems.code.tex
+Library (tcolorbox): 'tcbtheorems.code.tex' version '6.9.0'
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbskins.code.tex
+Library (tcolorbox): 'tcbskins.code.tex' version '6.9.0'
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill.image.sty
+Package: tikzfill.image 2023/08/08 v1.0.1 Image filling library for TikZ
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzfill-common.sty
+Package: tikzfill-common 2023/08/08 v1.0.1 Auxiliary code for tikzfill
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/tikzfill/tikzlibraryfill.image.code.tex
+File: tikzlibraryfill.image.code.tex 2023/08/08 v1.0.1 Image filling library
+\l__tikzfill_img_box=\box94
+)) (/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbskinsjigsaw.code.tex
+Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.9.0'
+)) (/usr/local/texlive/2026/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '6.9.0'
+(/usr/local/texlive/2026/texmf-dist/tex/latex/pdfcol/pdfcol.sty
+Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
+Package pdfcol Info: Interface disabled because of missing PDF mode of pdfTeX.
+)
+Package pdfcol Info: pdfTeX's color stacks are not available.
+\tcb@testbox=\box95
+\tcb@totalupperbox=\box96
+\tcb@totallowerbox=\box97
+)
+\c@tcb@cnt@mythm=\count338
+\c@tcb@cnt@mydef=\count339
+\c@tcb@cnt@mylem=\count340
+\c@tcb@cnt@myprop=\count341
+\c@tcb@cnt@myex=\count342
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-dvipdfmx.def
 File: l3backend-dvipdfmx.def 2025-10-09 L3 backend support: dvipdfmx
-\g__graphics_track_int=\count338
-\g__pdfannot_backend_int=\count339
-\g__pdfannot_backend_link_int=\count340
+\g__graphics_track_int=\count343
+\g__pdfannot_backend_int=\count344
+\g__pdfannot_backend_link_int=\count345
 )
 
 LaTeX Warning: Unused global option(s):
@@ -532,80 +572,80 @@ LaTeX Warning: Unused global option(s):
 (./test.aux)
 \openout1 = `test.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for JY2/mc/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for JT2/mc/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-Package hyperref Info: Link coloring OFF on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for JY2/mc/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for JT2/mc/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+Package hyperref Info: Link coloring OFF on input line 109.
  (./test.out) (./test.out)
 \@outlinefile=\write4
 \openout4 = `test.out'.
 
 
 
-Package tikz-feynhand Warning: Consider loading TikZ-Feynhand with \usepackage[compat=1.1.0]{tikz-feynhand} so that you can be warned if TikZ-Feynhand changes. on input line 15.
+Package tikz-feynhand Warning: Consider loading TikZ-Feynhand with \usepackage[compat=1.1.0]{tikz-feynhand} so that you can be warned if TikZ-Feynhand changes. on input line 109.
 
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 15.9785pt on input line 17.
+(Font)              scaled to size 15.9785pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 15.9785pt on input line 17.
+(Font)              scaled to size 15.9785pt on input line 111.
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 11.09619pt on input line 17.
+(Font)              scaled to size 11.09619pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 11.09619pt on input line 17.
+(Font)              scaled to size 11.09619pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 5.5481pt on input line 17.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 17.
+(Font)              scaled to size 5.5481pt on input line 111.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 111.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 111.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 11.09619pt on input line 17.
+(Font)              scaled to size 11.09619pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 7.39746pt on input line 17.
+(Font)              scaled to size 7.39746pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 5.5481pt on input line 17.
+(Font)              scaled to size 5.5481pt on input line 111.
  [1
 
 
 ]
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 9.24683pt on input line 17.
+(Font)              scaled to size 9.24683pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 9.24683pt on input line 17.
+(Font)              scaled to size 9.24683pt on input line 111.
  [2
 
 ]
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 23.0061pt on input line 17.
+(Font)              scaled to size 23.0061pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 23.0061pt on input line 17.
+(Font)              scaled to size 23.0061pt on input line 111.
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 23.0061pt on input line 17.
+(Font)              scaled to size 23.0061pt on input line 111.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 23.0061pt on input line 17.
+(Font)              scaled to size 23.0061pt on input line 111.
  (./test.toc
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
 (Font)              scaled to size 11.09619pt on input line 1.
@@ -618,50 +658,50 @@ LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 4.62341pt on input line 3.
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <10> not available
-(Font)              Font shape `JT2/gt/m/n' tried instead on input line 32.
+(Font)              Font shape `JT2/gt/m/n' tried instead on input line 52.
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 9.24683pt on input line 32.
+(Font)              scaled to size 9.24683pt on input line 52.
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <10> not available
-(Font)              Font shape `JY2/gt/m/n' tried instead on input line 32.
+(Font)              Font shape `JY2/gt/m/n' tried instead on input line 52.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 9.24683pt on input line 32.
+(Font)              scaled to size 9.24683pt on input line 52.
  [3])
 \tf@toc=\write5
 \openout5 = `test.toc'.
 
  [4]
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 19.17792pt on input line 19.
+(Font)              scaled to size 19.17792pt on input line 113.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 19.17792pt on input line 19.
+(Font)              scaled to size 19.17792pt on input line 113.
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 19.17792pt on input line 19.
+(Font)              scaled to size 19.17792pt on input line 113.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 19.17792pt on input line 19.
+(Font)              scaled to size 19.17792pt on input line 113.
  [5
 
 ] [6]
 第1章
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 13.31541pt on input line 23.
+(Font)              scaled to size 13.31541pt on input line 117.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 13.31541pt on input line 23.
+(Font)              scaled to size 13.31541pt on input line 117.
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 13.31541pt on input line 23.
+(Font)              scaled to size 13.31541pt on input line 117.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 13.31541pt on input line 23.
+(Font)              scaled to size 13.31541pt on input line 117.
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <8> not available
-(Font)              Font shape `JT2/gt/m/n' tried instead on input line 31.
+(Font)              Font shape `JT2/gt/m/n' tried instead on input line 125.
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 7.39746pt on input line 31.
+(Font)              scaled to size 7.39746pt on input line 125.
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <8> not available
-(Font)              Font shape `JY2/gt/m/n' tried instead on input line 31.
+(Font)              Font shape `JY2/gt/m/n' tried instead on input line 125.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 7.39746pt on input line 31.
+(Font)              scaled to size 7.39746pt on input line 125.
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 5.5481pt on input line 32.
+(Font)              scaled to size 5.5481pt on input line 126.
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 4.62341pt on input line 32.
+(Font)              scaled to size 4.62341pt on input line 126.
 [7
 
 ] [8] [9] [10
@@ -669,61 +709,75 @@ LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
 ]
 第2章
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 6.47278pt on input line 105.
-[11] [12] [13] [14]
+(Font)              scaled to size 6.47278pt on input line 202.
+[11] [12]
+LaTeX Font Info:    Font shape `JT2/mc/m/it' in size <10> not available
+(Font)              Font shape `JT2/mc/m/n' tried instead on input line 261.
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 9.24683pt on input line 261.
+LaTeX Font Info:    Font shape `JY2/mc/m/it' in size <10> not available
+(Font)              Font shape `JY2/mc/m/n' tried instead on input line 261.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 9.24683pt on input line 261.
+ [13] [14] [15] [16] [17] [18] [19] [20]
 第3章
-[15
+[21
 
-] [16] [17] [18] [19] [20
+] [22] [23] [24] [25] [26] [27] [28] [29] [30] [31] [32
 
 ]
 第4章
-[21]
-LaTeX Font Info:    Trying to load font information for U+euf on input line 355.
- (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/ueuf.fd
+LaTeX Font Info:    Trying to load font information for U+euf on input line 938.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/ueuf.fd
 File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
-) [22] [23] [24] [25
+) [33] [34] [35] [36] [37] [38] [39] [40] [41
 
-] [26]
+] [42]
 第5章
-[27
+[43
 
-] [28] [29] [30]
+] [44] [45] [46] [47] [48] [49] [50]
 第6章
+[51
+
+]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 569.
+(hyperref)                removing `math shift' on input line 1536.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 569.
+(hyperref)                removing `math shift' on input line 1536.
 
-[31
+[52]
+Overfull \hbox (31.06175pt too wide) detected at line 1567
+[][][]\OMS/cmsy/m/n/10 M[] [] \OML/cmm/m/it/10 O\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 N\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 =O\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 N \OMS/cmsy/m/n/10 ^^@ \OT1/cmr/m/n/10 1) [] \OML/cmm/m/it/10 S[];  [] G \OMS/cmsy/m/n/10 ^^@ [] \OML/cmm/m/it/10 H \OT1/cmr/m/n/10 = [] \OMS/cmsy/m/n/10 ^^@ [] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 N \OMS/cmsy/m/n/10 ^^@ \OT1/cmr/m/n/10 1
+ []
 
-] [32] [33] [34]
+[53] [54] [55] [56] [57] [58]
 第7章
-[35
+[59
 
-] [36] [37] [38
+] [60] [61] [62] [63] [64] [65] [66
 
 ]
 第8章
-[39] [40] [41] (./test.aux)
+[67] [68] [69] (./test.aux)
  ***********
 pLaTeX2e <2023-02-14u04>+1, based on
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `test.out' has not changed.
-(rerunfilecheck)             Checksum: D5AD1C597185495BF70A4C48B6D8EFBB;9117.
+(rerunfilecheck)             Checksum: 4D9CEDAF45E733FBAAEFCF898E0C5581;10007.
  ) 
 Here is how much of TeX's memory you used:
- 25342 strings out of 468171
- 524006 string characters out of 5434472
- 948089 words of memory out of 5000000
- 53835 multiletter control sequences out of 15000+600000
- 654238 words of font info for 162 fonts, out of 8000000 for 9000
+ 27412 strings out of 468171
+ 581432 string characters out of 5434472
+ 1044150 words of memory out of 5000000
+ 55873 multiletter control sequences out of 15000+600000
+ 654921 words of font info for 164 fonts, out of 8000000 for 9000
  934 hyphenation exceptions out of 8191
- 102i,11n,107p,861b,567s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,11n,107p,1142b,1353s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on test.dvi (41 pages, 182540 bytes).
+Output written on test.dvi (69 pages, 636332 bytes).
