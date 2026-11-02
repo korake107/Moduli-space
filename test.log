@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.2-u2.02-251130-2.6 (utf8.uptex) (TeX Live 2026) (preloaded format=uplatex 2026.10.19)  2 NOV 2026 17:07
+This is e-upTeX, Version 3.141592653-p4.1.2-u2.02-251130-2.6 (utf8.uptex) (TeX Live 2026) (preloaded format=uplatex 2026.10.19)  2 NOV 2026 19:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -617,21 +617,19 @@ LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 6.47278pt on input line 3.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 4.62341pt on input line 3.
-)
+LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <10> not available
+(Font)              Font shape `JT2/gt/m/n' tried instead on input line 32.
+LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
+(Font)              scaled to size 9.24683pt on input line 32.
+LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <10> not available
+(Font)              Font shape `JY2/gt/m/n' tried instead on input line 32.
+LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
+(Font)              scaled to size 9.24683pt on input line 32.
+ [3])
 \tf@toc=\write5
 \openout5 = `test.toc'.
 
-LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <10> not available
-(Font)              Font shape `JT2/gt/m/n' tried instead on input line 19.
-LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 9.24683pt on input line 19.
-LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <10> not available
-(Font)              Font shape `JY2/gt/m/n' tried instead on input line 19.
-LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 9.24683pt on input line 19.
- [3] [4
-
-]
+ [4]
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
 (Font)              scaled to size 19.17792pt on input line 19.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
@@ -640,7 +638,9 @@ LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
 (Font)              scaled to size 19.17792pt on input line 19.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 19.17792pt on input line 19.
- [5] [6]
+ [5
+
+] [6]
 第1章
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
 (Font)              scaled to size 13.31541pt on input line 23.
@@ -668,22 +668,62 @@ LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
 
 ]
 第2章
-[11] [12] [13] (./test.aux)
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 6.47278pt on input line 105.
+[11] [12] [13] [14]
+第3章
+[15
+
+] [16] [17] [18] [19] [20
+
+]
+第4章
+[21]
+LaTeX Font Info:    Trying to load font information for U+euf on input line 355.
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/ueuf.fd
+File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
+) [22] [23] [24] [25
+
+] [26]
+第5章
+[27
+
+] [28] [29] [30]
+第6章
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 569.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 569.
+
+[31
+
+] [32] [33] [34]
+第7章
+[35
+
+] [36] [37] [38
+
+]
+第8章
+[39] [40] [41] (./test.aux)
  ***********
 pLaTeX2e <2023-02-14u04>+1, based on
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `test.out' has not changed.
-(rerunfilecheck)             Checksum: 2338E23819E3D54F85064E1B120507F3;2555.
+(rerunfilecheck)             Checksum: D5AD1C597185495BF70A4C48B6D8EFBB;9117.
  ) 
 Here is how much of TeX's memory you used:
- 25302 strings out of 468171
- 523340 string characters out of 5434472
- 934262 words of memory out of 5000000
- 53801 multiletter control sequences out of 15000+600000
- 650310 words of font info for 146 fonts, out of 8000000 for 9000
+ 25342 strings out of 468171
+ 524006 string characters out of 5434472
+ 948089 words of memory out of 5000000
+ 53835 multiletter control sequences out of 15000+600000
+ 654238 words of font info for 162 fonts, out of 8000000 for 9000
  934 hyphenation exceptions out of 8191
- 102i,9n,107p,814b,537s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,11n,107p,861b,567s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on test.dvi (13 pages, 37824 bytes).
+Output written on test.dvi (41 pages, 182540 bytes).

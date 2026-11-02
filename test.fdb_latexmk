@@ -1,11 +1,11 @@
 # Fdb version 4
-["dvipdf"] 1793606843.84511 "test.dvi" "test.pdf" "test" 1793606844.161 0
-  "test.dvi" 1793606843.81926 37824 0c5638aca868d72166acf41a7d943ea7 "latex"
+["dvipdf"] 1793614322.52003 "test.dvi" "test.pdf" "test" 1793614322.85277 0
+  "test.dvi" 1793614322.49411 182540 66118063f57e44d4aafd87794a37ed45 "latex"
   (generated)
   "test.pdf"
   (rewritten before read)
-["latex"] 1793606843.38411 "/Users/kotakeryuto/Public/individual repository latex/Moduli-space/test.tex" "test.dvi" "test" 1793606844.15967 0
-  "/Users/kotakeryuto/Public/individual repository latex/Moduli-space/test.tex" 1793606842.76288 17703 35c19ea6f6913946098a9ef86c4a6d00 ""
+["latex"] 1793614321.97896 "/Users/kotakeryuto/Public/individual repository latex/Moduli-space/test.tex" "test.dvi" "test" 1793614322.85161 0
+  "/Users/kotakeryuto/Public/individual repository latex/Moduli-space/test.tex" 1793614321.2783 92583 b8730343170d26c98f9c9a2b3ab57029 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -18,6 +18,9 @@
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib6.tfm" 1246382020 1516 a3bf6a5e7ec4401b1f52092dfaaed242 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib7.tfm" 1246382020 1508 6e807ff901c35a5f1fde0ca275533df8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib8.tfm" 1246382020 1528 dab402b9d3774ca98baa037071cee7ae ""
+  "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.tfm" 1246382020 1040 b84415f97d114011685943ade933dc71 ""
+  "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm5.tfm" 1246382020 1040 a9d2074f3fa062d4d9046b92e2334d8c ""
+  "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm7.tfm" 1246382020 1040 82eb6630b094bff824fccca83ff507f9 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm" 1246382020 924 9904cf1d39e9767e7a3622f2a125a565 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
@@ -133,6 +136,7 @@
   "/usr/local/texlive/2026/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty" 1576624663 7008 f92eaa0a3872ed622bbf538217cd2ab7 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/amsfonts.sty" 1359763108 5949 3f3fd50a8cc94c3d4cbf4fc66cd3df1c ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/amssymb.sty" 1359763108 13829 94730e64147574077f8ecfea9bb69af4 ""
+  "/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/ueuf.fd" 1359763108 1047 4252767c0fde12e3ce9f914ef4bb1ea1 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd" 1359763108 961 6518c6525a34feb5e8250ffa91731cff ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd" 1359763108 961 d02606146ba5601b5645f987c92e6193 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsbsy.sty" 1748806692 2222 27db7d52163edae53881b71ff62e754e ""
@@ -190,10 +194,10 @@
   "/usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
   "/usr/local/texlive/2026/texmf-var/web2c/euptex/uplatex.fmt" 1792403206 3641561 8a1972ec2a2b4c5143c0a6bcdbafb6cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "test.aux" 1793606843.81853 2305 343b464ba01ed70e1e5551108ef14ce3 "latex"
-  "test.out" 1793606843.81908 2555 2338e23819e3d54f85064e1b120507f3 "latex"
-  "test.tex" 1793606842.76288 17703 35c19ea6f6913946098a9ef86c4a6d00 ""
-  "test.toc" 1793606843.81923 1470 6b9b6654830a8322a68a3d70b9a61c67 "latex"
+  "test.aux" 1793614322.49281 8569 7f3ab81d7ed93380dd6b6470a6c962dc "latex"
+  "test.out" 1793614322.4939 9117 d5ad1c597185495bf70a4c48b6d8efbb "latex"
+  "test.tex" 1793614321.2783 92583 b8730343170d26c98f9c9a2b3ab57029 ""
+  "test.toc" 1793614322.49407 5738 4197786ad68cde8d8072068f8d70fab5 "latex"
   (generated)
   "test.aux"
   "test.dvi"
