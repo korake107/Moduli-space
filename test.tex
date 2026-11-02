@@ -1,114 +1,152 @@
-\documentclass[11pt, dvipdfmx]{article}
-
-\usepackage[utf8]{inputenc}
-\usepackage[margin=35truemm]{geometry} % 余白を35mmに設定
+\documentclass[uplatex, dvipdfmx, book]{jsbook}
+\usepackage{amsmath, amssymb, bm}
+\usepackage{hyperref}
+\usepackage{tikz}
 \usepackage{tikz-feynhand}
-% --- 数学関連のパッケージ ---
-\usepackage{amsmath}      % 様々な数式環境
-\usepackage{amsthm}       % 定理環境
-\usepackage{amsfonts}     % 数学用フォント
-\usepackage{physics}      % 物理学の数式用マクロ (bra, ket, dvなど)
-\usepackage{bm}           % 太字の数式 \bm{}
-\usepackage{showkeys}
-% --- 図や色、レイアウト関連のパッケージ ---
-\usepackage{graphicx, color} % 図の挿入や色の利用
-\usepackage{tikz}         % 図形描画
-\usetikzlibrary{intersections,calc,arrows.meta}
-\usepackage{float}        % 図表の位置を調整 [H]など
-\usepackage{siunitx}      % 単位をきれいに表示 \SI{100}{\kilo\gram}など
-\usepackage{ascmac}       % itemboxなどの囲み枠
-\usepackage{amsmath}
-\usepackage{amssymb}      % 数学記号 (\becauseなど)
-\numberwithin{equation}{section}
-% --- その他 ---
-\parindent = 0pt % 全体の段落開始時のインデントをなくす
-\newcommand{\intinf}{\int_{-\infty}^\infty}
-\newcommand{\pathint}{\int \mathcal{D}\varphi}
-\newenvironment{note}{
-    \vspace{1ex} % 上部の余白（お好みで調整）
-    \par\footnotesize\noindent\textbf{【注】}
-}{
-    \par\vspace{1ex} % 下部の余白
-}
-% --- ハイパーリンク関連 (できるだけ最後に読み込む) ---
-\usepackage[
-    dvipdfmx,
-    bookmarks=true,
-    bookmarksnumbered=true,
-    bookmarkstype=toc,
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue
-]{hyperref}
-\usepackage{pxjahyper} % hyperrefの日本語文字化け対策
-\usepackage{amsmath, amssymb}
-\usepackage[many]{tcolorbox} % manyオプションでskinsやtheoremsなどを一括読み込み
+\usepackage{tcolorbox}
 
-% tcolorboxを用いた新しい定理環境の定義
-\tcbset{
-    myboxstyle/.style={
-        enhanced,
-        colback=white,           % メインボックスの背景色（白）
-        boxrule=0.8pt,           % 枠線の太さ
-        arc=1.5mm,               % 角の丸み
-        coltitle=white,          % タイトル文字の色（白）
-        attach boxed title to top left={xshift=5mm, yshift=-\tcboxedtitleheight/2},
-        description font=\normalfont,
-        separator sign={:}       % 番号の後のコロン
-    }
-}
+% note環境の定義（コメントアウトによるエラーを修正）
+\newenvironment{note}{\vspace{1ex}\par\footnotesize\noindent\textbf{【注】}}{\par\vspace{1ex}}
 
-% ==========================================
-% 2. 各環境の定義（色のみ個別設定）
-% ==========================================
-
-% --- 定理 (Theorem) : グレー系 ---
-\newtcbtheorem[number within=section]{mythm}{Theorem}{
-    myboxstyle,
-    colframe=red!75!black,           % 枠線の色（赤系に合わせて変更）
-    boxed title style={
-        colback=red!50,              % タイトル背景色をグレーから赤に変更
-        colframe=red!75!black,       % タイトル枠線の色（赤系に合わせて変更）
-        boxrule=0.8pt,
-        arc=1.5mm
-    }
-}{thm}
-
-% --- 定義 (Definition) : ブルー系 ---
-\newtcbtheorem[number within=section]{mydef}{Definition}{
-    myboxstyle,
-    colframe=blue!70!black,      % 枠線の色（青70% + 黒30%）
-    boxed title style={
-        colback=blue!60!gray!80, % タイトル背景色（少しグレーを混ぜた落ち着いた青）
-        colframe=blue!70!black,
-        boxrule=0.8pt,
-        arc=1.5mm
-    }
-}{def}
-
-% --- 補題 (Lemma) : グリーン系 ---
-\newtcbtheorem[number within=section]{mylem}{Lemma}{
-    myboxstyle,
-    colframe=green!50!black,     % 枠線の色（緑50% + 黒50%）
-    boxed title style={
-        colback=green!50!gray,   % タイトル背景色（渋めの緑）
-        colframe=green!50!black,
-        boxrule=0.8pt,
-        arc=1.5mm
-    }
-}{lem}
-
-\begin{document}
-
-\title{テスト文書}
+\title{講義ノート：物理に現れるモジュライ}
 \author{小武}
 \date{\today}
+
+\begin{document}
 \maketitle
-\section{はじめに}
+\tableofcontents
 
-\bibliographystyle{unsrturl}
+\part{共通する数学的構造}
 
-% Zoteroから出力した .bib ファイルの名前（拡張子 .bib は不要）
-\bibliography{マイライブラリ}
+\chapter{モジュライ問題の定義：分類問題として理解する}
+
+\section{モチベーション：なぜ「空間の空間」を考えるのか}
+
+物理学において、ある系を完全に理解することは「その系が取り得る状態や構造をすべて見つけ出し、分類すること」に帰着することが多い。古典論においては、運動方程式の特定の解（例えば平坦な時空や1つのソリトン解）を一つ見つければ系のダイナミクスを決定できた。しかし、場の量子論や弦理論といった非摂動的な効果を考慮すべき現代的な枠組みでは、単一の解や状態を個別に調べるだけでは不十分である。
+
+例えば、経路積分量子化においては、作用を最小化する古典解（真空やインスタントン）だけでなく、その周辺のあらゆる配位を足し合わせる必要がある。系に連続的な対称性や平坦な方向（flat direction）が存在する場合、作用を最小にする解は1つではなく、連続的なパラメータの組で指定される「解の集合」を形成する。この「条件を満たす解の全体集合」がどのような幾何学的・位相的構造を持っているかを知ることが不可欠になる。
+
+このように、ある条件を満たす数学的対象（多様体、ベクトル束、微分方程式の解など）を同値関係で割った商空間を\textbf{モジュライ空間（Moduli space）}と呼ぶ。モジュライ空間自体がひとつの幾何学的な空間（多様体やその拡張）となり、そのトポロジーや幾何学が元の物理系の性質（非摂動効果、双対性、アノマリーなど）を決定づけるのである。
+
+\begin{note}
+超対称ゲージ理論などにおける「パラメータ空間」も一種のモジュライ空間である。スカラー場のポテンシャルが平坦な谷を持つ場合、連続的な真空期待値（例えば $u = \langle \mathrm{Tr}\Phi^2 \rangle$）を変化させることは、真空のモジュライ空間 $\mathcal{M}_{\text{vac}}$ 上を移動することに対応する（第6章で詳述）。Seiberg--Witten理論では、このモジュライ空間上の特殊K\"ahler幾何学とモノドロミーを調べることで、低エネルギー有効作用を非摂動的に完全決定している。
+\end{note}
+
+\section{やりたいこと：分類問題の定式化}
+
+本講義全体の目的は、「対象の分類」という素朴なアイデアを厳密な数学的言語で記述し、物理へ応用することである。分類問題を定式化するためには、以下のステップを踏む必要がある。
+
+\begin{enumerate}
+    \item \textbf{対象（Objects）の決定}：何を分類したいのか。物理的文脈に応じて、考えるべき対象はリーマン面（弦理論）、ベクトル束やゲージ接続（Yang--Mills理論）、あるいは計量（一般相対論）など多岐にわたる。
+    \item \textbf{同値関係（Equivalence）の導入}：いつ2つの対象を「物理的に同じ状態」とみなすか。例えば、時空の座標変換（微分同相写像）やゲージ変換で移り合う2つの配位は、物理的には全く同一の状態を表す。ゲージ対称性は物理的冗長性であり、これを正しく割り引く（商をとる）操作が不可欠となる（第2章）。
+    \item \textbf{族（Families）の概念と局所的変形}：対象が連続パラメータ（モジュライ・パラメータ）に依存して滑らかに変化するとはどういうことかを定義する。これにより、モジュライ空間の局所的な座標が張る「接空間」が定義される。接空間の自由度は、しばしばコホモロジー群によって数え上げられる（第3章）。
+    \item \textbf{モジュライ空間の構成とコンパクト化}：同値類の全体からなる集合 $\mathcal{M}$ に位相や幾何構造を導入する。さらに、空間が「退化」する極限（例えば弦がちぎれる極限など）を付け加えて空間を閉じる「コンパクト化」の作業が、弦の散乱振幅の境界での振る舞いを理解する上で重要となる（第10章）。
+\end{enumerate}
+
+\section{具体例：2次元トーラスのモジュライと共形同値}
+
+最も基本的かつ物理的に重要な例として、2次元トーラス（種数 $g=1$ のリーマン面）の分類を考えよう。平坦な計量を持つトーラスは、複素平面 $\mathbb{C}$ を2つの離散的な並進ベクトルで作られる格子 $\Lambda$ で割った商空間 $\mathbb{C}/\Lambda$ として表される。
+
+2次元の計量は局所的に3つの自由度を持つが、微分同相変換（2自由度）とWeyl変換 $g_{ab} \to e^{2\omega} g_{ab}$（1自由度）を用いて、計量を平坦な形に「ゲージ固定」することができる。スケール変換と回転の全体的な自由度を使って一方の並進ベクトルを $1$ に固定すると、もう一方のベクトルを複素上半平面の点 $\tau \in \mathbb{H} = \{ \tau \in \mathbb{C} \mid \mathrm{Im}\,\tau > 0 \}$ として選ぶことができる。この $\tau$ がトーラスの複素構造を決定するモジュライ・パラメータである。
+
+しかし、同じ格子 $\Lambda$ を張る基底の選び方には冗長性がある。$SL(2, \mathbb{Z})$ によるモジュラー変換
+\begin{equation}
+    \tau \to \frac{a\tau + b}{c\tau + d} \quad \left(
+    \begin{pmatrix} a & b \\ c & d \end{pmatrix} \in SL(2, \mathbb{Z})
+    \right)
+\end{equation}
+で移り合う $\tau$ たちは、全く同じ格子（同じトーラス）を与える。したがって、トーラスのモジュライ空間 $\mathcal{M}_{g=1}$ は、上半平面 $\mathbb{H}$ をモジュラー群で割った商空間
+\begin{equation}
+    \mathcal{M}_{1} = \mathbb{H} / SL(2, \mathbb{Z})
+\end{equation}
+となる。これは基本領域としてよく知られる「鍵穴型」の領域をなす。
+
+\begin{note}
+弦理論の摂動論（1ループ振幅）において、トーラスのモジュライ空間上の積分が実行される。このとき、ゲージ固定に伴うFaddeev--Popov行列式（ゴースト場の寄与）と物質場の寄与が相殺し、モジュラー不変性が保たれるためには、系の中心電荷が特定の条件を満たす必要がある。例えばボソン弦の場合、ヴィラソロ代数のゴーストの寄与 $c=-26$ を打ち消すために、時空の次元が臨界次元 $D=26$ であることが要求される。モジュライ空間の幾何学は、このように量子論の無矛盾性と直結している（第9章・第11章）。
+\end{note}
+
+\section{局所的な変形と大域的なトポロジーの概観}
+
+モジュライ空間の構造は、局所的な性質と大域的な性質の2つの側面に分けて調べられる。
+
+局所的には、ある状態をわずかに変形したときに、それが物理的に新しい状態（モジュライの別な点）を与えるか、それとも単なるゲージ変換（あるいは座標変換）に過ぎないかが問題になる。量子論の経路積分においては、モジュライ空間の接空間方向への変形は作用を変えない「零モード（ゼロ・モード）」に対応する。モジュライ空間の次元は、系に存在する物理的な零モードの数に等しく、これを数え上げるのがAtiyah--Singerの指数定理である。
+
+一方、大域的には、モジュライ空間の境界や特異点が問題となる。前述のトーラスの例では、$\mathrm{Im}\,\tau \to \infty$ の極限でトーラスは無限に細長く退化し、円柱に近づく。物理的には、これは弦理論における赤外発散（あるいは双対チャネルでの紫外極限）に対応しており、モジュライ空間を適切に「コンパクト化」して境界を制御しなければならない。
+
+\begin{note}
+相対論において計量を扱う際、本講義では $(-+++)$ の符号系を採用する。ローレンツ多様体の計量のモジュライを考える場合、空間成分と時間成分で許容される位相幾何学的性質（スピン構造や因果構造）が異なるため、Riemann多様体（正定値計量）のモジュライとは異なる困難が生じる。弦理論では通常、Wick回転によってEuclid化された世界面や余剰次元の空間（Calabi--Yau多様体など）のモジュライを扱う（第7章・第8章）。
+\end{note}
+
+\section{まとめ：物理学における役割}
+
+本章の総括として、モジュライ空間の概念が物理学の各分野でどのような役割を果たし、それが本講義のどの章に対応するかを整理しておく。
+
+\begin{itemize}
+    \item \textbf{ゲージ理論（第5章・第11章）}：Yang--Mills方程式のインスタントン解のモジュライ空間。モジュライ上の積分は、非摂動的な相関関数や量子異常（アノマリー）を記述する。
+    \item \textbf{共形場理論とリーマン面（第9章）}：Teichm\"uller空間と写像類群の商としてのリーマン面のモジュライ $\mathcal{M}_g$。弦の散乱振幅の導出の基礎となる。
+    \item \textbf{弦理論の余剰次元（第7章）}：超弦理論のコンパクト化におけるCalabi--Yau多様体のモジュライ空間（複素構造とK\"ahler構造の変形）。これは低エネルギー有効理論におけるスカラー場（モジュライ場）として現れる。
+\end{itemize}
+
+次章では、この「物理的冗長性を割って真の自由度を取り出す」という手続きを数学的に定式化する「群作用と商空間」について詳しく見ていく。
+\chapter{群作用と商空間：ゲージ対称性との関係を理解する}
+
+\section{ゲージ対称性と物理的冗長性}
+
+物理系において「ゲージ対称性がある」とは、自然界に存在する真の力学的な対称性を意味するのではなく、我々が系を局所的かつ共変的に記述するために導入した変数（ゲージ場やベクトルポテンシャル）に\textbf{物理的冗長性}が存在することを意味している。
+
+例えば、電磁気学やYang--Mills理論において、ゲージ場 $A_\mu(x)$ に対する局所ゲージ変換
+\begin{equation}
+    A_\mu(x) \to U(x) A_\mu(x) U^{-1}(x) + \frac{i}{g} (\partial_\mu U(x)) U^{-1}(x)
+\end{equation}
+は、得られる電磁場強度 $F_{\mu\nu}$ を不変に保つ。したがって、数学的に許容されるすべてのゲージ接続の空間（これを $\mathcal{A}$ とする）の中には、物理的に全く同一の状態を表す配位が無数に含まれていることになる。真の物理的状態の空間（モジュライ空間）は、このゲージ変換のなす無限次元の群 $\mathcal{G}$ の作用で $\mathcal{A}$ を割った商空間
+\begin{equation}
+    \mathcal{M} = \mathcal{A} / \mathcal{G}
+\end{equation}
+として定義されなければならない。
+
+\begin{note}
+経路積分においてゲージ軌道の体積で割る操作は、場の量子論においてFaddeev--Popovゴーストを導入することで厳密に実現される。ゲージ変換の群体積を形式的にくくり出す際、ゲージ固定条件のヤコビアンとしてFaddeev--Popov行列式が現れ、これを反交換関係を満たすグラスマン偶奇性を持つ場（ゴースト場・反ゴースト場）の経路積分として作用に持ち上げる。ゴースト場は、モジュライ空間上の積分測度を正しく定義し、BRST不変性を保証するための代数的な要請として不可欠である。
+\end{note}
+
+\section{群作用の数学的定式化：軌道と商空間}
+
+モジュライ空間を構成する数学的基盤として、群作用の理論を整理する。
+ある滑らかな多様体 $M$ （例えばすべての許容される場や構造の空間）に対して、リー群 $G$ （ゲージ群や微分同相群など）が滑らかに作用しているとする。群作用 $\Phi: G \times M \to M$ が与えられたとき、各点 $x \in M$ の\textbf{軌道 (orbit)} $G \cdot x$ を次のように定義する。
+\begin{equation}
+    G \cdot x = \{ g \cdot x \mid g \in G \}
+\end{equation}
+モジュライ空間 $\mathcal{M}$ は、この軌道を1つの点と同一視した集合、すなわち商空間 $M / G$ である。
+
+商空間に良好な位相や多様体構造を導入するためには、群作用が以下の条件を満たすことが望ましい。
+\begin{itemize}
+    \item \textbf{自由な作用 (Free action)}：すべての $x \in M$ において、 $g \cdot x = x$ を満たす群の元が単位元 $e$ に限られること。すなわち、$g \neq e \implies g \cdot x \neq x$。
+    \item \textbf{固有な作用 (Proper action)}：写像 $G \times M \to M \times M$ が固有写像であること。これにより、商空間 $M/G$ がハウスドルフ空間などの優れた位相的性質を持つことが保証される。
+\end{itemize}
+
+\section{固定部分群と商空間の特異点（オービフォールド）}
+
+物理的に興味深い多くの系では、群の作用は必ずしも「自由」ではない。すなわち、ある特別な点 $x \in M$ において、非自明な群の元 $g \neq e$ が $g \cdot x = x$ を満たすことがある。このような $g$ の全体は部分群をなしており、これを点 $x$ における\textbf{固定部分群（あるいは等方部分群、スタビライザー）} $G_x$ と呼ぶ。
+\begin{equation}
+    G_x = \{ g \in G \mid g \cdot x = x \}
+\end{equation}
+
+固定部分群が自明でない（$G_x \neq \{e\}$ であるような）点が存在する場合、商空間 $M/G$ は通常の意味での滑らかな多様体とはならず、その点に\textbf{特異点（オービフォールド特異点）}が生じる。例えば、2次元平坦トーラスのモジュライ空間 $\mathcal{M}_1 = \mathbb{H} / SL(2, \mathbb{Z})$ において、$\tau = i$ や $\tau = e^{i\pi/3}$ といった点では $SL(2, \mathbb{Z})$ の部分群による自明でない固定点が存在するため、モジュライ空間の境界や内部にコニカル特異点（円錐特異点）が現れる。
+
+\begin{note}
+弦理論のコンパクト化において、このオービフォールド特異点は極めて重要な物理的役割を果たす。時空を有限群の作用で割ったオービフォールドを考えると、固定点のまわりを回る閉弦の境界条件として「ねじれ（twisted sector）」が許容される。これにより、特異点上に質量ゼロの新しい粒子が局所的に出現し、低エネルギーでのゲージ対称性のパターンやパリティの破れを決定する。こうした特異点を含む空間上の幾何学を矛盾なく扱うための強力な枠組みが、第12章で扱う「モジュライスタック」である。
+\end{note}
+
+\section{大域的な障害：Gribov問題と大域的定義の困難}
+
+局所的なゲージ固定条件を導入してモジュライ空間を構成しようとするとき、数学的に深刻な大域的障害に直面することがある。これが\textbf{Gribov問題}である。
+
+非自明なトポロジーを持つ主バンド上のゲージ接続の空間 $\mathcal{A}$ をゲージ群 $\mathcal{G}$ で割る際、単一の切断（グローバルなゲージ固定の選択）によってすべての軌道をちょうど1回ずつ横切るような滑らかな領域を定義することが、大域的トポロジーの障害（Gribov obstruction）により不可能であることが知られている。すなわち、ゲージ固定条件を満たす面が複数の軌道と交差したり、滑らかな大域的座標系が入らない事態が発生する。
+
+このことは、モジュライ空間が単純な商空間 $M/G$ として大域的に書き表せず、より大域的な貼り合わせの構造や、スタックとしての定式化が必要であることを示唆している。
+
+\section{まとめと次章への展望}
+
+本章では、物理的冗長性としてのゲージ対称性を割り引き、真の自由度を抽出する操作が「群作用による商空間の構成」に他ならないことを見た。しかし、作用が非自由である場合の特異点や、大域的なトポロジーに起因する困難（Gribov問題）が生じることも明らかになった。
+
+次章では、モジュライ空間の局所的な形状や次元を決定づける\textbf{接空間・特異点・次元}の解析手法、およびそれを変形理論とコホモロジー群の言葉でどのように定式化するかについて詳しく見ていく。
 \end{document}
