@@ -1,3 +1,188 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{10}
+
+\bibitem{seibergwitten1994}
+N.~Seiberg and E.~Witten.
+\newblock Electric-magnetic duality, monopole condensation, and confinement in
+  {N=2} supersymmetric {Yang-Mills} theory.
+\newblock {\em Nucl. Phys. B}, 426:19--52, 1994.
+
+\bibitem{polchinskistringtheoryvolume12005}
+Joseph~Gerard Polchinski.
+\newblock {\em String Theory: {{Volume}} 1: {{An}} Introduction to the Bosonic
+  String}.
+\newblock Cambridge Monographs on Mathematical Physics. Cambridge University
+  Press, Cambridge, paperback edition edition, 2005.
+
+\bibitem{polchinskistringtheoryvolume2005}
+Joseph~Gerard Polchinski.
+\newblock {\em String Theory: {{Volume}} 2: {{Superstring}} Theory and Beyond}.
+\newblock Cambridge Monographs on Mathematical Physics. Cambridge University
+  Press, Cambridge, paperback edition edition, 2005.
+
+\bibitem{lee2013}
+John~M. Lee.
+\newblock {\em Introduction to Smooth Manifolds}, volume 218 of {\em Graduate
+  Texts in Mathematics}.
+\newblock Springer, 2 edition, 2013.
+
+\bibitem{harerzagier1986}
+J.~Harer and D.~Zagier.
+\newblock The {Euler} characteristic of the moduli space of curves.
+\newblock {\em Invent. Math.}, 85:457--485, 1986.
+
+\bibitem{gribov1978}
+V.~N. Gribov.
+\newblock Quantization of non-{Abelian} gauge theories.
+\newblock {\em Nucl. Phys. B}, 139:1--19, 1978.
+
+\bibitem{singer1978}
+I.~M. Singer.
+\newblock Some remarks on the {Gribov} ambiguity.
+\newblock {\em Commun. Math. Phys.}, 60:7--12, 1978.
+
+\bibitem{kodairaspencer1958}
+K.~Kodaira and D.~C. Spencer.
+\newblock On deformations of complex analytic structures, {I, II}.
+\newblock {\em Ann. of Math.}, 67:328--466, 1958.
+
+\bibitem{kuranishi1962}
+M.~Kuranishi.
+\newblock On the locally complete families of complex analytic structures.
+\newblock {\em Ann. of Math.}, 75:536--577, 1962.
+
+\bibitem{tian1987}
+Gang Tian.
+\newblock Smoothness of the universal deformation space of compact {Calabi-Yau}
+  manifolds and its {Petersson-Weil} metric.
+\newblock In S.-T. Yau, editor, {\em Mathematical Aspects of String Theory},
+  pages 629--646. World Scientific, 1987.
+
+\bibitem{todorov1989}
+Andrey~N. Todorov.
+\newblock The {Weil-Petersson} geometry of the moduli space of {SU(n $\geq$ 3)}
+  ({Calabi-Yau}) manifolds {I}.
+\newblock {\em Commun. Math. Phys.}, 126:325--346, 1989.
+
+\bibitem{ahs1978}
+M.~F. Atiyah, N.~J. Hitchin, and I.~M. Singer.
+\newblock Self-duality in four-dimensional {Riemannian} geometry.
+\newblock {\em Proc. R. Soc. Lond. A}, 362:425--461, 1978.
+
+\bibitem{thooft1976}
+Gerard 't~Hooft.
+\newblock Computation of the quantum effects due to a four-dimensional
+  pseudoparticle.
+\newblock {\em Phys. Rev. D}, 14:3432--3450, 1976.
+
+\bibitem{nakahara2003}
+Mikio Nakahara.
+\newblock {\em Geometry, Topology and Physics}.
+\newblock Institute of Physics Publishing, 2 edition, 2003.
+
+\bibitem{wuyang1975}
+Tai~Tsun Wu and Chen~Ning Yang.
+\newblock Concept of nonintegrable phase factors and global formulation of
+  gauge fields.
+\newblock {\em Phys. Rev. D}, 12:3845--3857, 1975.
+
+\bibitem{bpst1975}
+A.~A. Belavin, A.~M. Polyakov, A.~S. Schwartz, and Yu.~S. Tyupkin.
+\newblock Pseudoparticle solutions of the {Yang-Mills} equations.
+\newblock {\em Phys. Lett. B}, 59:85--87, 1975.
+
+\bibitem{adhm1978}
+M.~F. Atiyah, V.~G. Drinfeld, N.~J. Hitchin, and Yu.~I. Manin.
+\newblock Construction of instantons.
+\newblock {\em Phys. Lett. A}, 65:185--187, 1978.
+
+\bibitem{uhlenbeck1982}
+Karen~K. Uhlenbeck.
+\newblock Removable singularities in {Yang-Mills} fields.
+\newblock {\em Commun. Math. Phys.}, 83:11--29, 1982.
+
+\bibitem{donaldsonkronheimer1990}
+S.~K. Donaldson and P.~B. Kronheimer.
+\newblock {\em The Geometry of Four-Manifolds}.
+\newblock Oxford University Press, 1990.
+
+\bibitem{witten1996small}
+Edward Witten.
+\newblock Small instantons in string theory.
+\newblock {\em Nucl. Phys. B}, 460:541--559, 1996.
+
+\bibitem{peskinintroductionquantumfield2019}
+Michael~Edward Peskin and Daniel~V. Schroeder.
+\newblock {\em An Introduction to Quantum Field Theory}.
+\newblock The Advanced Book Program. CRC Press, Taylor \& Francis Group, Boca
+  Raton London New York, first issued in paperback edition, 2019.
+
+\bibitem{kempfness1979}
+G.~Kempf and L.~Ness.
+\newblock The length of vectors in representation spaces.
+\newblock In {\em Algebraic Geometry (Copenhagen 1978)}, volume 732 of {\em
+  Lecture Notes in Mathematics}, pages 233--243. Springer, 1979.
+
+\bibitem{witten1993phases}
+Edward Witten.
+\newblock Phases of {N=2} theories in two dimensions.
+\newblock {\em Nucl. Phys. B}, 403:159--222, 1993.
+
+\bibitem{coleman1973}
+Sidney Coleman.
+\newblock There are no {Goldstone} bosons in two dimensions.
+\newblock {\em Commun. Math. Phys.}, 31:259--264, 1973.
+
+\bibitem{ads1984}
+I.~Affleck, M.~Dine, and N.~Seiberg.
+\newblock Dynamical supersymmetry breaking in supersymmetric {QCD}.
+\newblock {\em Nucl. Phys. B}, 241:493--534, 1984.
+
+\bibitem{seiberg1994}
+N.~Seiberg.
+\newblock Exact results on the space of vacua of four-dimensional {SUSY} gauge
+  theories.
+\newblock {\em Phys. Rev. D}, 49:6857--6863, 1994.
+
+\bibitem{greenestringtheorycalabiyau1997}
+Brian Greene.
+\newblock String {{Theory}} on {{Calabi-Yau Manifolds}}, February 1997.
+
+\bibitem{yau1978}
+Shing-Tung Yau.
+\newblock On the {Ricci} curvature of a compact {K\"ahler} manifold and the
+  complex {Monge-Amp\`ere} equation. {I}.
+\newblock {\em Comm. Pure Appl. Math.}, 31:339--411, 1978.
+
+\bibitem{strominger1995}
+Andrew Strominger.
+\newblock Massless black holes and conifolds in string theory.
+\newblock {\em Nucl. Phys. B}, 451:96--108, 1995.
+
+\bibitem{candelas1991}
+P.~Candelas, X.~C. de~la Ossa, P.~S. Green, and L.~Parkes.
+\newblock A pair of {Calabi-Yau} manifolds as an exactly soluble superconformal
+  theory.
+\newblock {\em Nucl. Phys. B}, 359:21--74, 1991.
+
+\bibitem{gvw2000}
+S.~Gukov, C.~Vafa, and E.~Witten.
+\newblock {CFT}'s from {Calabi-Yau} four-folds.
+\newblock {\em Nucl. Phys. B}, 584:69--108, 2000.
+
+\bibitem{kklt2003}
+S.~Kachru, R.~Kallosh, A.~Linde, and S.~P. Trivedi.
+\newblock de {Sitter} vacua in string theory.
+\newblock {\em Phys. Rev. D}, 68:046005, 2003.
+
+\bibitem{ebin1970}
+D.~G. Ebin.
+\newblock The manifold of {Riemannian} metrics.
+\newblock In {\em Global Analysis}, volume~15 of {\em Proc. Sympos. Pure
+  Math.}, pages 11--40. Amer. Math. Soc., 1970.
+
+\bibitem{witten1988}
+Edward Witten.
+\newblock 2+1 dimensional gravity as an exactly soluble system.
+\newblock {\em Nucl. Phys. B}, 311:46--78, 1988.
 
 \end{thebibliography}

@@ -3,6 +3,7 @@
 \usepackage{amsthm}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usetikzlibrary{calc}
 \usepackage{tikz-feynhand}
 \usepackage{tcolorbox}
 \tcbuselibrary{theorems, skins, breakable}
@@ -38,7 +39,7 @@
     }
 }
 
-\newtcbtheorem[number within=section]{mythm}{Theorem}{
+\newtcbtheorem[number within=section]{mythm}{定理}{
     myboxstyle,
     colframe=red!75!black,           % 枠線の色（赤系に合わせて変更）
     boxed title style={
@@ -50,7 +51,7 @@
 }{thm}
 
 % --- 定義 (Definition) : ブルー系 ---
-\newtcbtheorem[number within=section]{mydef}{Definition}{
+\newtcbtheorem[use counter from=mythm]{mydef}{定義}{
     myboxstyle,
     colframe=blue!70!black,      % 枠線の色（青70% + 黒30%）
     boxed title style={
@@ -62,7 +63,7 @@
 }{def}
 
 % --- 補題 (Lemma) : グリーン系 ---
-\newtcbtheorem[number within=section]{mylem}{Lemma}{
+\newtcbtheorem[use counter from=mythm]{mylem}{補題}{
     myboxstyle,
     colframe=green!50!black,     % 枠線の色（緑50% + 黒50%）
     boxed title style={
@@ -74,7 +75,7 @@
 }{lem}
 
 % --- 命題 (Proposition) : オレンジ系 ---
-\newtcbtheorem[number within=section]{myprop}{Proposition}{
+\newtcbtheorem[use counter from=mythm]{myprop}{命題}{
     myboxstyle,
     colframe=orange!80!black,
     boxed title style={
@@ -86,7 +87,7 @@
 }{prop}
 
 % --- 例 (Example) : グレー系 ---
-\newtcbtheorem[number within=section]{myex}{Example}{
+\newtcbtheorem[use counter from=mythm]{myex}{例}{
     myboxstyle,
     colframe=gray!70!black,
     boxed title style={
@@ -96,7 +97,7 @@
         arc=1.5mm
     }
 }{ex}
-% note環境の定義（コメントアウトによるエラーを修正）
+% 計算過程などを書く注釈環境
 \newenvironment{note}{\vspace{1ex}\par\footnotesize\noindent\textbf{【注】}}{\par\vspace{1ex}}
 
 % 証明環境（amsthm）
@@ -113,6 +114,7 @@
 \part{共通する数学的構造}
 
 \chapter{モジュライ問題の定義：分類問題として理解する}
+\label{ch:intro}
 
 \section{モチベーション：なぜ「空間の空間」を考えるのか}
 
@@ -123,7 +125,7 @@
 このように、ある条件を満たす数学的対象（多様体、ベクトル束、微分方程式の解など）を同値関係で割った商空間を\textbf{モジュライ空間（Moduli space）}と呼ぶ。モジュライ空間自体がひとつの幾何学的な空間（多様体やその拡張）となり、そのトポロジーや幾何学が元の物理系の性質（非摂動効果、双対性、アノマリーなど）を決定づけるのである。
 
 \begin{note}
-超対称ゲージ理論などにおける「パラメータ空間」も一種のモジュライ空間である。スカラー場のポテンシャルが平坦な谷を持つ場合、連続的な真空期待値（例えば $u = \langle \mathrm{Tr}\Phi^2 \rangle$）を変化させることは、真空のモジュライ空間 $\mathcal{M}_{\text{vac}}$ 上を移動することに対応する（第6章で詳述）。Seiberg--Witten理論では、このモジュライ空間上の特殊K\"ahler幾何学とモノドロミーを調べることで、低エネルギー有効作用を非摂動的に完全決定している。
+超対称ゲージ理論などにおける「パラメータ空間」も一種のモジュライ空間である。スカラー場のポテンシャルが平坦な谷を持つ場合、連続的な真空期待値（例えば $u = \langle \mathrm{Tr}\Phi^2 \rangle$）を変化させることは、真空のモジュライ空間 $\mathcal{M}_{\text{vac}}$ 上を移動することに対応する（第\ref{ch:vacuum}章で詳述）。Seiberg--Witten理論\cite{seibergwitten1994}では、このモジュライ空間上の特殊K\"ahler幾何学とモノドロミーを調べることで、低エネルギー有効作用を非摂動的に完全決定している。
 \end{note}
 
 \section{やりたいこと：分類問題の定式化}
@@ -132,59 +134,159 @@
 
 \begin{enumerate}
     \item \textbf{対象（Objects）の決定}：何を分類したいのか。物理的文脈に応じて、考えるべき対象はリーマン面（弦理論）、ベクトル束やゲージ接続（Yang--Mills理論）、あるいは計量（一般相対論）など多岐にわたる。
-    \item \textbf{同値関係（Equivalence）の導入}：いつ2つの対象を「物理的に同じ状態」とみなすか。例えば、時空の座標変換（微分同相写像）やゲージ変換で移り合う2つの配位は、物理的には全く同一の状態を表す。ゲージ対称性は物理的冗長性であり、これを正しく割り引く（商をとる）操作が不可欠となる（第2章）。
-    \item \textbf{族（Families）の概念と局所的変形}：対象が連続パラメータ（モジュライ・パラメータ）に依存して滑らかに変化するとはどういうことかを定義する。これにより、モジュライ空間の局所的な座標が張る「接空間」が定義される。接空間の自由度は、しばしばコホモロジー群によって数え上げられる（第3章）。
+    \item \textbf{同値関係（Equivalence）の導入}：いつ2つの対象を「物理的に同じ状態」とみなすか。例えば、時空の座標変換（微分同相写像）やゲージ変換で移り合う2つの配位は、物理的には全く同一の状態を表す。ゲージ対称性は物理的冗長性であり、これを正しく割り引く（商をとる）操作が不可欠となる（第\ref{ch:group-action}章）。
+    \item \textbf{族（Families）の概念と局所的変形}：対象が連続パラメータ（モジュライ・パラメータ）に依存して滑らかに変化するとはどういうことかを定義する。これにより、モジュライ空間の局所的な座標が張る「接空間」が定義される。接空間の自由度は、しばしばコホモロジー群によって数え上げられる（第\ref{ch:deformation}章）。
     \item \textbf{モジュライ空間の構成とコンパクト化}：同値類の全体からなる集合 $\mathcal{M}$ に位相や幾何構造を導入する。さらに、空間が「退化」する極限（例えば弦がちぎれる極限など）を付け加えて空間を閉じる「コンパクト化」の作業が、弦の散乱振幅の境界での振る舞いを理解する上で重要となる（第10章）。
 \end{enumerate}
 
+この手続きを、もう少し正確な言葉でまとめておこう。
+
+\begin{mydef}{モジュライ問題と族}{}
+\begin{enumerate}
+    \item \textbf{モジュライ問題}とは、対象のクラス $\mathcal{C}$ と、その上の同値関係（多くの場合「同型」）$\sim$ の組である。その同値類の集合 $\mathcal{M} = \mathcal{C}/\!\sim$ を（集合としての）\textbf{モジュライ空間}と呼ぶ。
+    \item パラメータ空間 $S$ 上の\textbf{族}とは、各点 $s \in S$ に対象 $X_s \in \mathcal{C}$ を「連続的（あるいは正則）に」対応させたものである。族は写像 $S \to \mathcal{M}$、$s \mapsto [X_s]$ を定める。
+    \item $\mathcal{M}$ が幾何学的な空間の構造を持ち、$S$ 上の族（の同型類）と写像 $S \to \mathcal{M}$ が1対1に対応するとき、$\mathcal{M}$ を\textbf{微細モジュライ空間（fine moduli space）}と呼ぶ。このとき $\mathcal{M}$ 自身の上に、各点 $[X]$ に $X$ を対応させる\textbf{普遍族}が存在する。
+    \item 族から写像 $S \to \mathcal{M}$ が得られ、かつ $\mathcal{M}$ の点が同値類と1対1に対応するが、普遍族が存在しないとき、$\mathcal{M}$ を\textbf{粗モジュライ空間（coarse moduli space）}と呼ぶ。
+\end{enumerate}
+\end{mydef}
+
+微細モジュライ空間が存在しない典型的な理由は、対象が非自明な\textbf{自己同型}を持つことである。自己同型 $\sigma: X \to X$ があると、$X$ を円周に沿って $\sigma$ でひねって貼り合わせた族（すべてのファイバーが $X$ と同型なのに、全体としては自明でない族）が作れる。このとき写像 $S \to \mathcal{M}$ は定値写像なので、族と写像の対応が1対1でなくなる。次節のトーラスはまさにこの状況にあり、これがモジュライ空間をスタックとして扱う動機となる。
+
 \section{具体例：2次元トーラスのモジュライと共形同値}
 
-最も基本的かつ物理的に重要な例として、2次元トーラス（種数 $g=1$ のリーマン面）の分類を考えよう。平坦な計量を持つトーラスは、複素平面 $\mathbb{C}$ を2つの離散的な並進ベクトルで作られる格子 $\Lambda$ で割った商空間 $\mathbb{C}/\Lambda$ として表される。
+最も基本的かつ物理的に重要な例として、2次元トーラス（種数 $g=1$ のリーマン面）の分類を考えよう。
 
-2次元の計量は局所的に3つの自由度を持つが、微分同相変換（2自由度）とWeyl変換 $g_{ab} \to e^{2\omega} g_{ab}$（1自由度）を用いて、計量を平坦な形に「ゲージ固定」することができる。スケール変換と回転の全体的な自由度を使って一方の並進ベクトルを $1$ に固定すると、もう一方のベクトルを複素上半平面の点 $\tau \in \mathbb{H} = \{ \tau \in \mathbb{C} \mid \mathrm{Im}\,\tau > 0 \}$ として選ぶことができる。この $\tau$ がトーラスの複素構造を決定するモジュライ・パラメータである。
+2次元の計量は局所的に3つの自由度を持つが、微分同相変換（2自由度）とWeyl変換 $g_{ab} \to e^{2\omega} g_{ab}$（1自由度）を用いて、計量を局所的に平坦な形に「ゲージ固定」することができる（第\ref{ch:gravity}章）。したがって、トーラス上の計量を「微分同相とWeyl変換で移り合うものは同じ」とみなして分類することは、トーラス上の\textbf{複素構造}を分類することと同じである。平坦なトーラスは、複素平面 $\mathbb{C}$ を格子 $\Lambda = \mathbb{Z}\omega_1 + \mathbb{Z}\omega_2$（$\omega_1, \omega_2$ は $\mathbb{R}$ 上一次独立）で割った商空間 $E_\Lambda = \mathbb{C}/\Lambda$ として表される。
 
-しかし、同じ格子 $\Lambda$ を張る基底の選び方には冗長性がある。$SL(2, \mathbb{Z})$ によるモジュラー変換
+2つの格子 $\Lambda, \Lambda'$ が同じ複素構造を定める（$E_\Lambda$ と $E_{\Lambda'}$ が双正則同値になる）のは、$\Lambda' = \lambda\Lambda$（$\lambda \in \mathbb{C}^\times$）となるとき、すなわち格子がスケール変換と回転で移り合うときに限る。そこで $\omega_1$ を $1$ に規格化し、向きを $\mathrm{Im}(\omega_2/\omega_1) > 0$ となるように選ぶと、格子は
+\begin{equation}
+    \tau = \frac{\omega_2}{\omega_1} \in \mathbb{H} = \{ \tau \in \mathbb{C} \mid \mathrm{Im}\,\tau > 0 \}
+\end{equation}
+で指定される。この $\tau$ がトーラスの複素構造を決定する\textbf{モジュライ・パラメータ}である。
+
+しかし、同じ格子 $\Lambda$ を張る基底の選び方には冗長性がある。基底の取り替えは $SL(2, \mathbb{Z})$ の元で与えられ、それに伴って $\tau$ は\textbf{モジュラー変換}
 \begin{equation}
     \tau \to \frac{a\tau + b}{c\tau + d} \quad \left(
     \begin{pmatrix} a & b \\ c & d \end{pmatrix} \in SL(2, \mathbb{Z})
     \right)
 \end{equation}
-で移り合う $\tau$ たちは、全く同じ格子（同じトーラス）を与える。したがって、トーラスのモジュライ空間 $\mathcal{M}_{g=1}$ は、上半平面 $\mathbb{H}$ をモジュラー群で割った商空間
+を受ける。
+
+\begin{note}
+新しい基底を $\omega_2' = a\omega_2 + b\omega_1$、$\omega_1' = c\omega_2 + d\omega_1$ とする。これが同じ格子を張るための条件は、変換行列が整数成分で逆行列も整数成分であること、すなわち $\det = \pm 1$ である。さらに向き $\mathrm{Im}(\omega_2'/\omega_1') > 0$ を保つことから $\det = +1$ となる。このとき
+\begin{equation*}
+    \tau' = \frac{\omega_2'}{\omega_1'} = \frac{a\omega_2 + b\omega_1}{c\omega_2 + d\omega_1} = \frac{a\tau + b}{c\tau + d}
+\end{equation*}
+である。また、$\mathrm{Im}\,\tau' = \dfrac{\mathrm{Im}\,\tau}{|c\tau + d|^2}$ が成り立つので、$\mathbb{H}$ は確かに保たれる。
+\end{note}
+
+したがって、トーラスのモジュライ空間 $\mathcal{M}_{1}$ は、上半平面 $\mathbb{H}$ をモジュラー群で割った商空間
 \begin{equation}
     \mathcal{M}_{1} = \mathbb{H} / SL(2, \mathbb{Z})
 \end{equation}
-となる。これは基本領域としてよく知られる「鍵穴型」の領域をなす。
+となる。この商空間の形は、次の基本領域によって具体的に捉えられる。
+
+\begin{myprop}{モジュラー群の基本領域}{fundamental-domain}
+\begin{equation*}
+    \mathcal{F} = \left\{ \tau \in \mathbb{H} \,\middle|\, |\tau| \ge 1,\ |\mathrm{Re}\,\tau| \le \tfrac{1}{2} \right\}
+\end{equation*}
+とおく。$\mathbb{H}$ の任意の点は、$SL(2, \mathbb{Z})$ の作用によって $\mathcal{F}$ の点に移る。さらに、$\mathcal{F}$ の内部の異なる2点が同じ軌道に属することはなく、同一視は境界上でのみ（$\mathrm{Re}\,\tau = \pm\frac12$ の2辺どうし、および円弧 $|\tau| = 1$ の左右の半分どうし）起こる。
+\end{myprop}
+
+\begin{proof}[証明の概略]
+$\tau \in \mathbb{H}$ を固定する。$\mathrm{Im}(\gamma\tau) = \mathrm{Im}\,\tau / |c\tau + d|^2$ であり、$|c\tau + d| \le 1$ を満たす整数の組 $(c, d)$ は有限個しかないので、軌道上で $\mathrm{Im}$ は最大値をとる。その最大値を与える点に $T: \tau \mapsto \tau + 1$ を何回か施して $|\mathrm{Re}\,\tau| \le \frac12$ とする（$\mathrm{Im}$ は変わらない）。もし $|\tau| < 1$ なら、$S: \tau \mapsto -1/\tau$ により $\mathrm{Im}(-1/\tau) = \mathrm{Im}\,\tau/|\tau|^2 > \mathrm{Im}\,\tau$ となって最大性に反する。よって $|\tau| \ge 1$ であり、$\tau \in \mathcal{F}$ である。
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=2]
+    \fill[blue!10] (-0.5,0.866) arc (120:60:1) -- (0.5,2.2) -- (-0.5,2.2) -- cycle;
+    \draw[->] (-1.4,0) -- (1.5,0) node[right] {$\mathrm{Re}\,\tau$};
+    \draw[->] (0,0) -- (0,2.45) node[above] {$\mathrm{Im}\,\tau$};
+    \draw[gray, dashed] (1,0) arc (0:180:1);
+    \draw[gray, dashed] (-0.5,0) -- (-0.5,0.866);
+    \draw[gray, dashed] (0.5,0) -- (0.5,0.866);
+    \draw[very thick, blue!70!black] (-0.5,2.2) -- (-0.5,0.866) arc (120:60:1) -- (0.5,2.2);
+    \node[below] at (-0.5,0) {$-\frac{1}{2}$};
+    \node[below] at (0.5,0) {$\frac{1}{2}$};
+    \node[below] at (1,0) {$1$};
+    \node[below] at (-1,0) {$-1$};
+    \fill (0,1) circle (0.03) node[below right] {$i$};
+    \fill (0.5,0.866) circle (0.03) node[right] {$e^{i\pi/3}$};
+    \fill (-0.5,0.866) circle (0.03) node[left] {$e^{2\pi i/3}$};
+    \node at (0,1.6) {$\mathcal{F}$};
+    \draw[<->, red!70!black] (-0.42,1.85) -- node[above, font=\scriptsize] {$T$ で同一視} (0.42,1.85);
+    \draw[<->, red!70!black] (-0.3,1.08) to[bend left=40] node[above, font=\scriptsize] {$S$} (0.3,1.08);
+    \node[above, font=\scriptsize] at (0,2.2) {$\uparrow$ カスプ $\tau \to i\infty$};
+\end{tikzpicture}
+\caption{モジュラー群 $SL(2,\mathbb{Z})$ の基本領域 $\mathcal{F}$（青）。左右の辺は $T: \tau \mapsto \tau + 1$ で、円弧の左右の半分は $S: \tau \mapsto -1/\tau$ で貼り合わされる。点 $i$ と $e^{i\pi/3}$（$\sim e^{2\pi i/3}$）は余分な対称性を持つ点であり、上方はカスプに向かって非コンパクトに伸びている。}
+\label{fig:fundamental-domain}
+\end{figure}
+
+すなわち $\mathcal{M}_1$ は、$\mathcal{F}$ の境界を上の規則で貼り合わせた空間である（図\ref{fig:fundamental-domain}）。$\tau = i$ と $\tau = e^{i\pi/3}$ は特別な対称性を持つ点であり、そこでモジュライ空間は円錐特異点を持つ（第\ref{ch:group-action}章で詳しく調べる）。また、$\mathrm{Im}\,\tau \to \infty$ の方向（カスプ）にモジュライ空間は非コンパクトに伸びている。
 
 \begin{note}
-弦理論の摂動論（1ループ振幅）において、トーラスのモジュライ空間上の積分が実行される。このとき、ゲージ固定に伴うFaddeev--Popov行列式（ゴースト場の寄与）と物質場の寄与が相殺し、モジュラー不変性が保たれるためには、系の中心電荷が特定の条件を満たす必要がある。例えばボソン弦の場合、ヴィラソロ代数のゴーストの寄与 $c=-26$ を打ち消すために、時空の次元が臨界次元 $D=26$ であることが要求される。モジュライ空間の幾何学は、このように量子論の無矛盾性と直結している（第9章・第11章）。
+複素解析的には、楕円モジュラー関数 $j(\tau)$（$SL(2, \mathbb{Z})$ 不変な正則関数で、$\mathcal{F}$ の各点で異なる値をとる）によって
+\begin{equation*}
+    j: \mathbb{H}/SL(2, \mathbb{Z}) \xrightarrow{\ \cong\ } \mathbb{C}
+\end{equation*}
+という同一視が得られる。すなわち、粗モジュライ空間としては $\mathcal{M}_1$ は単なる複素平面であり、カスプ $\tau \to i\infty$ に1点 $j = \infty$ を加えれば $\mathbb{CP}^1$ にコンパクト化される。しかし、円錐特異点の情報（$\tau = i$ と $e^{i\pi/3}$ における余分な対称性）は $j$ によって見えなくなっており、それを記憶するにはオービフォールドやスタックの言葉が必要となる。
+\end{note}
+
+前節の定義に照らすと、$\mathcal{M}_1$ は微細モジュライ空間ではない。実際、すべてのトーラスは自己同型 $z \mapsto -z$ を持つ（これは $-1 \in SL(2, \mathbb{Z})$ が $\tau$ を動かさないことに対応する）。さらに並進 $z \mapsto z + c$ という連続的な自己同型もあるので、通常は原点を1点固定した\textbf{1点付きトーラス}（楕円曲線）のモジュライ空間 $\mathcal{M}_{1,1}$ を考える。本講義で $\mathcal{M}_1$ と書くときは、この $\mathcal{M}_{1,1}$ を指すものとする（第\ref{ch:deformation}章）。
+
+\begin{note}
+弦理論の摂動論（1ループ振幅）において、トーラスのモジュライ空間上の積分が実行される。ここでは2つの異なる無矛盾性の条件が現れる。第一に、Weyl変換でゲージ固定を行うためには、量子論的にWeyl対称性が保たれていなければならず、これは物質場とゴースト場の中心電荷の和が消えること $c_{\text{matter}} + c_{\text{ghost}} = 0$ を要求する。ボソン弦では $c_{\text{ghost}} = -26$ なので、時空の次元が臨界次元 $D = 26$ であることが要求される\cite{polchinskistringtheoryvolume12005}。第二に、積分が基本領域 $\mathcal{F}$ 上で矛盾なく定義されるためには、被積分関数がモジュラー変換で不変でなければならない（\textbf{モジュラー不変性}）。超弦理論のGSO射影は、この条件によって決まる\cite{polchinskistringtheoryvolume2005}。モジュライ空間の幾何学は、このように量子論の無矛盾性と直結している（第9章・第11章）。
 \end{note}
 
 \section{局所的な変形と大域的なトポロジーの概観}
 
 モジュライ空間の構造は、局所的な性質と大域的な性質の2つの側面に分けて調べられる。
 
-局所的には、ある状態をわずかに変形したときに、それが物理的に新しい状態（モジュライの別な点）を与えるか、それとも単なるゲージ変換（あるいは座標変換）に過ぎないかが問題になる。量子論の経路積分においては、モジュライ空間の接空間方向への変形は作用を変えない「零モード（ゼロ・モード）」に対応する。モジュライ空間の次元は、系に存在する物理的な零モードの数に等しく、これを数え上げるのがAtiyah--Singerの指数定理である。
+局所的には、ある状態をわずかに変形したときに、それが物理的に新しい状態（モジュライの別な点）を与えるか、それとも単なるゲージ変換（あるいは座標変換）に過ぎないかが問題になる。量子論の経路積分においては、モジュライ空間の接空間方向への変形は作用を変えない「零モード（ゼロ・モード）」に対応する。モジュライ空間が滑らかな点では、その次元は物理的な零モードの数に等しい。一般には、変形を記述するコホモロジー群 $H^0$（自己同型）、$H^1$（変形）、$H^2$（障害）の次元の交代和として\textbf{仮想次元}が定まり、これをトポロジカルに計算するのがAtiyah--Singerの指数定理である（第\ref{ch:deformation}章）。
 
-一方、大域的には、モジュライ空間の境界や特異点が問題となる。前述のトーラスの例では、$\mathrm{Im}\,\tau \to \infty$ の極限でトーラスは無限に細長く退化し、円柱に近づく。物理的には、これは弦理論における赤外発散（あるいは双対チャネルでの紫外極限）に対応しており、モジュライ空間を適切に「コンパクト化」して境界を制御しなければならない。
+一方、大域的には、モジュライ空間の境界や特異点が問題となる。前述のトーラスの例では、$\mathrm{Im}\,\tau \to \infty$ の極限でトーラスは無限に細長く退化し、1つのサイクルが潰れた「ピンチしたトーラス」（節点を1つ持つ曲線）に近づく。物理的には、これは弦理論の1ループ振幅における赤外領域（長いチューブを質量ゼロの粒子が伝播する極限）に対応しており、モジュライ空間を適切に「コンパクト化」して境界を制御しなければならない。この退化した曲線を境界として付け加えるのが、Deligne--Mumfordコンパクト化である（第10章）。
 
 \begin{note}
-相対論において計量を扱う際、本講義では $(-+++)$ の符号系を採用する。ローレンツ多様体の計量のモジュライを考える場合、空間成分と時間成分で許容される位相幾何学的性質（スピン構造や因果構造）が異なるため、Riemann多様体（正定値計量）のモジュライとは異なる困難が生じる。弦理論では通常、Wick回転によってEuclid化された世界面や余剰次元の空間（Calabi--Yau多様体など）のモジュライを扱う（第7章・第8章）。
+相対論において計量を扱う際、本講義では $(-+++)$ の符号系を採用する。ローレンツ多様体の計量のモジュライを考える場合、空間成分と時間成分で許容される位相幾何学的性質（因果構造など）が異なるため、Riemann多様体（正定値計量）のモジュライとは異なる困難が生じる。弦理論では通常、Wick回転によってEuclid化された世界面や余剰次元の空間（Calabi--Yau多様体など）のモジュライを扱う（第\ref{ch:calabi-yau}章・第\ref{ch:gravity}章）。
 \end{note}
 
-\section{まとめ：物理学における役割}
+\section{まとめ：物理学における役割と本講義の構成}
 
 本章の総括として、モジュライ空間の概念が物理学の各分野でどのような役割を果たし、それが本講義のどの章に対応するかを整理しておく。
 
+\paragraph{第I部：共通する数学的構造}
 \begin{itemize}
-    \item \textbf{ゲージ理論（第5章・第11章）}：Yang--Mills方程式のインスタントン解のモジュライ空間。モジュライ上の積分は、非摂動的な相関関数や量子異常（アノマリー）を記述する。
+    \item \textbf{群作用と商空間（第\ref{ch:group-action}章）}：ゲージ対称性による商。良い商が得られる条件、オービフォールド特異点、Gribov問題。
+    \item \textbf{接空間・特異点・次元（第\ref{ch:deformation}章）}：零モードと変形複体のコホモロジー、倉西の局所モデル、指数定理。
+    \item \textbf{束・接続・曲率（第\ref{ch:bundle}章）}：ゲージ場の幾何学的定式化と特性類。
+\end{itemize}
+
+\paragraph{第II部：物理に現れるモジュライ}
+\begin{itemize}
+    \item \textbf{ゲージ理論（第\ref{ch:instanton}章・第11章）}：Yang--Mills方程式のインスタントン解のモジュライ空間。モジュライ上の積分は、非摂動的な相関関数や量子異常（アノマリー）を記述する。
+    \item \textbf{真空のモジュライ（第\ref{ch:vacuum}章）}：自発的対称性の破れと非線形シグマ模型、超対称ゲージ理論のシンプレクティック商・GIT商。
+    \item \textbf{弦理論の余剰次元（第\ref{ch:calabi-yau}章）}：超弦理論のコンパクト化におけるCalabi--Yau多様体のモジュライ空間（複素構造とK\"ahler構造の変形）。これは低エネルギー有効理論におけるスカラー場（モジュライ場）として現れる。
+    \item \textbf{一般相対論と2次元重力（第\ref{ch:gravity}章）}：計量の空間を微分同相で割った商。2次元ではTeichm\"uller空間とリーマン面のモジュライ $\mathcal{M}_g$ に帰着する。
+\end{itemize}
+
+\paragraph{第III部：発展的視点（予定）}
+\begin{itemize}
     \item \textbf{共形場理論とリーマン面（第9章）}：Teichm\"uller空間と写像類群の商としてのリーマン面のモジュライ $\mathcal{M}_g$。弦の散乱振幅の導出の基礎となる。
-    \item \textbf{弦理論の余剰次元（第7章）}：超弦理論のコンパクト化におけるCalabi--Yau多様体のモジュライ空間（複素構造とK\"ahler構造の変形）。これは低エネルギー有効理論におけるスカラー場（モジュライ場）として現れる。
+\end{itemize}
+
+\paragraph{付録}
+\begin{itemize}
+    \item \textbf{超対称性の基礎（付録\ref{app:susy}）}：超対称性代数とBPS限界、多重項、$\mathcal{N}=1$ のラグランジアンと非繰り込み定理、$\mathcal{N}=2$ の特殊幾何。
+    \item \textbf{弦理論の基礎（付録\ref{app:string}）}：Polyakov作用と臨界次元、種数展開、5つの超弦理論、T双対性、Dブレーン、双対性の網。
 \end{itemize}
 
 次章では、この「物理的冗長性を割って真の自由度を取り出す」という手続きを数学的に定式化する「群作用と商空間」について詳しく見ていく。
-\chapter{群作用と商空間：ゲージ対称性との関係を理解する}
 
-第1章では、モジュライ空間を「対象の集合を同値関係で割ったもの」として導入した。物理において同値関係の大部分は、ゲージ変換や座標変換といった\textbf{群の作用}によって与えられる。本章では、群作用と商空間の理論を整理し、商空間が良い空間になるための条件と、それが破れたときに現れる特異点や大域的障害を、具体例を通して調べる。
+\chapter{群作用と商空間：ゲージ対称性との関係を理解する}
+\label{ch:group-action}
+
+第\ref{ch:intro}章では、モジュライ空間を「対象の集合を同値関係で割ったもの」として導入した。物理において同値関係の大部分は、ゲージ変換や座標変換といった\textbf{群の作用}によって与えられる。本章では、群作用と商空間の理論を整理し、商空間が良い空間になるための条件と、それが破れたときに現れる特異点や大域的障害を、具体例を通して調べる。
 
 \section{ゲージ対称性と物理的冗長性}
 
@@ -222,7 +324,7 @@ $U(x) = e^{i\lambda(x)}$ を式 \eqref{eq:gauge-transf-ch2} に代入する。$U
 を得る。したがって $A' - A = \frac{1}{g}d\lambda$ は完全形式である。
 \end{note}
 
-ここで商空間 $\mathcal{A}/\mathcal{G}$ の構造は、時空のトポロジーに依存する。$M = \mathbb{R}^4$ のように可縮な時空では、Poincar\'eの補題により「$dF = 0$ を満たす $F$ は必ず $F = dA$ と書け、$F$ が同じなら $A$ はゲージ同値」であるから、$\mathcal{A}/\mathcal{G}$ は閉2形式 $F$ の空間と同一視され、場の強さ $F$ がすべての物理的情報を持つ。一方、$M$ が非自明なループ（例えば $S^1$ 方向）を持つ場合はそうではない。$F = 0$ でもホロノミー $e^{ig\oint A}$ が非自明な配位は、自明な配位 $A = 0$ とゲージ同値ではない。これがAharonov--Bohm効果であり、第3章ではこれをWilsonラインのモジュライとして再び扱う。
+ここで商空間 $\mathcal{A}/\mathcal{G}$ の構造は、時空のトポロジーに依存する。$M = \mathbb{R}^4$ のように可縮な時空では、Poincar\'eの補題により「$dF = 0$ を満たす $F$ は必ず $F = dA$ と書け、$F$ が同じなら $A$ はゲージ同値」であるから、$\mathcal{A}/\mathcal{G}$ は閉2形式 $F$ の空間と同一視され、場の強さ $F$ がすべての物理的情報を持つ。一方、$M$ が非自明なループ（例えば $S^1$ 方向）を持つ場合はそうではない。$F = 0$ でもホロノミー $e^{ig\oint A}$ が非自明な配位は、自明な配位 $A = 0$ とゲージ同値ではない。これがAharonov--Bohm効果であり、第\ref{ch:deformation}章ではこれをWilsonラインのモジュライとして再び扱う。
 
 \begin{note}
 この「物理的冗長性を割る」という幾何学的な要請は、量子論の経路積分において極めて具体的な手続きを要求する。分配関数においてゲージ軌道の体積で割る操作を行う際、ゲージ固定条件のヤコビアンとしてFaddeev--Popov行列式が現れる。これを局所的な作用に持ち上げるために導入されるのが、反交換関係を満たすグラスマン偶奇性を持ったゴースト場・反ゴースト場である。ゴースト場は、商空間 $\mathcal{M} = \mathcal{A} / \mathcal{G}$ 上の積分測度を正しく定義し、量子論レベルでのBRST不変性を保証するための代数的な要請として不可欠である。
@@ -298,13 +400,13 @@ $U(1)$ を $e^{i\theta} \cdot z = e^{i\theta} z$ によって $\mathbb{C}$ に�
 \begin{equation}
     \mathbb{C}/U(1) \cong [0, \infty)
 \end{equation}
-となる。これは境界を持つ半直線であり、境界点 $r = 0$ がちょうど固定部分群の大きい点に対応している。物理的には、$U(1)$ 対称性を持つ複素スカラー場 $\phi$ の配位を対称性で割ると不変量 $|\phi|$ だけが残り、$\phi = 0$ で対称性が回復することに対応する（第6章）。
+となる。これは境界を持つ半直線であり、境界点 $r = 0$ がちょうど固定部分群の大きい点に対応している。物理的には、$U(1)$ 対称性を持つ複素スカラー場 $\phi$ の配位を対称性で割ると不変量 $|\phi|$ だけが残り、$\phi = 0$ で対称性が回復することに対応する（第\ref{ch:vacuum}章）。
 
 \paragraph{例：円周 $\mathbb{Z} \curvearrowright \mathbb{R}$}
 $\mathbb{Z}$ を $n \cdot x = x + n$ によって $\mathbb{R}$ に作用させる。$n \neq 0$ ならば $x + n \neq x$ なので固定部分群はすべて自明であり、商空間は $\mathbb{R}/\mathbb{Z} \cong S^1$ という滑らかな多様体となる。周期的境界条件を課すことは、この商をとることに他ならない。
 
 \paragraph{例：複素射影空間とHopf束}
-$\mathbb{C}^\times = \mathbb{C} \setminus \{0\}$ を $\lambda \cdot z = \lambda z$ によって $\mathbb{C}^{n+1} \setminus \{0\}$ に作用させると、商空間は複素射影空間 $\mathbb{CP}^n = (\mathbb{C}^{n+1} \setminus \{0\}) / \mathbb{C}^\times$ である。$|z| = 1$ と正規化すれば、同じ空間は $S^{2n+1}/U(1)$ とも表される。$n = 1$ の場合 $S^3/U(1) \cong \mathbb{CP}^1 \cong S^2$ であり、射影 $S^3 \to S^2$ は\textbf{Hopf束}と呼ばれる。これは第4章で扱うDiracモノポール（磁荷 $n = 1$）の主 $U(1)$ 束そのものである。
+$\mathbb{C}^\times = \mathbb{C} \setminus \{0\}$ を $\lambda \cdot z = \lambda z$ によって $\mathbb{C}^{n+1} \setminus \{0\}$ に作用させると、商空間は複素射影空間 $\mathbb{CP}^n = (\mathbb{C}^{n+1} \setminus \{0\}) / \mathbb{C}^\times$ である。$|z| = 1$ と正規化すれば、同じ空間は $S^{2n+1}/U(1)$ とも表される。$n = 1$ の場合 $S^3/U(1) \cong \mathbb{CP}^1 \cong S^2$ であり、射影 $S^3 \to S^2$ は\textbf{Hopf束}と呼ばれる。これは第\ref{ch:bundle}章で扱うDiracモノポール（磁荷 $n = 1$）の主 $U(1)$ 束そのものである。
 
 
 \section{良い商空間が得られる条件：自由かつ固有な作用}
@@ -341,7 +443,7 @@ $K \subset M \times M$ をコンパクトとし、$K_2$ をその第2成分へ�
 \end{enumerate}
 \end{mythm}
 
-証明は、各軌道に横断的な部分多様体（スライス）を構成し、それを $M/G$ の局所座標として用いることで行われる（例えば J.~M.~Lee, \textit{Introduction to Smooth Manifolds}, Thm.~21.10）。
+証明は、各軌道に横断的な部分多様体（スライス）を構成し、それを $M/G$ の局所座標として用いることで行われる（例えば \cite[Thm.~21.10]{lee2013}）。
 
 前節の例に当てはめてみよう。$\mathbb{Z} \curvearrowright \mathbb{R}$ は自由で、離散群の平行移動なので固有であり、$\dim S^1 = 1 - 0 = 1$ を与える。$U(1) \curvearrowright S^{2n+1}$ は、$U(1)$ がコンパクトなので固有、また $|z| = 1$ では $e^{i\theta}z = z \Rightarrow e^{i\theta} = 1$ なので自由であり、$\dim \mathbb{CP}^n = (2n+1) - 1 = 2n$ を与える。一方、$U(1) \curvearrowright \mathbb{C}$ は固有だが原点で自由でなく、実際に商 $[0, \infty)$ は境界のない多様体にはならない。
 
@@ -361,7 +463,34 @@ $K \subset M \times M$ をコンパクトとし、$K_2$ をその第2成分へ�
 \end{note}
 
 \paragraph{例：双曲的スケーリング（固有でない作用）}
-$\mathbb{R}_{>0}$ を $t \cdot (x, y) = (t x,\ t^{-1} y)$ によって $\mathbb{R}^2$ に作用させる。軌道は、双曲線 $xy = c$（$c \neq 0$）の各分枝、4本の開半軸（例えば $\{x > 0, y = 0\}$）、原点の3種類に分類される。このとき、商空間において半軸 $\{x > 0, y = 0\}$ の軌道と $\{x = 0, y > 0\}$ の軌道は開集合で分離できず、さらに原点の軌道はすべての軌道の閉包に含まれる。このような非ハウスドルフ性は、複素化されたゲージ群による商（第6章のGIT商）において典型的に現れ、「安定な点」だけを残すことで解消される。
+$\mathbb{R}_{>0}$ を $t \cdot (x, y) = (t x,\ t^{-1} y)$ によって $\mathbb{R}^2$ に作用させる。軌道は、双曲線 $xy = c$（$c \neq 0$）の各分枝、4本の開半軸（例えば $\{x > 0, y = 0\}$）、原点の3種類に分類される。このとき（図\ref{fig:hyperbolic}）、商空間において半軸 $\{x > 0, y = 0\}$ の軌道と $\{x = 0, y > 0\}$ の軌道は開集合で分離できず、さらに原点の軌道はすべての軌道の閉包に含まれる。このような非ハウスドルフ性は、複素化されたゲージ群による商（第\ref{ch:vacuum}章のGIT商）において典型的に現れ、「安定な点」だけを残すことで解消される。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    \begin{scope}
+    \clip (-2.2,-2.2) rectangle (2.2,2.2);
+    \foreach \c in {0.25,0.7,1.4} {
+        \draw[blue!70!black] plot[domain=0.05:2.2, samples=60, smooth] (\x, {\c/\x});
+        \draw[blue!70!black] plot[domain=0.05:2.2, samples=60, smooth] (-\x, {-\c/\x});
+        \draw[blue!40] plot[domain=0.05:2.2, samples=60, smooth] (\x, {-\c/\x});
+        \draw[blue!40] plot[domain=0.05:2.2, samples=60, smooth] (-\x, {\c/\x});
+    }
+    \end{scope}
+    \draw[very thick, red!70!black, ->] (0.08,0) -- (2.2,0) node[right, black] {$x$};
+    \draw[very thick, red!70!black, ->] (-0.08,0) -- (-2.2,0);
+    \draw[very thick, red!70!black, ->] (0,2.2) -- (0,0.08);
+    \draw[very thick, red!70!black, ->] (0,-2.2) -- (0,-0.08);
+    \node[above] at (0,2.2) {$y$};
+    \fill (0,0) circle (0.05);
+    \fill[orange!80!black] (1,0.25) circle (0.05) node[above right, font=\scriptsize] {$p_n$};
+    \fill[orange!80!black] (0.25,1) circle (0.05) node[above right, font=\scriptsize] {$t_n \cdot p_n$};
+    \draw[orange!80!black, dashed, ->] (0.95,0.3) to[bend right=20] (0.3,0.95);
+\end{tikzpicture}
+\caption{$\mathbb{R}_{>0}$ の作用 $t \cdot (x, y) = (tx, t^{-1}y)$ の軌道。青は双曲線 $xy = c$、赤は4本の開半軸（矢印は $t$ を大きくしたときの流れ）、黒点は原点。双曲線上の点 $p_n$ と $t_n \cdot p_n$ は、それぞれ $x$ 軸上と $y$ 軸上の異なる軌道に近づくので、商空間では2つの半軸の軌道が分離できない。}
+\label{fig:hyperbolic}
+\end{figure}
+
 
 \begin{note}
 点列 $p_n = (1, 1/n)$ をとると $p_n \to (1, 0)$ である。一方、$t_n = 1/n$ に対して
@@ -372,7 +501,7 @@ $\mathbb{R}_{>0}$ を $t \cdot (x, y) = (t x,\ t^{-1} y)$ によって $\mathbb{
 \end{note}
 
 \begin{note}
-ゲージ理論の $\mathcal{G} \curvearrowright \mathcal{A}$ は無限次元であるため、商多様体定理をそのまま適用することはできず、Sobolev空間による完備化が必要となる。また、$G$ の中心に値をとる定数ゲージ変換はすべての接続を固定するので、作用は決して自由ではない。そこで、中心で割った群（あるいは1点での値を $e$ に固定した基点付きゲージ群 $\mathcal{G}_0$）を用い、固定部分群が最小となる\textbf{既約接続}の空間 $\mathcal{A}^*$ に制限すると、$\mathcal{A}^*/\mathcal{G}$ は無限次元の（Banach）多様体となり、$\mathcal{A}^* \to \mathcal{A}^*/\mathcal{G}$ は主束となる。可約接続で何が起きるかは第3章で調べる。
+ゲージ理論の $\mathcal{G} \curvearrowright \mathcal{A}$ は無限次元であるため、商多様体定理をそのまま適用することはできず、Sobolev空間による完備化が必要となる。また、$G$ の中心に値をとる定数ゲージ変換はすべての接続を固定するので、作用は決して自由ではない。そこで、中心で割った群（あるいは1点での値を $e$ に固定した基点付きゲージ群 $\mathcal{G}_0$）を用い、固定部分群が最小となる\textbf{既約接続}の空間 $\mathcal{A}^*$ に制限すると、$\mathcal{A}^*/\mathcal{G}$ は無限次元の（Banach）多様体となり、$\mathcal{A}^* \to \mathcal{A}^*/\mathcal{G}$ は主束となる。可約接続で何が起きるかは第\ref{ch:deformation}章で調べる。
 \end{note}
 
 
@@ -390,15 +519,45 @@ $\mathbb{R}_{>0}$ を $t \cdot (x, y) = (t x,\ t^{-1} y)$ によって $\mathbb{
 離散群 $\Gamma$ が $n$ 次元多様体 $M$ に滑らかかつ真性不連続に作用しているとする。このとき $M/\Gamma$ はオービフォールドであり、点 $[x]$ の局所群は固定部分群 $\Gamma_x$（$x$ における接空間 $T_x M \cong \mathbb{R}^n$ への線形作用）で与えられる。特に、$\Gamma_x = \{e\}$ となる点の近傍では $M/\Gamma$ は滑らかな多様体である。
 \end{mythm}
 
-より一般に、リー群 $G$ が固有に作用する場合も\textbf{スライス定理}により、軌道 $G \cdot x$ の近傍で $M/G$ は局所的に $S/G_x$（$S$ は軌道に横断的なスライス）と表される。$G_x$ が有限群ならオービフォールド特異点、連続群なら錐のようなより深刻な特異点が現れる（後者は第3章で扱う）。
+より一般に、リー群 $G$ が固有に作用する場合も\textbf{スライス定理}により、軌道 $G \cdot x$ の近傍で $M/G$ は局所的に $S/G_x$（$S$ は軌道に横断的なスライス）と表される。$G_x$ が有限群ならオービフォールド特異点、連続群なら錐のようなより深刻な特異点が現れる（後者は第\ref{ch:deformation}章で扱う）。
 
 \paragraph{例：錐 $\mathbb{C}/\mathbb{Z}_n$}
-$\zeta = e^{2\pi i/n}$ とし、$\mathbb{Z}_n = \{ \zeta^k \}$ を $z \mapsto \zeta z$ によって $\mathbb{C}$ に作用させる。固定点は原点のみで、$\Gamma_0 = \mathbb{Z}_n$、それ以外の点の固定部分群は自明である。基本領域として扇形 $0 \le \arg z < 2\pi/n$ をとり、その2辺を貼り合わせると、商は頂角 $2\pi/n$ の\textbf{円錐}となる。
+$\zeta = e^{2\pi i/n}$ とし、$\mathbb{Z}_n = \{ \zeta^k \}$ を $z \mapsto \zeta z$ によって $\mathbb{C}$ に作用させる。固定点は原点のみで、$\Gamma_0 = \mathbb{Z}_n$、それ以外の点の固定部分群は自明である。基本領域として扇形 $0 \le \arg z < 2\pi/n$ をとり、その2辺を貼り合わせると、商は頂角 $2\pi/n$ の\textbf{円錐}となる（図\ref{fig:cone}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    % 左：扇形
+    \begin{scope}
+        \fill[blue!10] (0,0) -- (2,0) arc (0:120:2) -- cycle;
+        \draw[gray, dashed] (0,0) circle (2);
+        \draw[very thick, red!70!black] (0,0) -- (2,0);
+        \draw[very thick, red!70!black] (0,0) -- (120:2);
+        \draw[->, red!70!black] (1.5,0.05) to[bend right=50] node[right, font=\scriptsize] {$z \mapsto \zeta z$} (120:1.5);
+        \fill (0,0) circle (0.05) node[below] {$0$};
+        \node at (50:0.85) {基本領域};
+        \node[font=\scriptsize] at (0,-2.4) {$0 \le \arg z \le 2\pi/n$（図は $n = 3$）};
+    \end{scope}
+    \draw[->, thick] (2.6,0) -- node[above] {貼り合わせ} (3.8,0);
+    % 右：錐
+    \begin{scope}[xshift=5.5cm]
+        \draw[thick] (0,1.6) -- (-1.2,-1.0);
+        \draw[thick] (0,1.6) -- (1.2,-1.0);
+        \draw[thick] (-1.2,-1.0) arc (180:360:1.2 and 0.35);
+        \draw[thick, dashed] (1.2,-1.0) arc (0:180:1.2 and 0.35);
+        \draw[very thick, red!70!black] (0,1.6) -- (0.3,-1.33);
+        \fill (0,1.6) circle (0.05) node[above] {頂点（$\Gamma_0 = \mathbb{Z}_n$）};
+        \node[font=\scriptsize] at (0,-2.0) {頂角 $2\pi/n$ の円錐};
+    \end{scope}
+\end{tikzpicture}
+\caption{錐 $\mathbb{C}/\mathbb{Z}_n$ の作り方。扇形の基本領域の2辺（赤）を貼り合わせると、原点が頂点となる円錐ができる。頂点のまわりを1周したときの角度は $2\pi/n$ しかない。}
+\label{fig:cone}
+\end{figure}
 
 興味深いのは、位相空間としては $w = z^n$ によって $\mathbb{C}/\mathbb{Z}_n \cong \mathbb{C}$ と同相であり、特異点が見えないことである。しかし平坦な計量 $|dz|^2$ を商に降ろすと、原点のまわりを1周したときの角度が $2\pi$ ではなく $2\pi/n$ となり、原点に曲率が集中した円錐特異点となる。オービフォールドの構造（局所群 $\mathbb{Z}_n$）は、位相だけでは見えないこの情報を記憶している。
 
 \paragraph{例：トーラスのモジュライ空間}
-第1章のトーラスのモジュライ $\mathcal{M}_1 = \mathbb{H}/SL(2, \mathbb{Z})$ を考えよう。$-1 \in SL(2,\mathbb{Z})$ は $\tau \mapsto \tau$ と自明に作用するので、実効的に作用するのは $PSL(2, \mathbb{Z}) = SL(2, \mathbb{Z})/\{\pm 1\}$ であり、これは
+第\ref{ch:intro}章のトーラスのモジュライ $\mathcal{M}_1 = \mathbb{H}/SL(2, \mathbb{Z})$ を考えよう。$-1 \in SL(2,\mathbb{Z})$ は $\tau \mapsto \tau$ と自明に作用するので、実効的に作用するのは $PSL(2, \mathbb{Z}) = SL(2, \mathbb{Z})/\{\pm 1\}$ であり、これは
 \begin{equation}
     S: \tau \mapsto -\frac{1}{\tau}, \qquad T: \tau \mapsto \tau + 1
 \end{equation}
@@ -440,7 +599,7 @@ $SL(2, \mathbb{Z})$ の中で数えれば、$-1$ を含めてそれぞれ位数4
 \begin{equation*}
     \chi^{\mathrm{orb}}(\mathbb{H}/PSL(2,\mathbb{Z})) = 1 - \left(1 - \frac{1}{2}\right) - \left(1 - \frac{1}{3}\right) = -\frac{1}{6}
 \end{equation*}
-となり、すべての点に共通する自己同型 $-1$（$z \mapsto -z$）も数えると $\chi^{\mathrm{orb}}(\mathcal{M}_{1,1}) = -\frac{1}{12} = \zeta(-1)$ を得る（Harer--Zagier）。
+となり、すべての点に共通する自己同型 $-1$（$z \mapsto -z$）も数えると $\chi^{\mathrm{orb}}(\mathcal{M}_{1,1}) = -\frac{1}{12} = \zeta(-1)$ を得る（Harer--Zagier\cite{harerzagier1986}）。
 \end{note}
 
 \begin{note}
@@ -450,7 +609,7 @@ $SL(2, \mathbb{Z})$ の中で数えれば、$-1$ を含めてそれぞれ位数4
 
 \section{大域的な障害：Gribov問題と大域的定義の困難}
 
-前節までは局所的な特異点の問題であったが、商空間を構成する際には大域的なトポロジーの障害も立ちはだかる。局所的なゲージ固定条件を導入してモジュライ空間 $\mathcal{A}/\mathcal{G}$ を構成しようとするとき、数学的に深刻な大域的障害に直面することがある。これが\textbf{Gribov問題（Gribov ambiguity）}である。
+前節までは局所的な特異点の問題であったが、商空間を構成する際には大域的なトポロジーの障害も立ちはだかる。局所的なゲージ固定条件を導入してモジュライ空間 $\mathcal{A}/\mathcal{G}$ を構成しようとするとき、数学的に深刻な大域的障害に直面することがある。これが\textbf{Gribov問題（Gribov ambiguity）}である\cite{gribov1978}。
 
 写像 $F: \mathcal{A} \to V$（$V$ はベクトル空間）による条件 $F(A) = 0$ を\textbf{ゲージ固定条件}という。理想的には、零点集合 $F^{-1}(0)$ が各ゲージ軌道とちょうど1点で横断的に交わり、各軌道 $[A]$ にその交点を対応させる写像 $s: \mathcal{A}/\mathcal{G} \to \mathcal{A}$ が連続になることが望ましい。このような $s$（$\pi \circ s = \mathrm{id}$ を満たす連続写像）は、主束 $\pi: \mathcal{A} \to \mathcal{A}/\mathcal{G}$ の\textbf{大域的切断}に他ならない。これに対し、同一のゲージ軌道上の異なる2点 $A \neq A^U$ がともにゲージ固定条件を満たすとき、これらを互いの\textbf{Gribovコピー}と呼ぶ。
 
@@ -489,7 +648,7 @@ Coulomb（Landau）ゲージ $\partial^\mu A_\mu = 0$ を考える。$A$ に無�
 を得る。$\partial^\mu A_\mu = 0$ を満たす $A$ に対して、変換後も $\partial^\mu (A_\mu + \delta A_\mu) = 0$ となる条件は $\partial^\mu D_\mu \epsilon = 0$、すなわち $\mathcal{M}_{\mathrm{FP}}\, \epsilon = 0$ である。
 \end{note}
 
-玩具模型ではGribov領域への制限によって問題が解消したが、次の定理は、非可換ゲージ理論ではそもそも大域的切断が存在しないことを示している。
+玩具模型ではGribov領域への制限によって問題が解消したが、次の定理\cite{singer1978}は、非可換ゲージ理論ではそもそも大域的切断が存在しないことを示している。
 
 \begin{mythm}{Singer, 1978}{}
 $M = S^4$（あるいは $S^3$）、$G = SU(N)$（$N \ge 2$）とする。既約接続の空間 $\mathcal{A}^*$ と基点付きゲージ群 $\mathcal{G}_0$ に対し、主束 $\mathcal{A}^* \to \mathcal{A}^*/\mathcal{G}_0$ は自明ではない。特に、連続な大域的ゲージ固定（大域的切断）は存在しない。
@@ -512,13 +671,14 @@ Gribovコピーの存在は、Faddeev--Popovの処方が摂動論的な枠組み
 \begin{itemize}
     \item \textbf{自由かつ固有}な作用 $\Rightarrow$ $M/G$ は滑らかな多様体で、$M \to M/G$ は主 $G$ 束（定理 \ref{thm:quotient-manifold}）。
     \item 固有で、固定部分群が\textbf{有限群} $\Rightarrow$ $M/G$ はオービフォールド（定理 \ref{thm:orbifold}。錐やトーラスのモジュライ空間）。
-    \item 固定部分群が\textbf{連続群} $\Rightarrow$ 境界や錐のような、より深刻な特異点（平面の回転の例、第3章）。
-    \item \textbf{固有でない}作用 $\Rightarrow$ $M/G$ はハウスドルフ性を失いうる（無理数回転、双曲的スケーリング、第6章のGIT商）。
+    \item 固定部分群が\textbf{連続群} $\Rightarrow$ 境界や錐のような、より深刻な特異点（平面の回転の例、第\ref{ch:deformation}章）。
+    \item \textbf{固有でない}作用 $\Rightarrow$ $M/G$ はハウスドルフ性を失いうる（無理数回転、双曲的スケーリング、第\ref{ch:vacuum}章のGIT商）。
     \item 局所的には良い商でも、\textbf{大域的切断が存在しない}ことがある $\Rightarrow$ Gribov問題（Singerの定理）。
 \end{itemize}
 
 次章では、モジュライ空間の局所的な形状や次元を決定づける\textbf{接空間・特異点・次元}の解析手法、およびそれを変形理論とコホモロジー群の言葉でどのように定式化するかについて詳しく見ていく。
 \chapter{接空間・特異点・次元：モジュライの自由度を理解する}
+\label{ch:deformation}
 
 モジュライ空間の大域的な構造（トポロジーや特異点）を完全に理解することは一般に困難であるが、ある解の近傍における局所的な構造は、線形化された方程式とコホモロジー理論を用いて系統的に調べることができる。本章では、モジュライ空間の接空間がどのように定義され、物理的な「零モード（ゼロ・モード）」とどのように対応するのかを、ゲージ理論および複素幾何学の変形理論（小平・スペンサー理論）を題材に詳細に解説する。
 
@@ -700,7 +860,7 @@ $M$ をコンパクトなRiemann多様体、$A$ を平坦接続とする。こ�
 
 \section{複素幾何における変形理論（小平・スペンサー理論）}
 
-モジュライ空間の接空間をコホモロジーで捉える枠組みは、ゲージ理論に限らず、弦理論における余剰次元（Calabi--Yau多様体など）の分類でも中心的な役割を果たす。多様体の「複素構造」のモジュライ空間を記述する小平・スペンサー（Kodaira-Spencer）理論を概観しよう。
+モジュライ空間の接空間をコホモロジーで捉える枠組みは、ゲージ理論に限らず、弦理論における余剰次元（Calabi--Yau多様体など）の分類でも中心的な役割を果たす。多様体の「複素構造」のモジュライ空間を記述する小平・スペンサー（Kodaira--Spencer）理論\cite{kodairaspencer1958}を概観しよう。
 
 複素多様体 $X$ の複素構造を変形するとは、局所的な正則座標の取り替え方（推移関数）をわずかにずらすこと、あるいは同値な言い方として、概複素構造 $J$（$J^2 = -1$ を満たすテンソル）を可積分条件を保ちながら変形することに等しい。
 複素座標 $(z^i, \bar{z}^{\bar{j}})$ において、正則ベクトル束 $T_X$ に値をとる反正則微分形式、すなわち Beltrami 微分 $\mu \in \Omega^{0,1}(X, T_X)$ を導入する。局所的には $\mu = \mu_{\bar{j}}^i \frac{\partial}{\partial z^i} d\bar{z}^{\bar{j}}$ と書ける。
@@ -738,7 +898,7 @@ $X$ が $n$ 次元Calabi--Yau多様体の場合には、正則 $n$ 形式 $\Omeg
 
 \subsection{例：トーラスとリーマン面の変形}
 
-第1章で扱ったトーラス $E_\tau = \mathbb{C}/(\mathbb{Z} + \tau\mathbb{Z})$ に小平・スペンサー理論を適用してみよう。$E_\tau$ の接束は自明（大域的なベクトル場 $\partial_z$ が存在し $T_E \cong \mathcal{O}$）であるから、
+第\ref{ch:intro}章で扱ったトーラス $E_\tau = \mathbb{C}/(\mathbb{Z} + \tau\mathbb{Z})$ に小平・スペンサー理論を適用してみよう。$E_\tau$ の接束は自明（大域的なベクトル場 $\partial_z$ が存在し $T_E \cong \mathcal{O}$）であるから、
 \begin{equation}
     H^0(E, T_E) \cong H^0(E, \mathcal{O}) \cong \mathbb{C}, \qquad H^1(E, T_E) \cong H^{0,1}(E) \cong \mathbb{C}
 \end{equation}
@@ -756,7 +916,7 @@ $\tau \to \tau + \delta\tau$ という変形に対応するBeltrami微分を求�
 を得る。これは定数であり明らかに $\bar\partial\mu = 0$ を満たす。一方、$\mu = \bar{\partial} V$ と書けたとすると、$V$ の周期性から $\int_E \mu^z{}_{\bar z}\, d^2z = \int_E \partial_{\bar z} V^z \, d^2 z = 0$ となるが、左辺は $\delta\tau \neq 0$ ならば非ゼロである。よって $\mu$ は $\bar\partial$-完全ではなく、$H^1(E, T_E)$ の非自明な元として $\delta\tau$ と1対1に対応する。
 \end{note}
 
-一方、$H^0(E, T_E) \cong \mathbb{C}$ は並進 $z \to z + c$ という連続的な自己同型を表している。この自己同型を取り除くために1点（原点）を固定したものが楕円曲線であり、第1章の $\mathcal{M}_1 = \mathbb{H}/SL(2,\mathbb{Z})$ は、正確にはこの1点付きトーラスのモジュライ空間 $\mathcal{M}_{1,1}$ である。
+一方、$H^0(E, T_E) \cong \mathbb{C}$ は並進 $z \to z + c$ という連続的な自己同型を表している。この自己同型を取り除くために1点（原点）を固定したものが楕円曲線であり、第\ref{ch:intro}章の $\mathcal{M}_1 = \mathbb{H}/SL(2,\mathbb{Z})$ は、正確にはこの1点付きトーラスのモジュライ空間 $\mathcal{M}_{1,1}$ である。
 
 一般の種数のリーマン面についても、同様の計算から次が得られる。
 
@@ -807,7 +967,7 @@ Serre双対性により $H^1(\Sigma, T_\Sigma) \cong H^0(\Sigma, K^2)^*$ であ�
 
 ここで、自己同型に起因する2種類の特異性を区別しておく必要がある。
 \begin{itemize}
-    \item 自己同型群が\textbf{有限群}である場合：$H^0$ はリー代数（無限小の自己同型）しか見ないため $H^0 = 0$ のままであるが、モジュライ空間は局所的に有限群による商となり、\textbf{オービフォールド特異点}を持つ。第2章で見たトーラスの $\tau = i,\ e^{i\pi/3}$ がこの例である。
+    \item 自己同型群が\textbf{有限群}である場合：$H^0$ はリー代数（無限小の自己同型）しか見ないため $H^0 = 0$ のままであるが、モジュライ空間は局所的に有限群による商となり、\textbf{オービフォールド特異点}を持つ。第\ref{ch:group-action}章で見たトーラスの $\tau = i,\ e^{i\pi/3}$ がこの例である。
     \item 自己同型群が\textbf{連続群}である場合（$H^0 \neq 0$）：特異性はより深刻になる。ゲージ理論の可約接続の近傍では、モジュライ空間は局所的に $H^1 / G_A$ という形の\textbf{錐（cone）}となる。例えば $G_A = U(1)$ が $H^1 \cong \mathbb{C}^{m+1}$ に位相回転として作用する場合、商は複素射影空間 $\mathbb{CP}^m$ 上の錐であり、頂点が特異点となる。複素構造のモジュライでは商がハウスドルフ性を失うこともあり、これがスタックによる定式化を必要とする理由の一つである。
 \end{itemize}
 
@@ -854,7 +1014,7 @@ Serre双対性により $H^1(\Sigma, T_\Sigma) \cong H^0(\Sigma, K^2)^*$ であ�
 \end{equation}
 を得る。右辺は $d_A$-閉であり、そのコホモロジー類 $[[a_1, a_1]] \in H^2(M, d_A)$ が障害となる。小平・スペンサー理論の場合とは符号が異なるが、これは規約の違いにすぎない。
 
-以上をまとめると、倉西の理論は次の\textbf{局所モデル}を与える。
+以上をまとめると、倉西の理論\cite{kuranishi1962}は次の\textbf{局所モデル}を与える。
 
 \begin{mythm}{倉西の局所モデル}{kuranishi}
 点 $[A]$（あるいは $[X]$）に対し、$H^1$ の原点の近傍 $U$ 上で定義された $G_A$-同変な滑らかな写像（\textbf{倉西写像}）
@@ -876,13 +1036,13 @@ Serre双対性により $H^1(\Sigma, T_\Sigma) \cong H^0(\Sigma, K^2)^*$ であ�
 \end{itemize}
 最後の下限が、次節で扱う「仮想次元」の起源である。
 
-特筆すべき物理的応用として、超弦理論における余剰次元空間である \textbf{Calabi--Yau多様体} の場合が挙げられる。
+特筆すべき物理的応用として、超弦理論における余剰次元空間である \textbf{Calabi--Yau多様体} の場合が挙げられる\cite{tian1987,todorov1989}。
 
 \begin{mythm}{Bogomolov--Tian--Todorov}{BTT}
 コンパクトなCalabi--Yau多様体 $X$ の複素構造の変形には障害がない。すなわち、$H^2(X, T_X) \neq 0$ であっても倉西写像は恒等的に $\kappa \equiv 0$ であり、複素構造のモジュライ空間は $[X]$ の近傍で次元 $\dim_{\mathbb{C}} H^1(X, T_X) = h^{n-1,1}$ の滑らかな複素多様体である。
 \end{mythm}
 
-これは物理的に、「Calabi--Yau空間の複素構造モジュライは常に障害を持たず、局所的に滑らかな多様体をなす」という極めて強力な事実を保証している。3次元の場合には、このモジュライ空間はさらに特殊K\"ahler多様体の構造を持つ（第7章）。
+これは物理的に、「Calabi--Yau空間の複素構造モジュライは常に障害を持たず、局所的に滑らかな多様体をなす」という極めて強力な事実を保証している。3次元の場合には、このモジュライ空間はさらに特殊K\"ahler多様体の構造を持つ（第\ref{ch:calabi-yau}章）。
 
 \section{指数定理とモジュライの仮想次元}
 
@@ -902,7 +1062,7 @@ Serre双対性により $H^1(\Sigma, T_\Sigma) \cong H^0(\Sigma, K^2)^*$ であ�
 となる。アティヤ＝シンガー（Atiyah--Singer）の指数定理は、この解析的な指数を、多様体 $M$ とベクトル束 $P$ のトポロジー（特性類）から代数的に計算できることを教えてくれる。
 \end{note}
 
-Atiyah--Singerの指数定理を用いると、次の公式が得られる。
+Atiyah--Singerの指数定理を用いると、次の公式が得られる\cite{ahs1978}。
 
 \begin{mythm}{Atiyah--Hitchin--Singer の次元公式}{AHS-dim}
 $M$ をコンパクトな向き付けられた4次元Riemann多様体、$G$ をコンパクトな単純リー群とする。インスタントン数 $k$ のASD接続のモジュライ空間の仮想次元は
@@ -926,16 +1086,17 @@ $M$ をコンパクトな向き付けられた4次元Riemann多様体、$G$ を�
 \begin{equation}
     \dim \mathcal{M}_k = 4N k - (N^2 - 1)
 \end{equation}
-となる。$SU(2)$、$k = 1$ では $8 - 3 = 5$ であり、これは位置（4個）とサイズ（1個）の集団座標に対応する（第5章で具体的な解を用いて確認する）。
+となる。$SU(2)$、$k = 1$ では $8 - 3 = 5$ であり、これは位置（4個）とサイズ（1個）の集団座標に対応する（第\ref{ch:instanton}章で具体的な解を用いて確認する）。
 
-同じ指数定理の機構は、インスタントン背景中のフェルミオンの零モードも数え上げる。インスタントン数 $k$ の背景中で、表現 $R$ のDirac作用素 $D_R$ の指数はDynkin指数 $T(R)$ を用いて $\mathrm{ind}\, D_R = 2T(R)\,k$ で与えられ、基本表現のWeylフェルミオンは $k$ 個、随伴表現のWeylフェルミオン（ゲージーノ）は $2Nk$ 個の零モードを持つ。経路積分ではこれらの零モードをGrassmann積分で吸収するフェルミオン演算子の挿入が必要となり、これが 't Hooftの有効頂点としてカイラル対称性を破る（カイラル・アノマリー）。さらに $\mathcal{N}=2$ 超対称ゲージ理論では、2つの随伴Weylフェルミオンの零モード $2 \times 2Nk = 4Nk$ 個がボソン的な集団座標の数（無限遠のゲージ回転も含めた $4Nk$ 個）とちょうど一致し、超対称性がボソンとフェルミオンの零モードを対にしていることが分かる。
+同じ指数定理の機構は、インスタントン背景中のフェルミオンの零モードも数え上げる。インスタントン数 $k$ の背景中で、表現 $R$ のDirac作用素 $D_R$ の指数はDynkin指数 $T(R)$ を用いて $\mathrm{ind}\, D_R = 2T(R)\,k$ で与えられ、基本表現のWeylフェルミオンは $k$ 個、随伴表現のWeylフェルミオン（ゲージーノ）は $2Nk$ 個の零モードを持つ。経路積分ではこれらの零モードをGrassmann積分で吸収するフェルミオン演算子の挿入が必要となり、これが 't Hooftの有効頂点\cite{thooft1976}としてカイラル対称性を破る（カイラル・アノマリー）。さらに $\mathcal{N}=2$ 超対称ゲージ理論では、2つの随伴Weylフェルミオンの零モード $2 \times 2Nk = 4Nk$ 個がボソン的な集団座標の数（無限遠のゲージ回転も含めた $4Nk$ 個）とちょうど一致し、超対称性がボソンとフェルミオンの零モードを対にしていることが分かる。
 
 以上のように、接空間の無限小変形（$H^1$）、特異点と対称性（$H^0$）、非線形な変形の障害（$H^2$）というコホモロジー的枠組みを用いることで、モジュライ問題は「非線形微分方程式の解の空間」という捉えどころのない対象から、代数トポロジーや指数定理を駆使して厳密に計算可能な対象へと昇華されるのである。
 \chapter{束・接続・曲率：ゲージ理論の数学的基礎を理解する}
+\label{ch:bundle}
 
-場の量子論、特に標準模型を記述するゲージ理論や、弦理論におけるDブレーン上の力学（非可換ゲージ理論）を深く理解するためには、ゲージ場を単なる「ベクトル場」としてではなく、「ファイバー束上の接続」として幾何学的に捉え直す必要がある。本章では、次章以降でYang--Mills理論のインスタントンやCalabi--Yau多様体の計量のモジュライを扱うための数学的基礎として、ファイバー束、接続、曲率、および特性類の幾何学的意味を、物理学の言葉（ゲージポテンシャルと電磁場テンソル）と対応させながら定式化する。
+場の量子論、特に標準模型を記述するゲージ理論や、弦理論におけるDブレーン上の力学（非可換ゲージ理論）を深く理解するためには、ゲージ場を単なる「ベクトル場」としてではなく、「ファイバー束上の接続」として幾何学的に捉え直す必要がある。本章では、次章以降でYang--Mills理論のインスタントンやCalabi--Yau多様体の計量のモジュライを扱うための数学的基礎として、ファイバー束、接続、曲率、および特性類の幾何学的意味を、物理学の言葉（ゲージポテンシャルと電磁場テンソル）と対応させながら定式化する。標準的な教科書として\cite{nakahara2003}を挙げておく。
 
-本章では数学の慣習に従い、ゲージ場をリー代数 $\mathfrak{g}$（$SU(N)$ なら反エルミート行列）に値をとる1形式 $A$ として扱い、共変微分を $D = d + A$ と書く。第2章で用いた物理の規約（エルミートな $A^{\text{phys}}$、$D = \partial - igA^{\text{phys}}$）とは
+本章では数学の慣習に従い、ゲージ場をリー代数 $\mathfrak{g}$（$SU(N)$ なら反エルミート行列）に値をとる1形式 $A$ として扱い、共変微分を $D = d + A$ と書く。第\ref{ch:group-action}章で用いた物理の規約（エルミートな $A^{\text{phys}}$、$D = \partial - igA^{\text{phys}}$）とは
 \begin{equation}
     A = -ig A^{\text{phys}}, \qquad F = -ig F^{\text{phys}}
     \label{eq:convention-ch4}
@@ -947,7 +1108,7 @@ $D = d + A = d - igA^{\text{phys}}$ は明らかである。曲率について�
 \begin{equation*}
     F = dA + A \wedge A = -ig\, dA^{\text{phys}} - g^2 A^{\text{phys}} \wedge A^{\text{phys}} = -ig\left( dA^{\text{phys}} - ig A^{\text{phys}} \wedge A^{\text{phys}} \right) = -ig F^{\text{phys}}
 \end{equation*}
-であり、成分で書けば第2章の $F^{\text{phys}}_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu - ig[A_\mu, A_\nu]$ に一致する。また、第2章のゲージ変換 $A^{\text{phys}} \to U A^{\text{phys}} U^{-1} - \frac{i}{g}(dU)U^{-1}$ に $-ig$ を掛けると $A \to UAU^{-1} - (dU)U^{-1}$ となり、$g = U^{-1}$ とおけば $d(g^{-1}) = -g^{-1}(dg)g^{-1}$ より、本章で用いる形
+であり、成分で書けば第\ref{ch:group-action}章の $F^{\text{phys}}_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu - ig[A_\mu, A_\nu]$ に一致する。また、第\ref{ch:group-action}章のゲージ変換 $A^{\text{phys}} \to U A^{\text{phys}} U^{-1} - \frac{i}{g}(dU)U^{-1}$ に $-ig$ を掛けると $A \to UAU^{-1} - (dU)U^{-1}$ となり、$g = U^{-1}$ とおけば $d(g^{-1}) = -g^{-1}(dg)g^{-1}$ より、本章で用いる形
 \begin{equation*}
     A \to g^{-1} A g + g^{-1} dg
 \end{equation*}
@@ -960,11 +1121,34 @@ $D = d + A = d - igA^{\text{phys}}$ は明らかである。曲率について�
 
 その最も有名な例がDiracモノポールである。原点に磁荷 $g_m$ を持つ磁気モノポールが存在する場合、磁場 $\bm{B}$ のフラックスは原点を囲む球面 $S^2$ 上で非ゼロの積分値を持つ（$\int_{S^2} \bm{B} \cdot d\bm{S} = g_m$）。もしベクトルポテンシャル $\bm{A}$ が $S^2$ 全体で滑らかに定義できるとすれば、$S^2$ は境界を持たないのでStokesの定理により $\int_{S^2} dA = \int_{\partial S^2} A = 0$ となり、フラックスはゼロになるはずである。この矛盾は、「ベクトルポテンシャルは全空間で単一の座標系（ゲージ）を用いて定義できない」という事実を示している。
 
-WuとYangは、球面 $S^2$ を北半球を含む領域 $U_N$（$\theta < \pi$）と南半球を含む領域 $U_S$（$\theta > 0$）の2つのパッチに分け、それぞれで滑らかなベクトルポテンシャル
+WuとYang\cite{wuyang1975}は、球面 $S^2$ を北半球を含む領域 $U_N$（$\theta < \pi$）と南半球を含む領域 $U_S$（$\theta > 0$）の2つのパッチに分け、それぞれで滑らかなベクトルポテンシャル
 \begin{equation}
     A_N = \frac{g_m}{4\pi}(1 - \cos\theta)\, d\phi, \qquad A_S = -\frac{g_m}{4\pi}(1 + \cos\theta)\, d\phi
 \end{equation}
-を導入した。両者は同じ磁場 $dA_N = dA_S = \frac{g_m}{4\pi}\sin\theta\, d\theta \wedge d\phi$ を与え、重なり（赤道付近）ではゲージ変換で結ばれている。この「パッチごとのポテンシャルとその貼り合わせ」という構造から、次の量子化条件が従う。
+を導入した。両者は同じ磁場 $dA_N = dA_S = \frac{g_m}{4\pi}\sin\theta\, d\theta \wedge d\phi$ を与え、重なり（赤道付近）ではゲージ変換で結ばれている。この「パッチごとのポテンシャルとその貼り合わせ」という構造（図\ref{fig:wu-yang}）から、次の量子化条件が従う。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.2]
+    \begin{scope}
+        \clip (0,0) circle (1.6);
+        \fill[blue!15] (-2,-0.35) rectangle (2,2);
+        \fill[red!15] (-2,0.35) rectangle (2,-2);
+    \end{scope}
+    \draw[thick] (0,0) circle (1.6);
+    \draw[thick] (-1.6,0) arc (180:360:1.6 and 0.45);
+    \draw[thick, dashed] (1.6,0) arc (0:180:1.6 and 0.45);
+    \fill (0,0) circle (0.06) node[right, font=\scriptsize] {$g_m$};
+    \fill (0,1.6) circle (0.04) node[above] {N};
+    \fill (0,-1.6) circle (0.04) node[below right] {S};
+    \draw[very thick, densely dotted, gray] (0,-0.1) -- (0,-2.4) node[below, font=\scriptsize] {$A_N$ の特異線（Diracの弦）};
+    \node[blue!60!black] at (-0.75,0.95) {$U_N,\ A_N$};
+    \node[red!60!black] at (-0.75,-0.95) {$U_S,\ A_S$};
+    \draw[<-] (1.45,-0.15) -- (2.3,-0.6) node[right, align=left, font=\scriptsize] {重なり（赤道付近）\\ $A_N - A_S = d\chi$\\ 推移関数 $t_{NS} = e^{in\phi}$};
+\end{tikzpicture}
+\caption{Wu--Yangによるモノポールの記述。球面を北側のパッチ $U_N$（青）と南側のパッチ $U_S$（赤）で覆い、それぞれで滑らかなポテンシャルを用いる。$A_N$ を南極まで延長しようとすると特異線（Diracの弦）が現れるが、パッチを分ければ不要になる。2つのパッチの情報は、重なり（紫）での推移関数に集約される。}
+\label{fig:wu-yang}
+\end{figure}
 
 \begin{myprop}{Diracの量子化条件}{dirac}
 電荷 $e$ の粒子の波動関数が全空間で矛盾なく定義されるための必要十分条件は
@@ -983,10 +1167,42 @@ $A_N$ は $\theta = \pi$ で、$A_S$ は $\theta = 0$ で、それぞれ係数�
 \begin{equation*}
     \psi_N = e^{ie\chi}\psi_S = \exp\left( i\frac{e g_m}{2\pi}\phi \right) \psi_S
 \end{equation*}
-で結ばれる。赤道を1周（$\phi \to \phi + 2\pi$）したとき $\psi_N, \psi_S$ がともに一価であるためには、$e^{ie g_m} = 1$、すなわち $e g_m \in 2\pi\mathbb{Z}$ でなければならない。推移関数 $t_{NS}(\phi) = e^{in\phi}$ は赤道 $S^1$ を $U(1)$ に $n$ 回巻き付ける写像である。
+で結ばれる。赤道を1周（$\phi \to \phi + 2\pi$）したとき $\psi_N, \psi_S$ がともに一価であるためには、$e^{ie g_m} = 1$、すなわち $e g_m \in 2\pi\mathbb{Z}$ でなければならない。推移関数 $t_{NS}(\phi) = e^{in\phi}$ は赤道 $S^1$ を $U(1)$ に $n$ 回巻き付ける写像である（図\ref{fig:winding}）。
 \end{note}
 
-$n = 1$ の場合、この $U(1)$ 束は第2章で見たHopf束 $S^3 \to S^2$ そのものである。このWu--Yangの辞書（dictionary）は、「ゲージ理論とは、主ファイバー束（Principal fiber bundle）上の幾何学である」という深遠な事実を物理学者に気付かせた。対応をまとめると次のようになる。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    % 左：位相のグラフ
+    \begin{scope}[scale=0.9]
+        \draw[->] (0,0) -- (4.6,0) node[right] {$\phi$};
+        \draw[->] (0,0) -- (0,4.6) node[above] {$\arg t_{NS}(\phi)$};
+        \draw[gray, dashed] (0,2) -- (4.3,2);
+        \draw[gray, dashed] (0,4) -- (4.3,4);
+        \draw[gray, dashed] (4,0) -- (4,4.3);
+        \node[left] at (0,2) {$2\pi$};
+        \node[left] at (0,4) {$4\pi$};
+        \node[below] at (4,0) {$2\pi$};
+        \node[below left] at (0,0) {$0$};
+        \draw[very thick, gray!70!black] (0,0.05) -- (4,0.05) node[above right, font=\scriptsize] {$n = 0$};
+        \draw[very thick, blue!70!black] (0,0) -- (4,2) node[right, font=\scriptsize] {$n = 1$};
+        \draw[very thick, red!70!black] (0,0) -- (4,4) node[right, font=\scriptsize] {$n = 2$};
+    \end{scope}
+    % 右：円周への巻き付き
+    \begin{scope}[xshift=8.9cm, yshift=2cm]
+        \draw[thick] (-2.6,0) circle (0.7);
+        \node at (-2.6,-1.1) {赤道 $S^1$};
+        \draw[->, thick] (-1.7,0) -- node[above] {$t_{NS}$} (-0.9,0);
+        \draw[gray] (0,0) circle (1.0);
+        \draw[very thick, red!70!black, ->] plot[domain=0:715, samples=120, smooth] ({(0.75+0.3*\x/720)*cos(\x)}, {(0.75+0.3*\x/720)*sin(\x)});
+        \node at (0,-1.45) {$U(1)$（$n = 2$ 回巻き付く）};
+    \end{scope}
+\end{tikzpicture}
+\caption{推移関数 $t_{NS}(\phi) = e^{in\phi}$ の巻き付き数。左：位相 $\arg t_{NS}$ は赤道を1周すると $2\pi n$ だけ増える。$t_{NS}$ が一価であるためには $n$ は整数でなければならず、$n$ は連続変形で変えられない。右：$n = 2$ の場合、赤道を1周すると $U(1)$ を2回まわる。}
+\label{fig:winding}
+\end{figure}
+
+$n = 1$ の場合、この $U(1)$ 束は第\ref{ch:group-action}章で見たHopf束 $S^3 \to S^2$ そのものである。このWu--Yangの辞書（dictionary）は、「ゲージ理論とは、主ファイバー束（Principal fiber bundle）上の幾何学である」という深遠な事実を物理学者に気付かせた。対応をまとめると次のようになる。
 
 \begin{center}
 \begin{tabular}{ll}
@@ -1016,16 +1232,16 @@ $G$ をリー群、$M$ を多様体とする。多様体 $P$ と滑らかな全�
 重なり $U_\alpha \cap U_\beta$ 上で、局所自明化の差は\textbf{推移関数} $g_{\alpha\beta}: U_\alpha \cap U_\beta \to G$ で与えられ、コサイクル条件 $g_{\alpha\beta}\, g_{\beta\gamma} = g_{\alpha\gamma}$ を満たす。
 \end{mydef}
 
-第2章の言葉で言えば、主束とは「$G$ が自由かつ固有に作用し、商が $M$ となる多様体 $P$」であり、商多様体定理の状況そのものである。局所自明化 $\varphi_\alpha$ は局所切断 $s_\alpha(x) = \varphi_\alpha^{-1}(x, e)$ を与え、これは物理的には「ゲージの選択」に対応する。2つの局所切断は推移関数を用いて $s_\beta = s_\alpha\, g_{\alpha\beta}$ と結ばれる。
+第\ref{ch:group-action}章の言葉で言えば、主束とは「$G$ が自由かつ固有に作用し、商が $M$ となる多様体 $P$」であり、商多様体定理の状況そのものである。局所自明化 $\varphi_\alpha$ は局所切断 $s_\alpha(x) = \varphi_\alpha^{-1}(x, e)$ を与え、これは物理的には「ゲージの選択」に対応する。2つの局所切断は推移関数を用いて $s_\beta = s_\alpha\, g_{\alpha\beta}$ と結ばれる。
 
 \paragraph{例}
 \begin{itemize}
-    \item \textbf{自明束} $P = M \times G$：大域的な切断 $s(x) = (x, e)$ が存在し、ゲージ場は $M$ 上の大域的な1形式として書ける。第2章で扱った状況である。
+    \item \textbf{自明束} $P = M \times G$：大域的な切断 $s(x) = (x, e)$ が存在し、ゲージ場は $M$ 上の大域的な1形式として書ける。第\ref{ch:group-action}章で扱った状況である。
     \item \textbf{Hopf束} $S^3 \to S^2$（$G = U(1)$）：Diracモノポール（$n = 1$）。大域的な切断は存在しない。
     \item \textbf{フレーム束}：$M$ の各点の接空間の基底（フレーム）全体は主 $GL(n, \mathbb{R})$ 束をなす（計量があれば主 $O(n)$ 束）。一般相対論のLevi-Civita接続（Christoffel記号）は、この束上の接続である。ゲージ理論と重力は、同じ幾何学的枠組みで記述される。
 \end{itemize}
 
-$P$ 上の点 $p$ における接空間 $T_p P$ には、$G$ の作用によるファイバー方向の接ベクトルからなる\textbf{垂直部分空間（Vertical subspace）} $V_p = \ker d\pi_p \subset T_p P$ が自然に定義される。リー代数の元 $X \in \mathfrak{g}$ は、$X^\#_p = \left.\frac{d}{dt}\right|_{t=0} p \cdot \exp(tX)$ によって垂直ベクトル場（\textbf{基本ベクトル場}）を定める。しかし、多様体 $M$ に沿った方向の移動を定義する\textbf{水平部分空間（Horizontal subspace）} $H_p$ はアプリオリには存在しない。この $H_p$ を各点で滑らかに（かつ $G$ の作用と両立するように）指定する規則こそが、幾何学における\textbf{接続（Connection）}の定義（Ehresmann接続）である。水平部分空間は、次の接続形式の核として指定するのが便利である。
+$P$ 上の点 $p$ における接空間 $T_p P$ には、$G$ の作用によるファイバー方向の接ベクトルからなる\textbf{垂直部分空間（Vertical subspace）} $V_p = \ker d\pi_p \subset T_p P$ が自然に定義される。リー代数の元 $X \in \mathfrak{g}$ は、$X^\#_p = \left.\frac{d}{dt}\right|_{t=0} p \cdot \exp(tX)$ によって垂直ベクトル場（\textbf{基本ベクトル場}）を定める。しかし、多様体 $M$ に沿った方向の移動を定義する\textbf{水平部分空間（Horizontal subspace）} $H_p$ はアプリオリには存在しない。この $H_p$ を各点で滑らかに（かつ $G$ の作用と両立するように）指定する規則（図\ref{fig:bundle}）こそが、幾何学における\textbf{接続（Connection）}の定義（Ehresmann接続）である。水平部分空間は、次の接続形式の核として指定するのが便利である。
 
 \begin{mydef}{接続形式}{}
 主 $G$ 束 $P$ 上の $\mathfrak{g}$ 値1形式 $\omega$ が\textbf{接続形式}であるとは、次を満たすことをいう。
@@ -1035,6 +1251,36 @@ $P$ 上の点 $p$ における接空間 $T_p P$ には、$G$ の作用による�
 \end{enumerate}
 このとき $H_p = \ker \omega_p$ とおくと $T_p P = V_p \oplus H_p$ が成り立ち、$H_p$ は $G$ の作用で互いに移り合う。
 \end{mydef}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0]
+    % 底空間
+    \draw[thick] (0,0) -- (7,0) node[right] {$M$};
+    % ファイバー
+    \foreach \x in {1,2,3,4,5,6} {
+        \draw[gray!60] (\x,1.0) -- (\x,4.2);
+        \fill (\x,0) circle (0.03);
+    }
+    \node[gray] at (6,4.45) {ファイバー $\cong G$};
+    % 底空間の曲線
+    \draw[very thick, orange!80!black] (1.5,0) -- (5.5,0);
+    \node[below, orange!80!black] at (3.5,0) {曲線 $\gamma$};
+    % 水平リフト
+    \draw[very thick, blue!70!black] plot[domain=1.5:5.5, samples=50, smooth] (\x, {1.8 + 0.35*(\x-1.5) + 0.25*sin(120*\x)});
+    \node[blue!70!black, right] at (5.5,3.3) {水平リフト $\tilde\gamma$};
+    % 点 p と V_p, H_p
+    \coordinate (p) at (3,2.43);
+    \fill (p) circle (0.06) node[below right] {$p$};
+    \draw[->, very thick, red!70!black] (p) -- ++(0,1.1) node[above left] {$V_p$};
+    \draw[very thick, green!50!black] ($(p)+(-0.8,-0.25)$) -- ($(p)+(0.8,0.25)$) node[above right] {$H_p$};
+    % 射影
+    \draw[->, dashed] (3,1.0) -- (3,0.12);
+    \node[left, font=\scriptsize] at (3,0.55) {$\pi$};
+\end{tikzpicture}
+\caption{主束 $P \to M$ と接続。各点の上にファイバー（$G$ と同型）が立っている。ファイバー方向の垂直部分空間 $V_p$ は自然に決まるが、水平部分空間 $H_p$ の選び方が接続である。底空間の曲線 $\gamma$ を、常に $H_p$ の方向に進むように持ち上げたものが水平リフト（並行移動）である。}
+\label{fig:bundle}
+\end{figure}
 
 物理的なゲージポテンシャル $A$ とは、接続形式 $\omega$ の局所切断（ゲージ固定）$s_\alpha: U_\alpha \to P$ による引き戻し $A_\alpha = s_\alpha^* \omega$ として定義される。異なる局所切断に対する引き戻しは、物理で知られる非可換ゲージ変換の規則
 \begin{equation}
@@ -1060,7 +1306,7 @@ $P$ 上の点 $p$ における接空間 $T_p P$ には、$G$ の作用による�
 \begin{equation}
     \mathcal{A} = A_0 + \Omega^1(M, \mathrm{ad}P)
 \end{equation}
-すなわち接続全体の空間 $\mathcal{A}$ は\textbf{アフィン空間}である。第2章・第3章で用いた事実（$\mathcal{A}$ が可縮であること、接続の変形 $\delta A$ が $\Omega^1(M, \mathrm{ad}P)$ の元であること）は、ここから従う。実際、\eqref{eq:local-gauge-transf} において2つの接続の差をとると非斉次項 $g^{-1}dg$ が打ち消し合い、差は $g^{-1}(\cdot)g$ と斉次に変換する。
+すなわち接続全体の空間 $\mathcal{A}$ は\textbf{アフィン空間}である。第\ref{ch:group-action}章・第\ref{ch:deformation}章で用いた事実（$\mathcal{A}$ が可縮であること、接続の変形 $\delta A$ が $\Omega^1(M, \mathrm{ad}P)$ の元であること）は、ここから従う。実際、\eqref{eq:local-gauge-transf} において2つの接続の差をとると非斉次項 $g^{-1}dg$ が打ち消し合い、差は $g^{-1}(\cdot)g$ と斉次に変換する。
 
 超弦理論において、Dブレーンの世界体積上には開弦の端点が張り付く。端点にChan--Paton因子（カラー自由度）を持たせることは、Dブレーン上にベクトル束を構成することに他ならない。このベクトル束上の接続が、Dブレーン上の非可換ゲージ場として振る舞うのである。
 
@@ -1072,11 +1318,35 @@ $P$ 上の点 $p$ における接空間 $T_p P$ には、$G$ の作用による�
 \end{equation}
 であり、その解は経路順序積 $\psi(1) = \mathcal{P}\exp\left( -\int_\gamma A \right) \psi(0)$ で与えられる。
 
-閉曲線に沿って並行移動して元の点に戻ってきたとき、一般には元の状態からゲージ変換（位相やカラーの回転）を受けた状態になる。この変換
+閉曲線に沿って並行移動して元の点に戻ってきたとき、一般には元の状態からゲージ変換（位相やカラーの回転）を受けた状態になる（図\ref{fig:holonomy}）。この変換
 \begin{equation}
     \mathrm{Hol}_\gamma(A) = \mathcal{P}\exp\left( -\oint_\gamma A \right) \in G
 \end{equation}
 を\textbf{ホロノミー（Holonomy）}と呼ぶ。ゲージ変換のもとで $\mathrm{Hol}_\gamma \to g(x_0)^{-1}\, \mathrm{Hol}_\gamma\, g(x_0)$（$x_0$ は基点）と共役で変換するので、そのトレース（\textbf{Wilsonループ}）$\mathrm{Tr}\,\mathrm{Hol}_\gamma$ はゲージ不変な観測量である。無限小の閉曲線に沿ったホロノミーのズレを測るテンソル場が曲率である。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    % 底空間の閉曲線
+    \draw[thick, orange!80!black, dashed] (2,0) arc (0:180:2 and 0.6);
+    \draw[thick, orange!80!black] (-2,0) arc (180:360:2 and 0.6);
+    \node[orange!80!black] at (2.6,-0.5) {閉曲線 $\gamma \subset M$};
+    \fill (2,0) circle (0.04) node[below right, font=\scriptsize] {$x_0$};
+    % ファイバー
+    \draw[gray!60] (2,0.6) -- (2,3.6);
+    \node[gray, font=\scriptsize] at (2,3.85) {$x_0$ 上のファイバー};
+    % リフト（らせん）
+    \draw[very thick, blue!70!black, dashed] plot[domain=0:180, samples=60, smooth] ({2*cos(\x)}, {0.6*sin(\x) + 1.4 + 1.2*\x/360});
+    \draw[very thick, blue!70!black] plot[domain=180:360, samples=60, smooth] ({2*cos(\x)}, {0.6*sin(\x) + 1.4 + 1.2*\x/360});
+    \node[blue!70!black, font=\scriptsize] at (-2.9,2.0) {水平リフト};
+    \fill (2,1.4) circle (0.06) node[right=14pt] {$p$};
+    \fill (2,2.6) circle (0.06) node[right=14pt] {$p \cdot \mathrm{Hol}_\gamma$};
+    \draw[<->, red!70!black] (2.25,1.45) -- node[right, font=\scriptsize] {ずれ} (2.25,2.55);
+\end{tikzpicture}
+\caption{ホロノミー。閉曲線 $\gamma$ に沿って水平リフトすると（点線は奥側）、一般には出発点 $p$ に戻らず、同じファイバー上の別の点 $p \cdot \mathrm{Hol}_\gamma$ に到達する。このずれがホロノミーであり、小さなループでのずれを測ったものが曲率である。平坦接続では、ループを連続変形してもずれは変わらない。}
+\label{fig:holonomy}
+\end{figure}
+
 
 \begin{mydef}{曲率}{}
 接続形式 $\omega$ の\textbf{曲率形式}を
@@ -1096,7 +1366,7 @@ $P$ 上の点 $p$ における接空間 $T_p P$ には、$G$ の作用による�
 \end{equation}
 となる（符号はループの向きと規約による）。$U(1)$ の場合、これはStokesの定理 $\oint A = \int dA$ そのものであり、非可換な場合には $A \wedge A$ の項が $A$ の非可換性から生じる。
 
-曲率がゼロ（$F=0$）である接続を\textbf{平坦接続}と呼ぶ。Frobeniusの定理によれば、曲率がゼロであることは水平部分空間 $H_p$ が可積分である（ファイバー束を水平にスライスする部分多様体が存在する）ことの必要十分条件である。このとき、ホロノミーは閉曲線をホモトピーで連続変形しても変わらず、平坦接続は基本群の表現 $\pi_1(M) \to G$ を定める。第3章で用いた $\mathcal{M}_{\text{flat}} \cong \mathrm{Hom}(\pi_1(M), G)/G$ はこの事実に基づいている。また、第3章で扱った変形理論は、この可積分条件を満たしたまま接続を微小に変形する理論であった。
+曲率がゼロ（$F=0$）である接続を\textbf{平坦接続}と呼ぶ。Frobeniusの定理によれば、曲率がゼロであることは水平部分空間 $H_p$ が可積分である（ファイバー束を水平にスライスする部分多様体が存在する）ことの必要十分条件である。このとき、ホロノミーは閉曲線をホモトピーで連続変形しても変わらず、平坦接続は基本群の表現 $\pi_1(M) \to G$ を定める。第\ref{ch:deformation}章で用いた $\mathcal{M}_{\text{flat}} \cong \mathrm{Hom}(\pi_1(M), G)/G$ はこの事実に基づいている。また、第\ref{ch:deformation}章で扱った変形理論は、この可積分条件を満たしたまま接続を微小に変形する理論であった。
 
 曲率形式は、接続によらず常に次の恒等式を満たす。
 
@@ -1123,7 +1393,7 @@ $P$ 上の点 $p$ における接空間 $T_p P$ には、$G$ の作用による�
 $U(1)$ の場合 Bianchi恒等式は $dF = 0$ となり、これは電磁気学における $\nabla \cdot \bm{B} = 0$ と $\nabla \times \bm{E} + \frac{\partial \bm{B}}{\partial t} = 0$ に他ならない。すなわち、Maxwell方程式の半分は力学ではなく幾何学（$F$ が接続の曲率であること）から自動的に従う。残りの半分（運動方程式）は作用から導かれる。
 
 \begin{note}
-Yang--Mills作用 $S = -\frac{1}{2g^2}\int_M \mathrm{Tr}(F \wedge *F)$（反エルミート規約では $-\mathrm{Tr}$ が正定値）を変分しよう。$A \to A + \delta A$ に対して $\delta F = d_A \delta A$（第3章）なので、
+Yang--Mills作用 $S = -\frac{1}{2g^2}\int_M \mathrm{Tr}(F \wedge *F)$（反エルミート規約では $-\mathrm{Tr}$ が正定値）を変分しよう。$A \to A + \delta A$ に対して $\delta F = d_A \delta A$（第\ref{ch:deformation}章）なので、
 \begin{equation*}
     \delta S = -\frac{1}{g^2}\int_M \mathrm{Tr}(d_A \delta A \wedge *F) = \pm\frac{1}{g^2}\int_M \mathrm{Tr}(\delta A \wedge d_A {*F})
 \end{equation*}
@@ -1202,7 +1472,7 @@ $U(1)$ の場合、\eqref{eq:convention-ch4} の規約で $F = -ie F^{\text{phys
 \begin{equation}
     \frac{1}{2\pi}\int_\Sigma K\, dA = \chi(\Sigma) = 2 - 2g
 \end{equation}
-となり、古典的なGauss--Bonnetの定理が得られる。左辺は計量に依存するように見えるが、Chern--Weil理論により計量（接続）を連続的に変えても値は変わらず、トポロジカルな不変量 $\chi$ に等しい。第2章で枕カバーの検証に用いたのはこの定理である。
+となり、古典的なGauss--Bonnetの定理が得られる。左辺は計量に依存するように見えるが、Chern--Weil理論により計量（接続）を連続的に変えても値は変わらず、トポロジカルな不変量 $\chi$ に等しい。第\ref{ch:group-action}章で枕カバーの検証に用いたのはこの定理である。
 
 \paragraph{例：インスタントン数とChern--Simons形式}
 物理的にもっとも重要な例が、インスタントン数を与える第2Chern類である。$\mathrm{Tr}(F \wedge F)$ は閉形式であるだけでなく、局所的には \textbf{Chern--Simons 3形式}
@@ -1223,7 +1493,26 @@ $d\omega_{\text{CS}}$ を直接計算しよう。$d\,\mathrm{Tr}(A \wedge dA) = 
 であり、巡回性より $\mathrm{Tr}(A^2 \wedge dA) = \mathrm{Tr}(dA \wedge A^2)$、また奇数次形式の巡回置換の符号から $\mathrm{Tr}(A^4) = -\mathrm{Tr}(A^4) = 0$ である。よって両者は一致する。
 \end{note}
 
-$M$ 全体で単一のゲージが使えれば、Stokesの定理より $k = \frac{1}{8\pi^2}\int_M d\omega_{\text{CS}} = 0$ となるはずである。非ゼロの $k$ は、ゲージが大域的に取れないこと、すなわち束のトポロジーの非自明性を反映している。最も重要な $M = S^4$（$\mathbb{R}^4$ に無限遠点を加えたもの）の場合を見てみよう。$S^4$ を北半球と南半球の2つのパッチに分けると、束は赤道 $S^3$ 上の推移関数 $g: S^3 \to SU(N)$ で決まり、そのホモトピー類は $\pi_3(SU(N)) \cong \mathbb{Z}$ で分類される。
+$M$ 全体で単一のゲージが使えれば、Stokesの定理より $k = \frac{1}{8\pi^2}\int_M d\omega_{\text{CS}} = 0$ となるはずである。非ゼロの $k$ は、ゲージが大域的に取れないこと、すなわち束のトポロジーの非自明性を反映している。最も重要な $M = S^4$（$\mathbb{R}^4$ に無限遠点を加えたもの）の場合を見てみよう。$S^4$ を北半球と南半球の2つのパッチに分けると（図\ref{fig:S4-gluing}）、束は赤道 $S^3$ 上の推移関数 $g: S^3 \to SU(N)$ で決まり、そのホモトピー類は $\pi_3(SU(N)) \cong \mathbb{Z}$ で分類される。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    \fill[blue!10] (0,0) circle (1.3);
+    \draw[very thick, blue!70!black] (0,0) circle (1.3);
+    \node at (0,0.2) {北半球 $D^4_N$};
+    \node at (0,-0.3) {ゲージ場 $A_N$};
+    \fill[red!10] (6.6,0) circle (1.3);
+    \draw[very thick, red!70!black] (6.6,0) circle (1.3);
+    \node at (6.6,0.2) {南半球 $D^4_S$};
+    \node at (6.6,-0.3) {ゲージ場 $A_S$};
+    \node[font=\scriptsize] at (0,-1.6) {境界 $= S^3$};
+    \node[font=\scriptsize] at (6.6,-1.6) {境界 $= S^3$};
+    \draw[<->, thick] (1.45,0) -- node[above, align=center, font=\small] {赤道 $S^3$ で貼り合わせ} node[below, font=\small] {$g: S^3 \to SU(N)$} (5.15,0);
+\end{tikzpicture}
+\caption{$S^4$ 上の $SU(N)$ 束の構成。2つの4次元球体（北半球と南半球）の上ではそれぞれ自明な束をとり、境界の赤道 $S^3$ で推移関数 $g$ を用いて貼り合わせる。束のトポロジーは $g$ のホモトピー類 $\pi_3(SU(N)) \cong \mathbb{Z}$ で決まり、これがインスタントン数 $k$ である。$\mathbb{R}^4$ の言葉では、北半球が有限領域、南半球が無限遠の近傍に対応し、$g$ は無限遠でゲージ場が近づく純粋ゲージ $A = g^{-1}dg$ を与える。}
+\label{fig:S4-gluing}
+\end{figure}
 
 \begin{myprop}{インスタントン数と巻き付き数}{winding}
 $S^4$ 上の $SU(N)$ 束のインスタントン数は、赤道 $S^3$ 上の推移関数 $g$ の巻き付き数に（向きの規約による符号を除いて）等しい：
@@ -1248,32 +1537,197 @@ $S^4$ 上の $SU(N)$ 束のインスタントン数は、赤道 $S^3$ 上の推�
 \part{物理に現れるモジュライ}
 
 \chapter{Yang--Mills理論：インスタントンのモジュライ}
+\label{ch:instanton}
 
 第I部では、モジュライ問題の一般的な枠組みと、ゲージ理論をファイバー束の幾何学として定式化する数学的基礎を学んだ。第II部では、これらの抽象的な枠組みが実際の理論物理学においてどのように立ち現れるのかを、具体的な物理系に即して解析していく。
 
-本章の主題は、4次元の非可換ゲージ理論（Yang--Mills理論）における「インスタントン（Instanton）」のモジュライ空間である。インスタントンは、真空間のトンネル効果を記述する非摂動的な配位であり、そのモジュライ空間の幾何学は、Seiberg--Witten理論やDonaldson不変量など、現代の数理物理学において最も豊穣な成果をもたらした源泉である。本章では、これまでの章の道具がすべて一つの具体例の中で働く様子を見る：Bogomol'nyi限界（第4章の特性類）、BPST解と集団座標（第3章の零モード）、次元公式（第3章の指数定理）、ADHM構成（第2章の商空間）、そしてコンパクト化（第1章）である。
+本章の主題は、4次元の非可換ゲージ理論（Yang--Mills理論）における「インスタントン（Instanton）」のモジュライ空間である。インスタントンは、真空間のトンネル効果を記述する非摂動的な配位であり、そのモジュライ空間の幾何学は、Seiberg--Witten理論やDonaldson不変量など、現代の数理物理学において最も豊穣な成果をもたらした源泉である。
+
+\paragraph{この章の地図}
+インスタントンは、これまでの章の道具がすべて一つの具体例の中で働く格好の題材である。本章の流れと、各節で使う道具を先にまとめておく。
+\begin{center}
+\begin{tabular}{lll}
+    \hline
+    節 & 内容 & 使う道具 \\
+    \hline
+    \ref{sec:qm-instanton} & 量子力学のインスタントン（準備） & 零モードと集団座標（第\ref{ch:deformation}章） \\
+    \ref{sec:bogomolnyi} & Bogomol'nyi限界と自己双対方程式 & 特性類（第\ref{ch:bundle}章） \\
+    \ref{sec:theta} & トンネル効果と $\theta$ 真空 & Chern--Simons形式（第\ref{ch:bundle}章） \\
+    \ref{sec:bpst} & BPST解とモジュライ空間 & 群作用と商空間（第\ref{ch:group-action}章） \\
+    \ref{sec:adhm} & ADHM構成 & 有限次元の商（第\ref{ch:group-action}章） \\
+    \ref{sec:index} & 次元公式 & 変形複体と指数定理（第\ref{ch:deformation}章） \\
+    \ref{sec:uhlenbeck} & 小インスタントンとコンパクト化 & 境界とコンパクト化（第\ref{ch:intro}章） \\
+    \hline
+\end{tabular}
+\end{center}
+初めて読む場合は、\ref{sec:qm-instanton}節で「インスタントンとは何か」の感覚をつかみ、\ref{sec:bogomolnyi}節〜\ref{sec:bpst}節で具体的な解とそのパラメータを理解すれば十分である。\ref{sec:adhm}節以降は、モジュライ空間の一般的な構造に関するより進んだ内容である。
+
+\section{準備：量子力学のインスタントン}
+\label{sec:qm-instanton}
+
+Yang--Mills理論に入る前に、同じ考え方が最も簡単な形で現れる1次元の量子力学の例を見ておこう。ここで出てくる概念（ユークリッド化、1階の方程式への帰着、零モード、集団座標、トンネル振幅 $e^{-S_0}$）は、すべてYang--Mills理論のインスタントンにそのまま引き継がれる。
+
+\subsection{二重井戸ポテンシャルとトンネル効果}
+
+質量 $1$ の粒子が、二重井戸ポテンシャル
+\begin{equation}
+    V(x) = \lambda\,(x^2 - a^2)^2
+\end{equation}
+の中を運動する系を考える（$\hbar = 1$）。古典的な最低エネルギー状態は2つの井戸の底 $x = \pm a$ であり、古典的には粒子は一方の井戸に留まり続ける。しかし量子力学では、粒子はポテンシャルの山をトンネル効果ですり抜けることができる。この効果は摂動論（井戸の底のまわりでの展開）のどの次数にも現れない。
+
+トンネル振幅 $\langle a | e^{-HT} | {-a} \rangle$ を経路積分で評価するには、時間を虚数時間 $\tau = it$ に解析接続（\textbf{Wick回転}）するのが便利である。すると経路積分の重みは $e^{iS}$ から $e^{-S_E}$ に変わり、
+\begin{equation}
+    S_E[x] = \int d\tau \left( \frac{1}{2}\dot{x}^2 + V(x) \right) \qquad \left( \dot{x} = \frac{dx}{d\tau} \right)
+\end{equation}
+を最小にする経路が支配的になる。$S_E$ は、ポテンシャル $-V(x)$ の中を運動する粒子の作用とみなせる。$-V$ では2つの井戸の底が「山の頂上」になるので、$\tau = -\infty$ で頂上 $x = -a$ を出発し、$\tau = +\infty$ でもう一方の頂上 $x = +a$ にたどり着く古典解が存在する（図\ref{fig:double-well}）。これが量子力学の\textbf{インスタントン}である。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    % 左：V と -V
+    \begin{scope}[scale=1.2]
+        \draw[->] (-1.8,0) -- (1.9,0) node[right] {$x$};
+        \draw[->] (0,-1.5) -- (0,1.7);
+        \draw[very thick, gray!70!black] plot[domain=-1.55:1.55, samples=80, smooth] (\x, {(\x*\x-1)*(\x*\x-1)});
+        \draw[very thick, blue!70!black] plot[domain=-1.55:1.55, samples=80, smooth] (\x, {-(\x*\x-1)*(\x*\x-1)});
+        \node[gray!70!black, font=\scriptsize] at (1.35,1.5) {$V(x)$};
+        \node[blue!70!black, font=\scriptsize] at (1.4,-1.45) {$-V(x)$};
+        \fill[red!70!black] (-1,0) circle (0.05);
+        \fill[red!70!black] (1,0) circle (0.05);
+        \node[below, font=\scriptsize] at (-1,-0.05) {$-a$};
+        \node[below, font=\scriptsize] at (1,-0.05) {$a$};
+        \draw[->, very thick, red!70!black] (-0.9,0.12) to[bend left=25] node[above, font=\scriptsize] {インスタントン} (0.9,0.12);
+    \end{scope}
+    % 右：tanh
+    \begin{scope}[xshift=6.3cm, scale=1.0]
+        \draw[->] (-2.6,0) -- (2.8,0) node[right] {$\tau$};
+        \draw[->] (0,-1.5) -- (0,1.6) node[above] {$x_{\text{cl}}(\tau)$};
+        \draw[gray, dashed] (-2.5,1) -- (2.5,1);
+        \draw[gray, dashed] (-2.5,-1) -- (2.5,-1);
+        \node[left, font=\scriptsize] at (-2.5,1) {$a$};
+        \node[left, font=\scriptsize] at (-2.5,-1) {$-a$};
+        \draw[very thick, red!70!black] plot[domain=-2.5:2.5, samples=80, smooth] (\x, {tanh(2*\x)});
+        \node[below right, font=\scriptsize] at (0,0) {$\tau_0$};
+        \draw[<->] (-0.5,-1.25) -- node[below, font=\scriptsize] {幅 $\sim 1/\omega$} (0.5,-1.25);
+    \end{scope}
+\end{tikzpicture}
+\caption{量子力学のインスタントン。左：二重井戸ポテンシャル $V$（灰）と、ユークリッド化で現れる逆さのポテンシャル $-V$（青）。$-V$ の2つの山の頂上 $x = \pm a$ を結ぶ古典解がインスタントンである。右：その解 $x_{\text{cl}}(\tau) = a\tanh(\omega(\tau - \tau_0)/2)$。時刻 $\tau_0$ の近くで瞬間的に井戸から井戸へ移る。$\tau_0$ を動かしても作用は変わらず、これがモジュライ・パラメータである。}
+\label{fig:double-well}
+\end{figure}
+
+
+\subsection{1階の方程式への帰着}
+
+この解は、作用を「平方完成」することで簡単に求められる。
+\begin{equation}
+    S_E = \int d\tau \left[ \frac{1}{2}\left( \dot{x} \mp \sqrt{2V(x)} \right)^2 \pm \dot{x}\sqrt{2V(x)} \right] \ \ge\ \left| \int_{-a}^{a} dx\, \sqrt{2V(x)} \right| \equiv S_0
+\end{equation}
+右辺の積分は $\dot{x}\,d\tau = dx$ により端点 $x = \pm a$ だけで決まる「トポロジカルな」量であり、経路の細部によらない。等号は1階の微分方程式
+\begin{equation}
+    \dot{x} = \sqrt{2V(x)} = \sqrt{2\lambda}\,(a^2 - x^2)
+    \label{eq:qm-bps}
+\end{equation}
+が成り立つときに達成される。2階の運動方程式を解かずに、1階の方程式で最小作用の解が得られたことに注意しよう。
+
+\begin{note}
+\eqref{eq:qm-bps} を変数分離して解くと、$\int \frac{dx}{a^2 - x^2} = \frac{1}{a}\mathrm{artanh}\frac{x}{a} = \sqrt{2\lambda}\,(\tau - \tau_0)$ より
+\begin{equation*}
+    x_{\text{cl}}(\tau) = a \tanh\left( \frac{\omega}{2}(\tau - \tau_0) \right), \qquad \omega = 2\sqrt{2\lambda}\,a
+\end{equation*}
+を得る（$\omega$ は井戸の底での振動数 $\omega^2 = V''(\pm a) = 8\lambda a^2$）。作用は
+\begin{equation*}
+    S_0 = \int_{-a}^{a} dx\, \sqrt{2\lambda}\,(a^2 - x^2) = \sqrt{2\lambda} \cdot \frac{4a^3}{3} = \frac{\omega^3}{12\lambda}
+\end{equation*}
+である。解は $\tau_0$ のまわりの幅 $1/\omega$ 程度の短い時間で井戸から井戸へ移る。「瞬間（instant）的な」現象であることが、インスタントンという名前の由来である。
+\end{note}
+
+\subsection{零モードと集団座標}
+
+解 $x_{\text{cl}}(\tau)$ には任意の定数 $\tau_0$（トンネルが起こる時刻）が含まれている。系が時間並進で不変なので、$\tau_0$ をずらしても作用は変わらない。したがって、この系のインスタントンの\textbf{モジュライ空間}は
+\begin{equation}
+    \mathcal{M}_{\text{QM}} = \{ \tau_0 \} \cong \mathbb{R}
+\end{equation}
+という1次元の空間である。第\ref{ch:deformation}章で見たように、モジュライ・パラメータ方向の微分 $\partial_{\tau_0}x_{\text{cl}} \propto \dot{x}_{\text{cl}}$ は揺らぎ演算子の\textbf{零モード}であり、経路積分ではその方向のGauss積分を $\tau_0$ の積分（集団座標の積分）に置き換えなければならない。
+
+\begin{note}
+集団座標の測度を具体的に求めよう。零モードを規格化すると、$\delta x = \dot{x}_{\text{cl}}\,\delta\tau_0$ のノルムは
+\begin{equation*}
+    \int d\tau\, \dot{x}_{\text{cl}}^2 = \int d\tau \left( \frac{1}{2}\dot{x}_{\text{cl}}^2 + V(x_{\text{cl}}) \right) = S_0
+\end{equation*}
+である（1階の方程式から $\frac{1}{2}\dot{x}^2 = V$ を用いた）。したがって第\ref{ch:deformation}章の公式で $g_{\tau_0\tau_0} = S_0$ となり、1インスタントンの寄与は
+\begin{equation*}
+    \int_0^T \frac{d\tau_0}{\sqrt{2\pi}}\sqrt{S_0}\; e^{-S_0}\left({\det}'\Delta\right)^{-1/2} = T \cdot K e^{-S_0}, \qquad K \propto \sqrt{\frac{S_0}{2\pi}}
+\end{equation*}
+という形になる。時間 $T$ に比例する因子は、モジュライ空間 $\mathbb{R}$ の「体積」から来ている。Yang--Mills理論でも、作用 $S_0$ の平方根が零モード1つごとに現れることを後で見る。
+\end{note}
+
+\subsection{エネルギー分裂}
+
+長い時間 $T$ の間には、インスタントン（$-a \to a$）と反インスタントン（$a \to -a$）が交互に何回も起こりうる。それぞれが十分離れている（\textbf{希薄気体近似}）とすると、$n$ 個のトンネルの寄与は $(KTe^{-S_0})^n/n!$ であり、これを足し上げると、2つの井戸に対応する状態が混ざって
+\begin{equation}
+    E_\pm = \frac{\omega}{2} \mp K e^{-S_0}
+\end{equation}
+とエネルギーが分裂することが分かる。基底状態は2つの井戸の対称な重ね合わせ $(|{-a}\rangle + |a\rangle)/\sqrt{2}$ である。
+
+\begin{note}
+$|{-a}\rangle$ から $|{\pm a}\rangle$ への振幅は、トンネルの回数 $n$ がそれぞれ偶数・奇数の項を足し上げたものである。
+\begin{equation*}
+    \langle \pm a | e^{-HT} | {-a} \rangle \simeq e^{-\omega T/2}\sum_{n:\ \text{偶数/奇数}} \frac{(KTe^{-S_0})^n}{n!} = e^{-\omega T/2} \times \begin{cases} \cosh(KTe^{-S_0}) \\ \sinh(KTe^{-S_0}) \end{cases}
+\end{equation*}
+一方、エネルギー固有状態 $|E_\pm\rangle$ で展開すると $\langle \pm a|e^{-HT}|{-a}\rangle = \sum e^{-E T}\langle\pm a|E\rangle\langle E|{-a}\rangle$ である。$\cosh, \sinh = \frac{1}{2}(e^{x} \pm e^{-x})$ と比較すれば、$E_\pm = \frac{\omega}{2} \mp Ke^{-S_0}$ を読み取れる。
+\end{note}
+
+以上の例と、これから見るYang--Mills理論の対応を表にまとめておく。
+
+\begin{center}
+\begin{tabular}{lll}
+    \hline
+     & 量子力学（二重井戸） & Yang--Mills理論 \\
+    \hline
+    古典的な真空 & $x = \pm a$ & 巻き付き数 $n$ の純粋ゲージ \\
+    インスタントン & $x_{\text{cl}} = a\tanh(\omega(\tau-\tau_0)/2)$ & BPST解 \\
+    1階の方程式 & $\dot{x} = \sqrt{2V}$ & $F = *F$（自己双対方程式） \\
+    最小作用 & $S_0 = \int\sqrt{2V}dx$ & $8\pi^2/g^2$ \\
+    トポロジカルな量 & 端点 $x = \pm a$ & インスタントン数 $k$ \\
+    モジュライ空間 & $\{\tau_0\} \cong \mathbb{R}$ & 位置・サイズ・ゲージの向き \\
+    真のエネルギー固有状態 & $|{-a}\rangle \pm |a\rangle$ & $\theta$ 真空 $\sum_n e^{in\theta}|n\rangle$ \\
+    \hline
+\end{tabular}
+\end{center}
 
 \section{ユークリッド化とBogomol'nyi限界}
+\label{sec:bogomolnyi}
 
-通常のミンコフスキー時空（計量符号 $(-+++)$）における場の量子論において、真空間のトンネル効果などの非摂動効果を評価するためには、時間を虚数時間 $\tau = i t$ へ解析接続（Wick回転）し、計量が正定値 $(++++)$ となる4次元ユークリッド空間 $\mathbb{R}^4$ で経路積分を実行するのが定石である。
+量子力学の場合と同様に、Yang--Mills理論でも時間を虚数時間に解析接続し、計量が正定値 $(++++)$ となる4次元ユークリッド空間 $\mathbb{R}^4$ で考える。
 
 本章では物理の慣習に従い、エルミートなゲージ場 $A_\mu = A_\mu^a T^a$（$\mathrm{Tr}(T^a T^b) = \frac{1}{2}\delta^{ab}$）を、結合定数 $g$ を作用の前に出す規格化で用いる：
 \begin{equation}
     F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu - i[A_\mu, A_\nu], \qquad
     S_{YM} = \frac{1}{2g^2} \int d^4x \, \mathrm{Tr}(F_{\mu\nu} F_{\mu\nu})
 \end{equation}
-作用 $S_{YM}$ を最小化する配位（古典解）を探すために、トポロジカルな不変量であるインスタントン数を導入しよう。
+量子力学の端点 $x = \pm a$ に対応するトポロジカルな量が、インスタントン数である。
 \begin{equation}
     k = \frac{1}{16\pi^2} \int d^4x \, \mathrm{Tr}(F_{\mu\nu} \tilde{F}_{\mu\nu}) = \frac{1}{8\pi^2} \int \mathrm{Tr}(F \wedge F)
     \label{eq:instanton-number-ch5}
 \end{equation}
-ここで、$\tilde{F}_{\mu\nu} \equiv \frac{1}{2}\epsilon_{\mu\nu\rho\sigma}F_{\rho\sigma}$ はHodge双対テンソル（微分形式の言葉では $*F$）である。
+ここで、$\tilde{F}_{\mu\nu} \equiv \frac{1}{2}\epsilon_{\mu\nu\rho\sigma}F_{\rho\sigma}$ は\textbf{双対テンソル}（微分形式の言葉ではHodge双対 $*F$）である。
 
 \begin{note}
-第4章の反エルミートな規約とは $A^{\text{(4章)}} = -iA$、$F^{\text{(4章)}} = -iF$ で対応する（第4章の式で $g = 1$ とおいたもの）。このとき $\mathrm{Tr}(F^{\text{(4章)}} \wedge F^{\text{(4章)}}) = -\mathrm{Tr}(F \wedge F)$ であるから、本章の $k$ は第4章の第2Chern数と $k = -c_2(P)$ の関係にある。物理の文献で「自己双対・$k > 0$」と呼ばれる配位は、数学の文献では向きを反転して「反自己双対（ASD）・$c_2 > 0$」と呼ばれることが多い。両者は向きの規約の違いにすぎない。また、$F \wedge F = \frac{1}{2}F_{\mu\nu}\tilde{F}_{\mu\nu}\, d^4x$ より、\eqref{eq:instanton-number-ch5} の2つの表式は一致する。
+第\ref{ch:bundle}章の反エルミートな規約とは $A^{\text{(4章)}} = -iA$、$F^{\text{(4章)}} = -iF$ で対応する（第\ref{ch:bundle}章の式で $g = 1$ とおいたもの）。このとき $\mathrm{Tr}(F^{\text{(4章)}} \wedge F^{\text{(4章)}}) = -\mathrm{Tr}(F \wedge F)$ であるから、本章の $k$ は第\ref{ch:bundle}章の第2Chern数と $k = -c_2(P)$ の関係にある。物理の文献で「自己双対・$k > 0$」と呼ばれる配位は、数学の文献では向きを反転して「反自己双対（ASD）・$c_2 > 0$」と呼ばれることが多い。両者は向きの規約の違いにすぎない。また、$F \wedge F = \frac{1}{2}F_{\mu\nu}\tilde{F}_{\mu\nu}\, d^4x$ より、\eqref{eq:instanton-number-ch5} の2つの表式は一致する。
 \end{note}
 
-インスタントン数は整数であり（第4章）、配位の連続的な変形で変わらない。したがって配位空間は $k$ によって連結成分に分かれ、各成分の中で作用を最小化することが問題となる。
+\paragraph{電場と磁場で見る双対性}
+双対テンソルに馴染みがなければ、電場と磁場の言葉で考えるとよい。ユークリッド時間を $x_4$ とし、
+\begin{equation}
+    E_i = F_{4i}, \qquad B_i = \frac{1}{2}\epsilon_{ijk}F_{jk} \qquad (i, j, k = 1, 2, 3)
+\end{equation}
+と定めると、双対をとる操作は $\bm{E}$ と $\bm{B}$ を入れ替える操作に他ならない（$\tilde{E}_i = \pm B_i$、$\tilde{B}_i = \pm E_i$、符号は $\epsilon_{1234}$ の向きの規約による）。このとき
+\begin{equation}
+    \mathrm{Tr}(F_{\mu\nu}F_{\mu\nu}) = 2\,\mathrm{Tr}(\bm{E}^2 + \bm{B}^2), \qquad \mathrm{Tr}(F_{\mu\nu}\tilde{F}_{\mu\nu}) = \pm 4\,\mathrm{Tr}(\bm{E}\cdot\bm{B})
+\end{equation}
+となる。作用は「電場と磁場のエネルギー」、インスタントン数は電磁気学でもおなじみの $\bm{E}\cdot\bm{B}$ の積分であり、自己双対方程式 $F = \pm\tilde{F}$ は「電場と磁場が等しい」という条件 $\bm{E} = \pm\bm{B}$ に他ならない。
+
+インスタントン数は整数であり（第\ref{ch:bundle}章）、配位の連続的な変形で変わらない。したがって配位空間は $k$ によって連結成分に分かれ、各成分の中で作用を最小化することが問題となる。量子力学の場合と全く同じ「平方完成」の議論から、次が得られる。
 
 \begin{myprop}{Bogomol'nyi限界}{bogomolnyi}
 任意の有限作用の配位に対して
@@ -1289,11 +1743,11 @@ $S^4$ 上の $SU(N)$ 束のインスタントン数は、赤道 $S^3$ 上の推�
     0 &\le \frac{1}{4g^2} \int d^4x \, \mathrm{Tr}\left( (F_{\mu\nu} \mp \tilde{F}_{\mu\nu})(F_{\mu\nu} \mp \tilde{F}_{\mu\nu}) \right) \\
     &= \frac{1}{4g^2} \int d^4x \, \mathrm{Tr}\left( F_{\mu\nu} F_{\mu\nu} \mp 2F_{\mu\nu} \tilde{F}_{\mu\nu} + \tilde{F}_{\mu\nu} \tilde{F}_{\mu\nu} \right)
 \end{align*}
-ユークリッド空間（計量 $\delta_{\mu\nu}$）においては $\tilde{F}_{\mu\nu} \tilde{F}_{\mu\nu} = F_{\mu\nu} F_{\mu\nu}$ となることを用いると、
+ユークリッド空間（計量 $\delta_{\mu\nu}$）においては $\tilde{F}_{\mu\nu} \tilde{F}_{\mu\nu} = F_{\mu\nu} F_{\mu\nu}$ となる（電場と磁場の入れ替えでエネルギーは変わらない）ことを用いると、
 \begin{align*}
     0 &\le \frac{1}{2g^2} \int d^4x \, \mathrm{Tr}(F_{\mu\nu} F_{\mu\nu}) \mp \frac{1}{2g^2} \int d^4x \, \mathrm{Tr}(F_{\mu\nu} \tilde{F}_{\mu\nu}) = S_{YM} \mp \frac{8\pi^2}{g^2} k
 \end{align*}
-を得る。$k$ の符号に合わせて複号を選べば $S_{YM} \ge 8\pi^2|k|/g^2$ である。等号は被積分関数 $\mathrm{Tr}(F \mp \tilde{F})^2$（正定値）が恒等的にゼロ、すなわち $F = \pm\tilde{F}$ のときに限る。
+を得る。$k$ の符号に合わせて複号を選べば $S_{YM} \ge 8\pi^2|k|/g^2$ である。等号は被積分関数 $\mathrm{Tr}(F \mp \tilde{F})^2$（正定値）が恒等的にゼロ、すなわち $F = \pm\tilde{F}$ のときに限る。量子力学の \eqref{eq:qm-bps} と見比べると、全く同じ構造であることが分かる。
 \end{note}
 
 \begin{mydef}{インスタントンとそのモジュライ空間}{}
@@ -1312,21 +1766,64 @@ $S^4$ 上の $SU(N)$ 束のインスタントン数は、赤道 $S^3$ 上の推�
 \end{enumerate}
 \end{mydef}
 
-SD/ASD方程式は、元のYang--Mills運動方程式 $d_A *F = 0$ を自動的に満たす。なぜなら、Bianchi恒等式 $d_A F = 0$（第4章）より、$F = \pm *F$ ならば直ちに $d_A *F = \pm d_A F = 0$ となるからである。2階の運動方程式を解くという困難な問題が、幾何学的により自然な1階のSD/ASD方程式に還元されたことになる。
+フレーム付きモジュライを考える理由は、物理的には「無限遠でのゲージの向き」が観測可能な量（例えば、遠方に置いた基準となる物質場に対するインスタントンの向き）だからである。数学的には、$\mathcal{G}_0$ の作用は自由になり、商が扱いやすくなるという利点がある（第\ref{ch:group-action}章）。
 
-\subsection{インスタントンの物理的意味：トンネル効果と $\theta$ 真空}
+SD/ASD方程式は、元のYang--Mills運動方程式 $D_\mu F_{\mu\nu} = 0$（$d_A *F = 0$）を自動的に満たす。なぜなら、Bianchi恒等式 $d_A F = 0$（第\ref{ch:bundle}章）より、$F = \pm *F$ ならば直ちに $d_A *F = \pm d_A F = 0$ となるからである。2階の運動方程式を解くという困難な問題が、1階のSD/ASD方程式に還元されたことになる。これも量子力学の場合と全く同じである。
 
-インスタントンの物理的意味は、Minkowski時空での真空構造を見ると明らかになる。時間的ゲージ $A_0 = 0$ では、古典的な真空（エネルギーゼロの配位）は空間 $\mathbb{R}^3$（無限遠を1点とみなして $S^3$）上の純粋ゲージ $A_i = i\, g^{-1}\partial_i g$ であり、$g: S^3 \to SU(N)$ の巻き付き数 $n \in \pi_3(SU(N)) \cong \mathbb{Z}$ で分類される。巻き付き数の異なる真空 $|n\rangle$ は小さなゲージ変換では移り合わず、古典的には互いにエネルギー障壁で隔てられている。
+\section{インスタントンの物理的意味：トンネル効果と $\theta$ 真空}
+\label{sec:theta}
 
-ユークリッド時間 $\tau$ の $-\infty$ で真空 $|n\rangle$、$+\infty$ で真空 $|n + k\rangle$ に近づく配位を考えると、Chern--Simons形式の議論（第4章）からそのインスタントン数はちょうど $k$ である。したがって、インスタントンは\textbf{異なる真空の間のトンネル効果}を記述し、その振幅は半古典近似で
+量子力学の二重井戸では、インスタントンは2つの古典的真空の間のトンネル効果を記述した。Yang--Mills理論のインスタントンも、同じく真空間のトンネル効果を記述する。ただし今度は、古典的な真空が無限個ある。
+
+時間的ゲージ $A_4 = 0$（Minkowskiでは $A_0 = 0$）では、古典的な真空（エネルギーゼロの配位）は空間 $\mathbb{R}^3$ 上の純粋ゲージ $A_i = i\, g^{-1}\partial_i g$ である。有限エネルギーの条件から $g$ は空間の無限遠で一定値に近づくとしてよいので、無限遠を1点とみなすと $g$ は写像 $S^3 \to SU(N)$ となり、その巻き付き数 $n \in \pi_3(SU(N)) \cong \mathbb{Z}$ で分類される。巻き付き数の異なる真空 $|n\rangle$ は「小さな」ゲージ変換（巻き付き数ゼロ）では移り合わず、古典的には互いにエネルギー障壁で隔てられている。
+
+ユークリッド時間 $\tau$ の $-\infty$ で真空 $|n\rangle$、$+\infty$ で真空 $|n + k\rangle$ に近づく配位を考えると、Chern--Simons形式の議論（第\ref{ch:bundle}章）からそのインスタントン数はちょうど $k$ である。したがって、インスタントンは\textbf{巻き付き数の異なる真空の間のトンネル効果}を記述し、その振幅は半古典近似で
 \begin{equation}
     \langle n + k | e^{-HT} | n \rangle \propto e^{-8\pi^2 |k|/g^2}
 \end{equation}
-となる。$g$ について非解析的なこの因子は、摂動論のどの次数にも現れない。真のエネルギー固有状態は、Bloch波と同様の重ね合わせ $|\theta\rangle = \sum_n e^{in\theta}|n\rangle$（\textbf{$\theta$ 真空}）であり、経路積分においては作用に $\theta$ 項 $-i\theta k$ を加えることと等価である。
+となる。$g$ について非解析的なこの因子は、摂動論のどの次数にも現れない。
 
-\section{BPSTインスタントンと集団座標}
+\begin{note}
+なぜ $k$ が真空の巻き付き数の差になるのかを確認しよう。$\mathbb{R}^4$ を時間 $\tau \in [-T, T]$ と空間 $\mathbb{R}^3$ の柱とみなすと、その境界は時刻 $\pm T$ の2枚の $\mathbb{R}^3$（と空間の無限遠）である。第\ref{ch:bundle}章で見たように $\mathrm{Tr}(F \wedge F) = d\omega_{\text{CS}}$ であり、Stokesの定理から
+\begin{equation*}
+    k = \frac{1}{8\pi^2}\int_{\tau = T} \omega_{\text{CS}} - \frac{1}{8\pi^2}\int_{\tau = -T} \omega_{\text{CS}}
+\end{equation*}
+となる（空間の無限遠からの寄与は $A_4 = 0$ ゲージと有限エネルギー条件から消える）。純粋ゲージに対する $\frac{1}{8\pi^2}\int_{\mathbb{R}^3}\omega_{\text{CS}}$（\textbf{Chern--Simons数}）は、第\ref{ch:bundle}章の命題（インスタントン数と巻き付き数）と同じ計算により、巻き付き数 $n$ に（符号を除いて）等しい。よって $k$ は時間の両端の真空の巻き付き数の差である。
+\end{note}
 
-$k=1$ の $SU(2)$ インスタントン解（BPSTインスタントン）は、1975年にBelavin, Polyakov, Schwarz, Tyupkinによって具体的に書き下された。正則ゲージ（regular gauge）では
+量子力学では、2つの井戸の重ね合わせが真のエネルギー固有状態であった。今は無限個の真空 $|n\rangle$ が一列に並んでおり、これは周期ポテンシャル中の粒子（結晶中の電子）とよく似ている。その場合と同様に、真のエネルギー固有状態はBloch波に相当する重ね合わせ
+\begin{equation}
+    |\theta\rangle = \sum_{n \in \mathbb{Z}} e^{in\theta} |n\rangle
+\end{equation}
+であり、これを\textbf{$\theta$ 真空}と呼ぶ。巻き付き数を1つずらす「大きな」ゲージ変換のもとで $|\theta\rangle$ は位相 $e^{-i\theta}$ を受けるだけなので、$\theta$ は物理的に意味を持つパラメータとなる。経路積分においては、$\theta$ 真空を用いることは作用に\textbf{$\theta$ 項}
+\begin{equation}
+    S \to S_{YM} - i\theta k = S_{YM} - \frac{i\theta}{8\pi^2}\int\mathrm{Tr}(F \wedge F)
+\end{equation}
+を加えることと等価である。
+
+\paragraph{希薄インスタントン気体と $\theta$ 依存性}
+量子力学のエネルギー分裂と同じ計算で、$\theta$ 真空のエネルギーが $\theta$ にどう依存するかを見積もることができる。体積 $VT$ の時空に、インスタントン（$k = +1$）が $n$ 個、反インスタントン（$k = -1$）が $\bar{n}$ 個、互いに離れて分布しているとすると、各々が $KVTe^{-S_0}$（$S_0 = 8\pi^2/g^2$、$K$ は集団座標と1ループの行列式から来る因子）と $\theta$ 項からの位相 $e^{\pm i\theta}$ を与える。
+
+\begin{note}
+すべての $n, \bar{n}$ について足し上げると
+\begin{equation*}
+    Z(\theta) = \sum_{n, \bar{n} \ge 0} \frac{(KVTe^{-S_0}e^{i\theta})^n}{n!}\frac{(KVTe^{-S_0}e^{-i\theta})^{\bar{n}}}{\bar{n}!} = \exp\left( 2KVTe^{-S_0}\cos\theta \right)
+\end{equation*}
+である。一方、$Z(\theta) \sim e^{-E(\theta)VT}$（$E(\theta)$ は単位体積あたりの真空のエネルギー）であるから、
+\begin{equation*}
+    E(\theta) = -2Ke^{-8\pi^2/g^2}\cos\theta
+\end{equation*}
+を得る。量子力学の $E_\pm = \frac{\omega}{2} \mp Ke^{-S_0}$ は、$\theta = 0, \pi$ に対応する特別な場合と見ることができる。
+\end{note}
+
+実際のQCDでは、後で見るようにインスタントンのサイズについての積分が赤外で発散するため、この希薄気体近似は定量的には信頼できない。しかし、真空のエネルギーが $\theta$ に依存すること、そしてそれが $e^{-8\pi^2/g^2}$ という非摂動的な因子で制御されることは、インスタントンの重要な定性的帰結である。さらに、インスタントンはフェルミオンの零モードを通じてカイラル対称性 $U(1)_A$ を破り（'t Hooftの有効頂点、第\ref{ch:deformation}章）、これが $\eta'$ 中間子が他の擬南部・ゴールドストーン粒子よりはるかに重い理由（$U(1)_A$ 問題の解決）を与える\cite{thooft1976}。
+
+\section{BPSTインスタントンとモジュライ空間}
+\label{sec:bpst}
+
+\subsection{BPST解}
+
+$k=1$ の $SU(2)$ インスタントン解（BPSTインスタントン）は、1975年にBelavin, Polyakov, Schwarz, Tyupkinによって具体的に書き下された\cite{bpst1975}。正則ゲージ（regular gauge）では
 \begin{equation}
     A_\mu^a(x) = \frac{2 \eta_{a\mu\nu} (x - X)_\nu}{(x - X)^2 + \rho^2}
     \label{eq:BPST}
@@ -1335,31 +1832,56 @@ $k=1$ の $SU(2)$ インスタントン解（BPSTインスタントン）は、1
 \begin{equation}
     \eta_{a\mu\nu} = \begin{cases} \epsilon_{a\mu\nu} & (\mu, \nu = 1, 2, 3) \\ \delta_{a\mu} & (\nu = 4) \\ -\delta_{a\nu} & (\mu = 4) \end{cases}
 \end{equation}
-であり、$\mu\nu$ について反対称かつ自己双対なテンソルである。$X_\mu$ はインスタントンの「中心位置」、$\rho > 0$ はインスタントンの「サイズ」を表す。対応する場の強さは
+であり、$\mu\nu$ について反対称かつ自己双対なテンソルである。$X_\mu$ はインスタントンの「中心位置」、$\rho > 0$ はインスタントンの「サイズ」を表す。
+
+\begin{note}
+'t Hooft記号の意味を補足しておく。4次元の反対称テンソル（2形式）は6成分あり、自己双対なもの（3成分）と反自己双対なもの（3成分）に分かれる。一方、$SU(2)$ のリー代数も3次元である。't Hooft記号 $\eta_{a\mu\nu}$ は、$SU(2)$ の生成子の添字 $a = 1, 2, 3$ と、自己双対な2形式の3つの基底を対応させる「辞書」の役割を果たす。例えば $\eta_{3\mu\nu}$ の非ゼロ成分は $\eta_{312} = 1$ と $\eta_{334} = 1$ であり、これは2形式 $dx^1 \wedge dx^2 + dx^3 \wedge dx^4$（自己双対）に対応する。$\eta$ の代わりに反自己双対な $\bar{\eta}$（$\nu = 4, \mu = 4$ の行の符号を反転したもの）を用いると反インスタントンが得られる。
+\end{note}
+
+対応する場の強さは
 \begin{equation}
     F^a_{\mu\nu} = -\frac{4 \eta_{a\mu\nu}\, \rho^2}{\left( (x - X)^2 + \rho^2 \right)^2}
 \end{equation}
-であり、$\eta$ の自己双対性からSD方程式を満たす。作用密度は中心 $X$ のまわりの幅 $\rho$ の領域に局在している。
+であり、$\eta$ の自己双対性からSD方程式を満たす。作用密度 $\propto \rho^4/((x-X)^2 + \rho^2)^4$ は中心 $X$ のまわりの半径 $\rho$ 程度の領域に局在しており、インスタントンは「4次元ユークリッド時空の中の、大きさ $\rho$ の塊」とイメージできる。
 
 \begin{note}
 作用が $8\pi^2/g^2$、すなわち $k = 1$ であることを確かめよう。$\mathrm{Tr}(F_{\mu\nu}F_{\mu\nu}) = \frac{1}{2}F^a_{\mu\nu}F^a_{\mu\nu}$ と、't Hooft記号の恒等式 $\eta_{a\mu\nu}\eta_{a\mu\nu} = 12$ を用いると、$r = |x - X|$ として
 \begin{equation*}
     S_{YM} = \frac{1}{4g^2}\int d^4x\, F^a_{\mu\nu}F^a_{\mu\nu} = \frac{1}{4g^2} \cdot 16 \cdot 12 \int d^4x\, \frac{\rho^4}{(r^2 + \rho^2)^4}
 \end{equation*}
-である。4次元の極座標 $d^4x = 2\pi^2 r^3 dr$ と $u = r^2$ の置換により
+である。4次元の極座標 $d^4x = 2\pi^2 r^3 dr$（$2\pi^2$ は単位3次元球面の体積）と $u = r^2$ の置換により
 \begin{equation*}
     \int d^4x\, \frac{\rho^4}{(r^2 + \rho^2)^4} = 2\pi^2 \cdot \frac{1}{2}\int_0^\infty du\, \frac{u\, \rho^4}{(u + \rho^2)^4} = \pi^2 \cdot \frac{1}{6} = \frac{\pi^2}{6}
 \end{equation*}
-（$\int_0^\infty \frac{u\, du}{(u + a)^4} = \frac{1}{6a^2}$）。よって $S_{YM} = \frac{192}{4g^2}\cdot\frac{\pi^2}{6} = \frac{8\pi^2}{g^2}$ となり、Bogomol'nyi限界を $k = 1$ で飽和している。作用が $\rho$ と $X$ に依存しないことは、これらが零モード（集団座標）であることの反映である（第3章）。
+（$\int_0^\infty \frac{u\, du}{(u + a)^4} = \frac{1}{6a^2}$）。よって $S_{YM} = \frac{192}{4g^2}\cdot\frac{\pi^2}{6} = \frac{8\pi^2}{g^2}$ となり、Bogomol'nyi限界を $k = 1$ で飽和している。
 \end{note}
 
+\paragraph{無限遠での振る舞いとトポロジー}
+$|x| \to \infty$（簡単のため $X = 0$）では、\eqref{eq:BPST} は
+\begin{equation}
+    A_\mu^a \to \frac{2\eta_{a\mu\nu}x_\nu}{x^2}
+\end{equation}
+となり、$1/|x|$ でしか減衰しない。それでも作用が有限なのは、この漸近形が\textbf{純粋ゲージ}だからである。実際、$\hat{x} = x/|x| \in S^3$ に対して $g(\hat{x}) = (x_4 + i\,x_j\sigma^j)/|x|$（あるいはその逆、規約による）とおくと、漸近形は $A_\mu = i\,g^{-1}\partial_\mu g$ に一致し、場の強さは $F \sim 1/|x|^4$ で速やかに減衰する。写像 $g: S^3_\infty \to SU(2) \cong S^3$ は（$SU(2)$ を単位四元数の3次元球面と同一視すると）恒等写像であり、その巻き付き数は1である。第\ref{ch:bundle}章の命題（インスタントン数と巻き付き数）により、これが $k = 1$ の起源である。つまり、BPSTインスタントンは「無限遠では巻き付き数1の純粋ゲージ、中心付近では滑らかに巻き戻された配位」である。
+
+\subsection{パラメータの数え上げ}
+
 解 \eqref{eq:BPST} は、作用を変えない対称性によってパラメータの族に広がる。
-\begin{itemize}
-    \item \textbf{並進}（4個）：中心位置 $X_\mu$。
-    \item \textbf{スケール変換}（1個）：サイズ $\rho$。古典的なYang--Mills理論は共形不変なので、作用は $\rho$ に依存しない。
-    \item \textbf{大域的ゲージ回転}（3個）：定数 $U \in SU(2)$ による $A \to U A U^{-1}$。無限遠で非自明に作用するので、$\mathcal{G}_0$ では割られず、フレーム付きモジュライの座標となる。
-\end{itemize}
-（回転 $SO(4)$ の作用は、解の形から大域的ゲージ回転と打ち消し合うように組み合わされ、新たなパラメータを生まない。）こうして次の結果を得る。
+\begin{center}
+\begin{tabular}{llc}
+    \hline
+    パラメータ & 由来となる対称性 & 個数 \\
+    \hline
+    中心位置 $X_\mu$ & 並進 & 4 \\
+    サイズ $\rho$ & スケール変換（古典的な共形不変性） & 1 \\
+    ゲージの向き $U \in SU(2)$ & 無限遠で非自明な大域的ゲージ回転 & 3 \\
+    \hline
+    合計 & & 8 \\
+    \hline
+\end{tabular}
+\end{center}
+回転 $SO(4) \cong (SU(2)_L \times SU(2)_R)/\mathbb{Z}_2$ の作用は、一方の $SU(2)$ はゲージ回転と組み合わせると解を変えず、もう一方の $SU(2)$ はゲージの向きの変化と同じ効果を持つので、新たなパラメータを生まない。また、作用は古典的には $\rho$ に依存しない。これは古典的なYang--Mills理論が無次元の結合定数 $g$ しか持たず、スケール変換で不変であることの反映である。
+
+ゲージの向き $U$ は $\mathcal{G}_0$ では割られないので、フレーム付きモジュライの座標となる。こうして次の結果を得る。
 
 \begin{myprop}{$k = 1$ の $SU(2)$ インスタントンのモジュライ空間}{k1-moduli}
 \begin{equation*}
@@ -1370,26 +1892,73 @@ $k=1$ の $SU(2)$ インスタントン解（BPSTインスタントン）は、1
 \end{myprop}
 
 \begin{note}
-フレーム付きモジュライの第2因子は、サイズ $\rho > 0$ とゲージの向き $U \in SU(2) \cong S^3$ を組にしたものである。ここで $U$ と $-U$ は随伴作用 $A \to UAU^{-1}$ として同じ変換を与えるので、実質的なパラメータは $SU(2)/\mathbb{Z}_2 = SO(3)$ に値をとる。$(\rho, U)$ を四元数 $\rho U \in \mathbb{H} \cong \mathbb{R}^4$（$\rho = |\rho U|$）とみなせば、$\rho > 0$ より原点が除かれ、$\pm$ の同一視により $(\mathbb{R}^4 \setminus \{0\})/\mathbb{Z}_2$ を得る。これは第2章で見た錐 $\mathbb{C}^2/\mathbb{Z}_2$ から頂点を除いたものであり、頂点 $\rho = 0$ が次節以降で扱う「小インスタントン」の特異点に対応する。
+フレーム付きモジュライの第2因子は、サイズ $\rho > 0$ とゲージの向き $U \in SU(2) \cong S^3$ を組にしたものである。ここで $U$ と $-U$ は随伴作用 $A \to UAU^{-1}$ として同じ変換を与えるので、実質的なパラメータは $SU(2)/\mathbb{Z}_2 = SO(3)$ に値をとる。$SU(2)$ を単位四元数の群と同一視して $(\rho, U)$ を四元数 $\rho U \in \mathbb{R}^4$（$\rho = |\rho U|$）とみなせば、$\rho > 0$ より原点が除かれ、$\pm$ の同一視により $(\mathbb{R}^4 \setminus \{0\})/\mathbb{Z}_2$ を得る。これは第\ref{ch:group-action}章で見た錐 $\mathbb{C}^2/\mathbb{Z}_2$ から頂点を除いたものであり、頂点 $\rho = 0$ が後で扱う「小インスタントン」の特異点に対応する。
 \end{note}
 
-さらに、$\mathbb{R}^4$ に無限遠点を加えた $S^4$ 上で考えると、共形変換群 $SO(5,1)$ が作用し、その固定部分群 $SO(5)$ による商として
+\paragraph{一般の $SU(N)$ と複数のインスタントン}
+この数え上げは直観的に一般化できる。
+\begin{itemize}
+    \item \textbf{$SU(N)$、$k = 1$}：BPST解を $SU(N)$ の左上 $2 \times 2$ ブロックに埋め込めばよい。ゲージの向きのパラメータは、埋め込まれた $SU(2)$ を動かさない部分群（$\dim = (N-2)^2$）を除いた $(N^2 - 1) - (N-2)^2 = 4N - 5$ 個となり、合計は $4 + 1 + (4N - 5) = 4N$ 個である。
+    \item \textbf{$k$ 個の離れたインスタントン}：互いに十分離れた $k$ 個のインスタントンは、それぞれが独立に位置・サイズ・向きを持つと考えられるので、パラメータは $4N \times k = 4Nk$ 個である。
+\end{itemize}
+後で見るように、$4Nk$ はフレーム付きモジュライ空間の正確な次元に一致する。インスタントンどうしが重なると「独立な塊」という描像は崩れるが、パラメータの総数は変わらないのである。
+
+\subsection{零モードとモジュライ空間の計量}
+
+第\ref{ch:deformation}章で学んだように、モジュライ空間の接ベクトルは「ゲージ直交条件を満たす零モード」である。並進の零モードを例にとって、これを具体的に見てみよう。
+
+中心を $X_\nu \to X_\nu + \delta X_\nu$ とずらすと、$A_\mu(x - X)$ は $\delta A_\mu = -\delta X_\nu\,\partial_\nu A_\mu$ だけ変化する。しかしこれはゲージ直交条件 $D_\mu \delta A_\mu = 0$ を満たさない。そこで恒等式
 \begin{equation}
-    \mathcal{M}_1(S^4) \cong SO(5,1)/SO(5) \cong \mathbb{H}^5
+    \partial_\nu A_\mu = F_{\nu\mu} + D_\mu A_\nu \qquad \left( D_\mu A_\nu \equiv \partial_\mu A_\nu - i[A_\mu, A_\nu] \right)
+\end{equation}
+を用いると、第2項はパラメータ $\epsilon = A_\nu$ の無限小ゲージ変換 $D_\mu\epsilon$ の形をしているので、これを差し引いて
+\begin{equation}
+    \delta_\nu A_\mu = F_{\nu\mu}
+\end{equation}
+を物理的な並進の零モードとして選べる。
+
+\begin{note}
+恒等式は $F_{\nu\mu} + D_\mu A_\nu = (\partial_\nu A_\mu - \partial_\mu A_\nu - i[A_\nu, A_\mu]) + (\partial_\mu A_\nu - i[A_\mu, A_\nu]) = \partial_\nu A_\mu$ から直ちに分かる。$\delta_\nu A_\mu = F_{\nu\mu}$ が物理的な零モードであることを確認しよう。
+\begin{itemize}
+    \item \textbf{ゲージ直交条件}：$D_\mu \delta_\nu A_\mu = D_\mu F_{\nu\mu} = 0$（Yang--Mills方程式）。
+    \item \textbf{線形化されたSD方程式}：$F$ 自身が自己双対で、共変的な並進で自己双対性は保たれる。
+\end{itemize}
+そのノルムを計算すると、自己双対な場ではエネルギー運動量テンソルが消える（$\mathrm{Tr}(F_{\nu\mu}F_{\lambda\mu}) = \frac{1}{4}\delta_{\nu\lambda}\mathrm{Tr}(F_{\rho\mu}F_{\rho\mu})$、電場と磁場の言葉では $\bm{E} = \bm{B}$ ならMaxwell応力が消える）ことから、
+\begin{equation*}
+    \int d^4x\, \mathrm{Tr}(\delta_\nu A_\mu\,\delta_\lambda A_\mu) = \frac{\delta_{\nu\lambda}}{4}\int d^4x\, \mathrm{Tr}(F_{\rho\mu}F_{\rho\mu}) = \frac{\delta_{\nu\lambda}}{4} \cdot 2g^2 S_{YM}
+\end{equation*}
+となる。すなわち、モジュライ空間の計量の $X$ 方向の成分は平坦な $\delta_{\nu\lambda}$ に比例し、比例係数は作用 $S_{YM} = 8\pi^2/g^2$ に比例する。量子力学の場合（$g_{\tau_0\tau_0} = S_0$）と全く同じく、零モード1つごとに $\sqrt{S_{YM}}$ の因子が集団座標の測度に現れる。
+\end{note}
+
+同様の計算をサイズとゲージの向きの零モードについても行うと、フレーム付きモジュライ空間 $\widetilde{\mathcal{M}}_1 = \mathbb{R}^4 \times (\mathbb{R}^4\setminus\{0\})/\mathbb{Z}_2$ 上の計量は\textbf{平坦な計量}（を $\mathbb{Z}_2$ で割ったもの）になることが知られている。すなわち、$k=1$ のモジュライ空間は幾何学的には「平坦な $\mathbb{R}^4$」と「平坦な錐 $\mathbb{C}^2/\mathbb{Z}_2$」の直積である。
+
+\subsection{$S^4$ 上のモジュライ空間と集団座標の積分}
+
+$\mathbb{R}^4$ に無限遠点を加えた $S^4$ 上で考えると、Yang--Mills理論の共形不変性により共形変換群 $SO(5,1)$ がモジュライ空間に作用し、その固定部分群 $SO(5)$ による商として
+\begin{equation}
+    \mathcal{M}_1(S^4) \cong SO(5,1)/SO(5) \cong H^5
 \end{equation}
 （5次元双曲空間、すなわち開いた5次元球体）を得る。位置 $X$ とサイズ $\rho$ は、上半空間モデル $\{(X, \rho) \mid \rho > 0\}$ の座標に他ならない。
 
 \begin{note}
-第3章で見た集団座標の処方を適用すると、1インスタントンの寄与は
+第\ref{ch:deformation}章で見た集団座標の処方を適用すると、1インスタントンの寄与は
 \begin{equation*}
     Z_{k=1} \propto \int d^4X \int_0^\infty \frac{d\rho}{\rho^5} \left( \frac{8\pi^2}{g^2} \right)^{2N} e^{-8\pi^2/g^2(1/\rho)}
 \end{equation*}
-という形になる（$SU(N)$）。$\rho^{-5}$ は次元解析から、$(8\pi^2/g^2)^{2N}$ はフレーム付きの $4N$ 個の集団座標のJacobian（1つあたり $\sqrt{S_{YM}}$）から生じ、1ループ行列式の効果は結合定数を尺度 $1/\rho$ での走る結合定数 $g(1/\rho)$ に置き換える。漸近自由性 $e^{-8\pi^2/g^2(1/\rho)} = (\rho\Lambda)^{11N/3}$ を用いると、被積分関数は $\rho^{11N/3 - 5}$ に比例し、大きな $\rho$ で発散する。これは、モジュライ空間の非コンパクトな方向（$\rho \to \infty$）が赤外での強結合の問題として現れていることを示している。
+という形になる（$SU(N)$）。各因子の由来は次のとおりである。
+\begin{itemize}
+    \item $d^4X$：並進の集団座標。量子力学の $d\tau_0$ に対応し、時空の体積 $VT$ を与える。
+    \item $\rho^{-5}$：次元解析から決まる（$Z$ は無次元で、$d^4X\,d\rho$ は長さの5乗の次元を持つ）。
+    \item $(8\pi^2/g^2)^{2N}$：フレーム付きの $4N$ 個の集団座標のJacobian（1つあたり $\sqrt{S_{YM}}$）。
+    \item $e^{-8\pi^2/g^2(1/\rho)}$：古典作用。1ループの行列式の効果により、結合定数が尺度 $1/\rho$ での走る結合定数 $g(1/\rho)$ に置き換わる。
+\end{itemize}
+漸近自由性 $e^{-8\pi^2/g^2(1/\rho)} = (\rho\Lambda)^{11N/3}$ を用いると、被積分関数は $\rho^{11N/3 - 5}$ に比例し、大きな $\rho$ で発散する。これは、モジュライ空間の非コンパクトな方向（$\rho \to \infty$）が赤外での強結合の問題として現れていることを示している。前節で希薄気体近似がQCDでは信頼できないと述べたのは、このためである。
 \end{note}
 
 \section{ADHM構成法}
+\label{sec:adhm}
 
-一般の $N$ と $k$ の場合、インスタントンのモジュライ空間 $\mathcal{M}_{k}$ の構造は極めて複雑になる。しかし、1978年にAtiyah, Drinfeld, Hitchin, Maninは、ツイスター理論を応用することで、自己双対方程式の一般解を有限次元の代数方程式（行列の線形代数）に帰着させることに成功した。これを\textbf{ADHM構成法}と呼ぶ。
+一般の $N$ と $k$ の場合、インスタントンが重なり合うとBPST解のような簡単な式は書けなくなり、モジュライ空間 $\mathcal{M}_{k}$ の構造は極めて複雑になる。しかし、1978年にAtiyah, Drinfeld, Hitchin, Maninは、ツイスター理論を応用することで、自己双対方程式の一般解を有限次元の代数方程式（行列の線形代数）に帰着させることに成功した。これを\textbf{ADHM構成法}と呼ぶ\cite{adhm1978}。
 
 \begin{mythm}{ADHM構成}{ADHM}
 $\mathbb{R}^4$ 上のインスタントン数 $k$ の $U(N)$ インスタントンのフレーム付きモジュライ空間は、行列
@@ -1412,10 +1981,22 @@ $\mathbb{R}^4$ 上のインスタントン数 $k$ の $U(N)$ インスタント�
 これは超K\"ahler商と呼ばれる構成であり、$\widetilde{\mathcal{M}}_{N,k}$ は自然な超K\"ahler計量を持つ。
 \end{mythm}
 
-無限次元の空間 $\mathcal{A}$ を無限次元の群 $\mathcal{G}$ で割るという問題が、有限次元の空間を有限次元の群 $U(k)$ で割る問題（第2章）に置き換わったことに注意しよう。
+無限次元の空間 $\mathcal{A}$ を無限次元の群 $\mathcal{G}$ で割るという問題が、有限次元の空間を有限次元の群 $U(k)$ で割る問題（第\ref{ch:group-action}章）に置き換わったことに注意しよう。$\mu_{\mathbb{R}}$ は第\ref{ch:vacuum}章で学ぶ運動量写像（D項）と同じ形をしている。
+
+\paragraph{ADHMデータの直観的な意味}
+各行列の意味は、インスタントンが互いに離れている極限で理解できる。
+\begin{itemize}
+    \item \textbf{$B_1, B_2$（位置）}：インスタントンが離れているとき、$B_1, B_2$ は同時に対角化でき、
+    \begin{equation*}
+        B_1 = \mathrm{diag}(z_1^{(1)}, \dots, z_1^{(k)}), \qquad B_2 = \mathrm{diag}(z_2^{(1)}, \dots, z_2^{(k)})
+    \end{equation*}
+    となる。$(z_1^{(i)}, z_2^{(i)}) \in \mathbb{C}^2 \cong \mathbb{R}^4$ が $i$ 番目のインスタントンの位置である。$U(k)$ による同一視には $k$ 個のインスタントンの並べ替えが含まれており、インスタントンは互いに区別できない。
+    \item \textbf{$I, J$（サイズと向き）}：$I$ の第 $i$ 行と $J$ の第 $i$ 列が、$i$ 番目のインスタントンのサイズとゲージの向きを表す（例えば $k = 1$ では $\rho^2 \propto |I|^2 + |J|^2$）。
+    \item \textbf{非対角成分（重なり）}：インスタントンが近づいて重なると、$B_1, B_2$ は可換でなくなり、非対角成分が現れる。ADHM方程式は、この「非可換性」が $I, J$ と整合的であるための条件である。
+\end{itemize}
 
 \begin{note}
-ADHM構成から次元を数えて、第3章の指数定理と比較しよう。実次元で数えると、
+ADHM構成から次元を数えて、前節の直観的な数え上げや第\ref{ch:deformation}章の指数定理と比較しよう。実次元で数えると、
 \begin{itemize}
     \item 変数：$B_1, B_2$ が $2 \times 2k^2 = 4k^2$、$I, J$ が $2 \times 2kN = 4kN$。
     \item 方程式：$\mu_{\mathbb{C}} = 0$ が $2k^2$ 本（複素 $k \times k$ 行列）、$\mu_{\mathbb{R}} = 0$ が $k^2$ 本（エルミート $k \times k$ 行列）。
@@ -1425,7 +2006,7 @@ ADHM構成から次元を数えて、第3章の指数定理と比較しよう。
 \begin{equation*}
     \dim_{\mathbb{R}} \widetilde{\mathcal{M}}_{N,k} = 4k^2 + 4kN - 2k^2 - k^2 - k^2 = 4kN
 \end{equation*}
-となる。これは第3章の次元公式 $4Nk - (N^2 - 1)$ に、無限遠での大域的ゲージ回転 $\dim SU(N) = N^2 - 1$ を加えたものに一致している。
+となる。これは前節の「$k$ 個の独立な塊」の数え上げ $4N \times k$ と一致し、また第\ref{ch:deformation}章の次元公式 $4Nk - (N^2 - 1)$ に、無限遠での大域的ゲージ回転 $\dim SU(N) = N^2 - 1$ を加えたものにも一致している。
 \end{note}
 
 \paragraph{例：$k = 1$ のADHMデータ}
@@ -1436,26 +2017,31 @@ $k = 1$ では $B_1, B_2$ は複素数であり、$[B_1, B_2] = 0$、$[B_i, B_i^
 を $U(1)$ で割ることである。$N = 2$ の場合、この「中心を除いた部分」は $\mathbb{C}^2/\mathbb{Z}_2$ と同型であることが知られており、BPST解から直接求めた $(\mathbb{R}^4 \setminus \{0\})/\mathbb{Z}_2$ に（原点 $I = J = 0$ を加えて）一致する。原点は $U(1)$ が自由に作用しない点であり、小インスタントンの特異点に対応する。
 
 \begin{note}
-ADHM構成法は、弦理論のDブレーンの描像を用いると非常に直感的に理解できる。$N$ 枚のD3ブレーンと $k$ 枚のD$(-1)$ブレーンからなる系を考える。D3ブレーン上のゲージ群は $U(N)$ であり、D$(-1)$ブレーンはD3ブレーンの中に溶け込んだインスタントンとして解釈される。このとき、$B_1, B_2$ はD$(-1)$--D$(-1)$弦（D$(-1)$ブレーンの位置）、$I, J$ はD$(-1)$--D3弦の励起であり、D$(-1)$ブレーン上の0次元の行列模型の真空条件（D項条件 $\mu_{\mathbb{R}} = 0$ とF項条件 $\mu_{\mathbb{C}} = 0$）が、まさにADHM方程式に他ならない。$U(k)$ はD$(-1)$ブレーン上のゲージ群である。
+ADHM構成法は、弦理論のDブレーンの描像を用いると非常に直感的に理解できる。$N$ 枚のD3ブレーンと $k$ 枚のD$(-1)$ブレーンからなる系を考える。D3ブレーン上のゲージ群は $U(N)$ であり、D$(-1)$ブレーンはD3ブレーンの中に溶け込んだインスタントンとして解釈される。このとき、$B_1, B_2$ はD$(-1)$--D$(-1)$弦（D$(-1)$ブレーンの位置）、$I, J$ はD$(-1)$--D3弦の励起であり、D$(-1)$ブレーン上の0次元の行列模型の真空条件（D項条件 $\mu_{\mathbb{R}} = 0$ とF項条件 $\mu_{\mathbb{C}} = 0$）が、まさにADHM方程式に他ならない。$U(k)$ はD$(-1)$ブレーン上のゲージ群である。上で述べた「離れたインスタントンでは $B_i$ が対角的」という描像は、離れたDブレーンの位置が行列の固有値で与えられるという、Dブレーンの一般的な性質の一例である。
 \end{note}
 
 \section{指数定理とモジュライの次元}
+\label{sec:index}
 
-第3章で議論した変形理論とコホモロジーの枠組みを用いて、インスタントンのモジュライ空間の次元を変形理論の側から確認しよう。以下では数学の文献に合わせて、インスタントンをASD接続（$F^+ \equiv \frac{1}{2}(F + *F) = 0$）として扱う（向きを反転すればSDとASDは入れ替わるので、一般性は失われない）。微小変形 $A \to A + \delta A$ がASD条件を保つための線形化方程式は、曲率の自己双対部分（自己双対2形式の空間 $\Omega^2_+$）への射影を用いて記述される。
+第\ref{ch:deformation}章で議論した変形理論とコホモロジーの枠組みを用いて、インスタントンのモジュライ空間の次元を変形理論の側から確認しよう。BPST解やADHM構成のような具体的な解を知らなくても、次元が「位相的に」決まることがこの方法の強みである。
+
+以下では数学の文献に合わせて、インスタントンをASD接続（$F^+ \equiv \frac{1}{2}(F + *F) = 0$）として扱う（向きを反転すればSDとASDは入れ替わるので、一般性は失われない）。微小変形 $A \to A + \delta A$ がASD条件を保つための線形化方程式は、曲率の自己双対部分（自己双対2形式の空間 $\Omega^2_+$）への射影を用いて記述される。
 
 \begin{note}
-$F^+$ の微小変化を計算すると、$F(A + \delta A) = F(A) + d_A\delta A + \mathcal{O}(\delta A^2)$（第3章）より
+$F^+$ の微小変化を計算すると、$F(A + \delta A) = F(A) + d_A\delta A + \mathcal{O}(\delta A^2)$（第\ref{ch:deformation}章）より
 \begin{equation*}
     (F(A+\delta A))^+ = F^+ + (d_A \delta A)^+ + \mathcal{O}(\delta A^2)
 \end{equation*}
-となる。背景はASDであるため $F^+ = 0$。したがって、物理的な変形 $\delta A$ は、線形化方程式 $d_A^+ \delta A \equiv (d_A\delta A)^+ = 0$ とゲージ固定条件 $d_A^* \delta A = 0$ を満たす。
+となる。背景はASDであるため $F^+ = 0$。したがって、物理的な変形 $\delta A$ は、線形化方程式 $d_A^+ \delta A \equiv (d_A\delta A)^+ = 0$ とゲージ固定条件 $d_A^* \delta A = 0$ を満たす。前節の並進の零モード $\delta_\nu A_\mu = F_{\nu\mu}$ は、まさにこの2条件を満たす解の例である。
 \end{note}
 
 すなわち、変形は次の\textbf{Atiyah--Hitchin--Singer (AHS) 複体}
 \begin{equation}
     0 \to \Omega^0(\mathrm{ad}P) \xrightarrow{d_A} \Omega^1(\mathrm{ad}P) \xrightarrow{d_A^+} \Omega^2_+(\mathrm{ad}P) \to 0
 \end{equation}
-の1次のコホモロジー $H^1_A$ で記述される。これが複体であることは、$d_A^+ d_A \epsilon = [F^+, \epsilon] = 0$（第3章の $d_A^2 = [F, \cdot\,]$）から従う。コホモロジー群を $H^0_A, H^1_A, H^2_A$ とする。
+の1次のコホモロジー $H^1_A$ で記述される。これが複体であることは、$d_A^+ d_A \epsilon = [F^+, \epsilon] = 0$（第\ref{ch:deformation}章の $d_A^2 = [F, \cdot\,]$）から従う。コホモロジー群を $H^0_A, H^1_A, H^2_A$ とする。
+
+成分の数を数えておくと見通しがよい。各点で、$\Omega^0$ は1成分（ゲージ変換のパラメータ）、$\Omega^1$ は4成分（$\delta A_\mu$）、$\Omega^2_+$ は3成分（自己双対な2形式）である（いずれもリー代数の次元倍）。$4 - 1 - 3 = 0$ であるから、「方程式の数（ゲージ条件1つ＋線形化SD方程式3つ）と未知数の数（4つ）がちょうど釣り合っている」。そのため解の空間は局所的な自由度を持たず有限次元となり、その次元は大域的なトポロジーだけで決まる。これが指数定理の出番である。
 
 \begin{itemize}
     \item \textbf{$H^0_A$}：既約な接続（大域的ゲージ対称性を持たない接続）では $H^0_A = 0$ である。
@@ -1466,19 +2052,24 @@ $F^+$ の微小変化を計算すると、$F(A + \delta A) = F(A) + d_A\delta A 
     \dim \mathcal{M}_{N, k} = \mathrm{ind}(D_{AHS}) = \dim H^1_A - \dim H^0_A - \dim H^2_A
 \end{equation}
 
-第3章の次元公式（定理 \ref{thm:AHS-dim}）を $S^4$（$b_1 = b_2^+ = 0$）に適用すると、次の有名な公式を得る。
+第\ref{ch:deformation}章の次元公式（定理 \ref{thm:AHS-dim}）を $S^4$（$b_1 = b_2^+ = 0$）に適用すると、次の有名な公式を得る。
 \begin{equation}
     \dim \mathcal{M}_{N, k} = 4 N k - (N^2 - 1)
 \end{equation}
-$SU(2)$、$k=1$ の場合、$4 \times 2 \times 1 - 3 = 5$ となり、BPST解の位置とサイズの数（$4 + 1$）に一致する。無限遠での大域的ゲージ回転（フレーミング）の自由度 $\dim SU(2) = 3$ を加えると、フレーム付きモジュライの次元 $8 = 4Nk$ となり、ADHM構成からの数え上げとも一致する。なお、$N > 2k$ では既約なインスタントンは存在せず（すべての解が $SU(2k)$ 以下の部分群に埋め込まれる）、上の公式は既約な解が存在する範囲で意味を持つ。
+$SU(2)$、$k=1$ の場合、$4 \times 2 \times 1 - 3 = 5$ となり、BPST解の位置とサイズの数（$4 + 1$）に一致する。無限遠での大域的ゲージ回転（フレーミング）の自由度 $\dim SU(2) = 3$ を加えると、フレーム付きモジュライの次元 $8 = 4Nk$ となり、ADHM構成からの数え上げとも一致する。このように、
+\begin{center}
+    具体的な解（BPST）\quad{}・\quad{} 代数的な構成（ADHM）\quad{}・\quad{} 位相的な計算（指数定理）
+\end{center}
+という全く異なる3つの方法が、同じ答え $4Nk$ を与えるのである。なお、$N > 2k$ では既約なインスタントンは存在せず（すべての解が $SU(2k)$ 以下の部分群に埋め込まれる）、上の公式は既約な解が存在する範囲で意味を持つ。
 
 \section{小インスタントン極限とUhlenbeckコンパクト化}
+\label{sec:uhlenbeck}
 
-モジュライ空間 $\mathcal{M}_k$ は、一般にコンパクトではない。BPSTインスタントンのパラメータにおける「サイズ」$\rho$ を思い出そう。$\rho \to 0$ の極限を考えるとどうなるだろうか。
+モジュライ空間 $\mathcal{M}_k$ は、一般にコンパクトではない。$k = 1$ の場合、モジュライ空間 $\mathbb{R}^4 \times \mathbb{R}_{>0}$ には2種類の「果て」がある。位置 $X \to \infty$（インスタントンが無限遠に逃げる）とサイズ $\rho \to \infty$（無限に広がる）は、$S^4$ 上で考えれば共形変換によって「無限遠点に集中する小さなインスタントン」に移される。したがって本質的なのはサイズ $\rho \to 0$ の極限である。
 
-この極限では、インスタントンの作用密度 $\mathrm{Tr}(F_{\mu\nu}F_{\mu\nu})$ が一点 $X_\mu$ にデルタ関数的に集中していく。これを\textbf{小インスタントン極限（Small instanton limit）}と呼ぶ。ゲージ場は中心点 $X_\mu$ で発散し、滑らかな接続ではなくなってしまうため、この極限の配位は本来のモジュライ空間（滑らかな接続の商空間）の外側に出てしまう。
+この極限では、インスタントンの作用密度 $\mathrm{Tr}(F_{\mu\nu}F_{\mu\nu})$ が一点 $X_\mu$ にデルタ関数的に集中していく。これを\textbf{小インスタントン極限（Small instanton limit）}と呼ぶ。全作用は $8\pi^2/g^2$ のまま変わらないが、その分布がどんどん鋭くなり、ゲージ場は中心点 $X_\mu$ で発散して滑らかな接続ではなくなってしまう。したがって、この極限の配位は本来のモジュライ空間（滑らかな接続の商空間）の外側に出てしまう。
 
-モジュライ空間を閉じた空間（コンパクトな空間）として扱うためには、このような特異な配位をモジュライ空間の境界として「付け加える」必要がある。Karen Uhlenbeckは、エネルギーが点に集中する現象（bubbling現象）を厳密に定式化した。
+モジュライ空間を閉じた空間（コンパクトな空間）として扱うためには、このような特異な配位をモジュライ空間の境界として「付け加える」必要がある。Karen Uhlenbeckは、エネルギーが点に集中する現象（\textbf{bubbling現象}）を厳密に定式化した\cite{uhlenbeck1982}。「bubble（泡）」という名前は、集中していく点の近くを拡大して見ると、そこに小さなインスタントンが泡のように丸ごと存在しているように見えることに由来する。
 
 \begin{mythm}{Uhlenbeckのコンパクト性定理}{uhlenbeck}
 $M$ をコンパクトな4次元Riemann多様体とし、$A_n$ をインスタントン数 $k$ のインスタントンの列とする。このとき部分列をとれば、有限個の点 $x_1, \dots, x_l \in M$（重複を許す、$0 \le l \le k$）と、インスタントン数 $k - l$ のインスタントン $A_\infty$ が存在して、
@@ -1493,27 +2084,70 @@ $M$ をコンパクトな4次元Riemann多様体とし、$A_n$ をインスタ�
 の中にとると、これはコンパクトとなる（\textbf{Uhlenbeckコンパクト化}）。
 \end{mythm}
 
+定理の内容を言葉で言えば、「インスタントンの列は、いくつかの点で泡（小インスタントン）が潰れて消えることを除いて、必ず収束する」ということである。消えた泡の分だけインスタントン数が減り、その位置の情報が $\mathrm{Sym}^l(M)$（$l$ 個の点の、順番を区別しない組）として残る。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    % 左：上半空間モデル
+    \begin{scope}
+        \fill[blue!8] (-2.8,0) rectangle (2.8,3.2);
+        \draw[very thick, red!70!black] (-2.8,0) -- (2.8,0);
+        \node[red!70!black, below, font=\scriptsize] at (0,-0.05) {$\rho = 0$：時空の点 $X$（小インスタントン）};
+        \draw[->] (-2.8,0) -- (-2.8,3.4) node[above] {$\rho$};
+        \node[right] at (2.8,0.25) {$X \in \mathbb{R}^4$};
+        \foreach \y/\r in {2.4/0.42, 1.4/0.25, 0.7/0.13, 0.3/0.06} {
+            \shade[ball color=orange!70] (0.8,\y) circle (\r);
+        }
+        \draw[->, thick] (1.5,2.3) -- node[right, font=\scriptsize] {$\rho \to 0$} (1.5,0.3);
+        \node[font=\scriptsize] at (-1.4,2.6) {$H^5 = \{(X, \rho)\}$};
+    \end{scope}
+    % 右：閉じた球体
+    \begin{scope}[xshift=6.5cm, yshift=1.4cm]
+        \shade[ball color=blue!12] (0,0) circle (1.4);
+        \draw[very thick, red!70!black] (0,0) circle (1.4);
+        \node at (0,0) {$\mathcal{M}_1(S^4)$};
+        \node[red!70!black, font=\scriptsize] at (0,-1.75) {境界 $\partial\overline{B^5} = S^4$};
+    \end{scope}
+\end{tikzpicture}
+\caption{$S^4$ 上の $k = 1$ インスタントンのモジュライ空間。左：上半空間モデル。高さがサイズ $\rho$ を表し、$\rho \to 0$ でインスタントン（橙）は時空の1点に潰れる。右：Uhlenbeckコンパクト化。開いた5次元球体 $H^5$ に、境界として時空 $S^4$ そのものを付け加えると閉じた球体 $\overline{B^5}$ になる。}
+\label{fig:H5}
+\end{figure}
+
 \paragraph{例：$S^4$ 上の $k = 1$ インスタントン}
-$\mathcal{M}_1(S^4) \cong \mathbb{H}^5$（開いた5次元球体）であった。サイズ $\rho \to 0$ の極限では、インスタントンは位置 $X$ の1点に集中し、$A_\infty$ は自明な接続（$k = 0$）となる。$\mathcal{M}_0$ は1点なので、付け加えられる境界は $\mathcal{M}_0 \times \mathrm{Sym}^1(S^4) = S^4$ であり、
+$\mathcal{M}_1(S^4) \cong H^5$（開いた5次元球体）であった。サイズ $\rho \to 0$ の極限では、インスタントンは位置 $X$ の1点に集中し、$A_\infty$ は自明な接続（$k = 0$）となる。$\mathcal{M}_0$ は1点なので、付け加えられる境界は $\mathcal{M}_0 \times \mathrm{Sym}^1(S^4) = S^4$ であり、
 \begin{equation}
     \overline{\mathcal{M}}_1(S^4) \cong \overline{B^5}, \qquad \partial \overline{B^5} = S^4
 \end{equation}
-すなわち閉じた5次元球体となる。境界の各点は「どこに集中したか」を表す時空の点そのものであり、モジュライ空間の境界から時空 $M$ が再構成される。Donaldsonはこの事実を用いて、4次元多様体のトポロジーに関する深い定理を証明した。
+すなわち閉じた5次元球体となる（図\ref{fig:H5}）。境界の各点は「どこに集中したか」を表す時空の点そのものであり、モジュライ空間の境界から時空 $M$ が再構成される。Donaldsonはこの事実を用いて\cite{donaldsonkronheimer1990}、4次元多様体のトポロジーに関する深い定理を証明した。
 
 \begin{note}
-弦理論において、小インスタントン極限は極めて劇的な物理現象として現れる。Wittenは、$SO(32)$ ヘテロティック弦理論（およびそれと双対なタイプI弦理論）をK3曲面にコンパクト化した際、ゲージ群のインスタントンのサイズ $\rho$ がゼロになる極限で、新たな $Sp(1)$ ゲージ対称性と質量ゼロのハイパー多重項が出現することを示した（タイプI側では、小インスタントンはD5ブレーンとして記述される）。$E_8 \times E_8$ ヘテロティック弦理論の場合には、小インスタントンはM5ブレーンとして解釈され、新たなテンソル多重項が出現する（小インスタントン転移）。
+弦理論において、小インスタントン極限は極めて劇的な物理現象として現れる。Witten\cite{witten1996small}は、$SO(32)$ ヘテロティック弦理論（およびそれと双対なタイプI弦理論）をK3曲面にコンパクト化した際、ゲージ群のインスタントンのサイズ $\rho$ がゼロになる極限で、新たな $Sp(1)$ ゲージ対称性と質量ゼロのハイパー多重項が出現することを示した（タイプI側では、小インスタントンはD5ブレーンとして記述される）。$E_8 \times E_8$ ヘテロティック弦理論の場合には、小インスタントンはM5ブレーンとして解釈され、新たなテンソル多重項が出現する（小インスタントン転移）。
 
 D3/D$(-1)$ の描像では、$\rho \to 0$ はD$(-1)$ブレーンがD3ブレーンから離れてバルクへ逃げていくことができる点（ADHMデータで $I = J = 0$ となる点）に対応している。ADHM方程式の $\mu_{\mathbb{R}} = 0$ を $\mu_{\mathbb{R}} = \zeta \cdot 1$（$\zeta > 0$ はFIパラメータ、弦理論ではB場）に変形すると、この特異点は解消され、モジュライ空間は滑らかになる（非可換インスタントン）。モジュライ空間の特異点や境界は、弦理論においては「新しい軽い自由度」が出現する物理的ポイントに他ならない。
 \end{note}
 
-このインスタントンのモジュライ空間上の積分（Donaldson不変量など）は、物理的には位相的場の理論（Topological Field Theory, TFT）における経路積分の厳密な評価に対応する。Wittenは、$\mathcal{N}=2$ 超対称Yang--Mills理論を「トポロジカル・ツイスト」することで、Donaldson不変量が経路積分によって記述できることを示し、さらにSeiberg--Witten理論を用いてそれをより計算の容易な可換ゲージ理論のモジュライ（モノポール方程式の解空間）へと双対変換してみせた。
+このインスタントンのモジュライ空間上の積分（Donaldson不変量など）は、物理的には位相的場の理論（Topological Field Theory, TFT）における経路積分の厳密な評価に対応する。Wittenは、$\mathcal{N}=2$ 超対称Yang--Mills理論を「トポロジカル・ツイスト」することで、Donaldson不変量が経路積分によって記述できることを示し、さらにSeiberg--Witten理論\cite{seibergwitten1994}を用いてそれをより計算の容易な可換ゲージ理論のモジュライ（モノポール方程式の解空間）へと双対変換してみせた。
+
+\section{まとめ}
+
+本章で見たことを、モジュライ空間の言葉でまとめておく。
+\begin{itemize}
+    \item \textbf{何を分類するか}：インスタントン数 $k$ を固定した自己双対接続を、ゲージ変換で割ったもの。作用の最小値 $8\pi^2|k|/g^2$ を与える配位の全体である（Bogomol'nyi限界）。
+    \item \textbf{物理的意味}：巻き付き数の異なる古典的真空の間のトンネル効果。$\theta$ 真空、真空エネルギーの $\theta$ 依存性、$U(1)_A$ の破れを引き起こす。
+    \item \textbf{具体例}：$k = 1$ のBPST解。位置4・サイズ1・向き3の計8個のパラメータを持ち、$\widetilde{\mathcal{M}}_1 = \mathbb{R}^4 \times (\mathbb{R}^4\setminus\{0\})/\mathbb{Z}_2$。
+    \item \textbf{一般の構成}：ADHM構成により、有限次元の行列の超K\"ahler商として得られる。
+    \item \textbf{次元}：BPST・ADHM・指数定理の3つの方法がすべて $\dim \widetilde{\mathcal{M}}_{N,k} = 4Nk$ を与える。
+    \item \textbf{境界}：サイズ $\rho \to 0$ の小インスタントン極限。Uhlenbeckコンパクト化で時空の点として付け加えられ、弦理論では新しい軽い自由度の出現と結びつく。
+\end{itemize}
 
 次章では、動的なゲージ場ではなく、スカラー場のポテンシャルの平坦な方向によって生じる「真空のモジュライ」と自発的対称性の破れについて、超対称性ゲージ理論を題材に詳述していく。
 \chapter{真空のモジュライ：自発的対称性の破れ}
+\label{ch:vacuum}
 
 場の量子論において、系の状態を決定する最も基本的な対象は「真空（Vacuum）」である。通常、ポテンシャルの最小値（真空）は孤立した一点として存在するが、理論に連続的な対称性がある場合、あるいは超対称性のような特殊な構造が存在する場合、同じエネルギーを持つ真空が連続的に縮退することがある。この「真空の連続的な縮退の空間」こそが、物理学に現れる最も直接的なモジュライ空間の例である。
 
-本章では、スカラー場の真空期待値によって張られる「真空のモジュライ空間」の幾何学が、低エネルギー有効理論における南部・ゴールドストーン（Nambu--Goldstone, NG）ボソンのダイナミクスをどのように決定づけるのかを、非線形シグマ模型と超対称性の枠組みから見ていく。第2章の群作用と商空間の理論が、ここでは「対称性の破れ」と「ゲージ対称性による商」という2つの形で現れる。
+本章では、スカラー場の真空期待値によって張られる「真空のモジュライ空間」の幾何学が、低エネルギー有効理論における南部・ゴールドストーン（Nambu--Goldstone, NG）ボソンのダイナミクスをどのように決定づけるのかを、非線形シグマ模型と超対称性の枠組みから見ていく。第\ref{ch:group-action}章の群作用と商空間の理論が、ここでは「対称性の破れ」と「ゲージ対称性による商」という2つの形で現れる。
 
 \section{スカラー場のポテンシャルと平坦な方向}
 
@@ -1531,7 +2165,7 @@ $D$ 次元ミンコフスキー時空における $N$ 個の実スカラー場 $
 を（古典的な）\textbf{真空のモジュライ空間}と呼ぶ。$\mathcal{M}_{\text{vac}}$ が正の次元を持つとき、その接方向を\textbf{平坦な方向（flat direction）}という。理論にゲージ対称性がある場合には、さらにゲージ変換で移り合う真空を同一視する（\ref{sec:susy-vacua}節）。
 \end{mydef}
 
-平坦な方向に沿って場を動かしてもエネルギーは変わらないので、その方向の揺らぎは質量を持たない。実際、真空 $v$ のまわりで $\phi = v + \delta\phi$ と展開すると、質量行列は $M^2_{ij} = \partial_i\partial_j V(v)$ であり、$\mathcal{M}_{\text{vac}}$ に沿った曲線 $v(t)$ を $V(v(t)) = 0$ について2回微分すれば $M^2_{ij}\dot v^i \dot v^j = 0$ を得る。すなわち、\textbf{真空のモジュライ空間の接方向は質量ゼロのスカラー場を与える}。これは第3章で見た「モジュライの接空間 $=$ 零モード」の、最も簡単な実現である。
+平坦な方向に沿って場を動かしてもエネルギーは変わらないので、その方向の揺らぎは質量を持たない。実際、真空 $v$ のまわりで $\phi = v + \delta\phi$ と展開すると、質量行列は $M^2_{ij} = \partial_i\partial_j V(v)$ であり、$\mathcal{M}_{\text{vac}}$ に沿った曲線 $v(t)$ を $V(v(t)) = 0$ について2回微分すれば $M^2_{ij}\dot v^i \dot v^j = 0$ を得る。すなわち、\textbf{真空のモジュライ空間の接方向は質量ゼロのスカラー場を与える}。これは第\ref{ch:deformation}章で見た「モジュライの接空間 $=$ 零モード」の、最も簡単な実現である。
 
 \section{自発的対称性の破れとコセット空間 $G/H$}
 
@@ -1549,22 +2183,23 @@ $D$ 次元ミンコフスキー時空における $N$ 個の実スカラー場 $
 特に、$G$ が真空の集合に推移的に作用する（すべての真空が対称性で移り合う）ならば $\mathcal{M}_{\text{vac}} \cong G/H$ である。
 \end{myprop}
 
-これは第2章の軌道・固定部分群定理そのものである。（$H$ は閉部分群なので、$H$ の $G$ への右からの作用は自由かつ固有であり、商多様体定理により $G/H$ は滑らかな多様体となる。）一般には、$\mathcal{M}_{\text{vac}}$ は対称性で移り合わない複数の軌道の和となりうる。対称性で説明されない平坦な方向は\textbf{偶発的（accidental）}な平坦方向と呼ばれ、後述するように量子補正によって持ち上がることが多い。
+これは第\ref{ch:group-action}章の軌道・固定部分群定理そのものである。（$H$ は閉部分群なので、$H$ の $G$ への右からの作用は自由かつ固有であり、商多様体定理により $G/H$ は滑らかな多様体となる。）一般には、$\mathcal{M}_{\text{vac}}$ は対称性で移り合わない複数の軌道の和となりうる。対称性で説明されない平坦な方向は\textbf{偶発的（accidental）}な平坦方向と呼ばれ、後述するように量子補正によって持ち上がることが多い。
 
 \begin{mythm}{Goldstoneの定理}{goldstone}
 Lorentz不変な理論において、連続的な大域的対称性 $G$ が $H$ に自発的に破れているとき、$\dim G - \dim H$ 個の質量ゼロのスカラー粒子（\textbf{NGボソン}）が存在する。
 \end{mythm}
 
-古典論の範囲では、これは前節の議論と命題の組み合わせから直ちに従う：軌道 $G \cdot v$ は平坦な方向であり、その次元は $\dim G - \dim H$ である。すなわち幾何学的には、\textbf{NGボソンは真空のモジュライ空間 $G/H$ の局所座標}に他ならない。
+古典論の範囲では（量子論での証明は\cite{peskinintroductionquantumfield2019}を参照）、これは前節の議論と命題の組み合わせから直ちに従う：軌道 $G \cdot v$ は平坦な方向であり、その次元は $\dim G - \dim H$ である。すなわち幾何学的には、\textbf{NGボソンは真空のモジュライ空間 $G/H$ の局所座標}に他ならない。
 
 \paragraph{例：$U(1)$ とメキシカンハット}
-複素スカラー場 $\phi$ とポテンシャル $V = \lambda(|\phi|^2 - v^2)^2$ を考える。$G = U(1)$ は位相回転 $\phi \to e^{i\alpha}\phi$ で作用する。真空は $|\phi| = v$ の円周であり、$H = \{1\}$、$\mathcal{M}_{\text{vac}} \cong U(1)/\{1\} \cong S^1$ となって、NGボソンは1個（位相の揺らぎ）である。一方、原点 $\phi = 0$ は固定部分群 $U(1)$ を持つ点であり（第2章の $U(1) \curvearrowright \mathbb{C}$ の例）、ここでは $V > 0$ なので真空ではない。
+複素スカラー場 $\phi$ とポテンシャル $V = \lambda(|\phi|^2 - v^2)^2$ を考える。$G = U(1)$ は位相回転 $\phi \to e^{i\alpha}\phi$ で作用する。真空は $|\phi| = v$ の円周であり、$H = \{1\}$、$\mathcal{M}_{\text{vac}} \cong U(1)/\{1\} \cong S^1$ となって、NGボソンは1個（位相の揺らぎ）である。一方、原点 $\phi = 0$ は固定部分群 $U(1)$ を持つ点であり（第\ref{ch:group-action}章の $U(1) \curvearrowright \mathbb{C}$ の例）、ここでは $V > 0$ なので真空ではない。
 
 \paragraph{例：$O(N)$ 模型}
 $N$ 成分の実スカラー場とポテンシャル $V = \lambda(\phi^T\phi - v^2)^2$ を考える。$G = O(N)$ であり、真空は半径 $v$ の球面 $S^{N-1}$、真空 $v = (0, \dots, 0, v)$ の固定部分群は $H = O(N-1)$ である。
-\begin{equation}
-    \mathcal{M}_{\text{vac}} \cong O(N)/O(N-1) \cong S^{N-1}, \qquad \dim G - \dim H = \frac{N(N-1)}{2} - \frac{(N-1)(N-2)}{2} = N - 1
-\end{equation}
+\begin{align}
+    \mathcal{M}_{\text{vac}} &\cong O(N)/O(N-1) \cong S^{N-1}, \\
+    \dim G - \dim H &= \frac{N(N-1)}{2} - \frac{(N-1)(N-2)}{2} = N - 1
+\end{align}
 であり、NGボソンは $N - 1$ 個である。
 
 \paragraph{例：QCDのパイオン}
@@ -1640,7 +2275,7 @@ NLSMの相互作用は、すべて標的空間の幾何学から決まる。真�
 
 対称性がゲージ化されている場合、モジュライ空間の構造ははるかに豊かになる。特に超弦理論の現象論的側面に直結する「超対称性（SUSY）ゲージ理論」における真空のモジュライ空間は、シンプレクティック商・幾何学的不変式論（GIT）商という、極めて美しい幾何学的構造を持つ。
 
-$\mathcal{N}=1$ 超対称性を持つ4次元のゲージ理論において、複素スカラー場 $\phi_i$（カイラル超場のスカラー成分）のポテンシャルはF項とD項の和として与えられる。
+$\mathcal{N}=1$ 超対称性を持つ4次元のゲージ理論において、複素スカラー場 $\phi_i$（カイラル超場のスカラー成分）のポテンシャルはF項とD項の和として与えられる（導出は付録\ref{app:susy}）。
 \begin{equation}
     V(\phi, \phi^\dagger) = \sum_i \left| \frac{\partial W}{\partial \phi_i} \right|^2 + \frac{1}{2} \sum_a g_a^2 (D^a)^2, \qquad D^a = \phi^\dagger T^a \phi - \xi^a
 \end{equation}
@@ -1700,7 +2335,7 @@ $\mathbb{C}^N$ のシンプレクティック形式を $\omega = \frac{i}{2} \su
 
 驚くべきことに、このシンプレクティック商は、実数の制約 $D^a = 0$ を解かずに、元の空間を\textbf{複素化されたゲージ群 $G^\mathbb{C}$} で直接割ることでも得られる。ここで $G^\mathbb{C}$ とは、例えば $G = U(1)$ なら $\mathbb{C}^\times$、$G = SU(N)$ なら $SL(N, \mathbb{C})$ のことである。超ポテンシャル $W$ は正則でゲージ不変なので、自動的に $G^\mathbb{C}$ 不変であり、F平坦条件は $G^\mathbb{C}$ の作用で保たれる。
 
-$G^\mathbb{C}$ の軌道は一般に閉じていない（第2章の双曲的スケーリングの例を思い出そう：$\mathbb{C}^\times$ の作用 $t\cdot(x, y) = (tx, t^{-1}y)$ はまさに $U(1)$ の複素化である）ので、単純に $G^\mathbb{C}$ で割るとハウスドルフでない空間ができてしまう。これを解消するのが「安定性」の概念である。$G^\mathbb{C}$ の軌道が閉じている点を\textbf{多重安定（polystable）}、軌道の閉包が原点を含まない点を\textbf{半安定（semistable）}と呼び（FIパラメータがある場合は、それに応じて安定性の条件を修正する）、半安定な点の軌道を「閉包が交わるならば同一視する」ことで得られる商をGIT商 $X /\!/ G^\mathbb{C}$ と書く。
+$G^\mathbb{C}$ の軌道は一般に閉じていない（第\ref{ch:group-action}章の双曲的スケーリングの例を思い出そう：$\mathbb{C}^\times$ の作用 $t\cdot(x, y) = (tx, t^{-1}y)$ はまさに $U(1)$ の複素化である）ので、単純に $G^\mathbb{C}$ で割るとハウスドルフでない空間ができてしまう。これを解消するのが「安定性」の概念である。$G^\mathbb{C}$ の軌道が閉じている点を\textbf{多重安定（polystable）}、軌道の閉包が原点を含まない点を\textbf{半安定（semistable）}と呼び（FIパラメータがある場合は、それに応じて安定性の条件を修正する）、半安定な点の軌道を「閉包が交わるならば同一視する」ことで得られる商をGIT商 $X /\!/ G^\mathbb{C}$ と書く。
 
 \begin{mythm}{Kempf--Ness}{kempf-ness}
 $X \subset \mathbb{C}^N$ を $G^\mathbb{C}$-不変な（F平坦条件で定まる）アフィン代数多様体とする。このとき
@@ -1715,31 +2350,31 @@ $X \subset \mathbb{C}^N$ を $G^\mathbb{C}$-不変な（F平坦条件で定ま�
 \end{enumerate}
 \end{mythm}
 
-この定理の物理的な意味は極めて大きい。我々は通常、実数の制約方程式 $D^a=0$ を解いてから実ゲージ群 $G$ で割るという面倒な手続きを強いられる。しかしこの定理によれば、「D項条件の代わりに、より大きな複素化されたゲージ対称性 $G^\mathbb{C}$ で分類してよい」のである。これにより、超対称ゲージ理論の真空のモジュライは、\textbf{ゲージ不変な正則演算子（メソンやバリオン）の真空期待値を座標とし、それらの間の代数的関係式（および F 項条件）で定義される代数多様体}として決定される。
+この定理\cite{kempfness1979}の物理的な意味は極めて大きい。我々は通常、実数の制約方程式 $D^a=0$ を解いてから実ゲージ群 $G$ で割るという面倒な手続きを強いられる。しかしこの定理によれば、「D項条件の代わりに、より大きな複素化されたゲージ対称性 $G^\mathbb{C}$ で分類してよい」のである。これにより、超対称ゲージ理論の真空のモジュライは、\textbf{ゲージ不変な正則演算子（メソンやバリオン）の真空期待値を座標とし、それらの間の代数的関係式（および F 項条件）で定義される代数多様体}として決定される。
 
 \paragraph{例：$U(1)$ と電荷 $\pm 1$ の2つの場}
 $G = U(1)$、電荷 $+1$ と $-1$ の場 $\phi_+, \phi_-$、$W = 0$、$\xi = 0$ とする。D平坦条件は $|\phi_+|^2 = |\phi_-|^2$ である。ゲージ不変な正則多項式は $M = \phi_+\phi_-$ で生成され、関係式はないので、
 \begin{equation}
     \mathcal{M}_{\text{vac}} \cong \mathbb{C} \quad (\text{座標 } M = \phi_+\phi_-)
 \end{equation}
-となる。原点 $M = 0$ では $U(1)$ が破れずに残り、そこでは質量ゼロのゲージ場という新たな自由度が現れる（第3章で述べた「特異点に新たな軽い自由度が現れる」ことの例）。
+となる。原点 $M = 0$ では $U(1)$ が破れずに残り、そこでは質量ゼロのゲージ場という新たな自由度が現れる（第\ref{ch:deformation}章で述べた「特異点に新たな軽い自由度が現れる」ことの例）。
 
 \begin{note}
-シンプレクティック商の側から次元を確認しよう。$\mathbb{C}^2$ は実4次元、D平坦条件 $|\phi_+|^2 - |\phi_-|^2 = 0$ が実1本、$U(1)$ による商が実1次元を減らすので、$4 - 1 - 1 = 2$（複素1次元）となり、$M \in \mathbb{C}$ と一致する。実際、$|\phi_+| = |\phi_-| = r$ とし、ゲージ変換 $(\phi_+, \phi_-) \to (e^{i\alpha}\phi_+, e^{-i\alpha}\phi_-)$ で $\phi_+$ を実正にとれば、残る自由度は $r$ と $\phi_-$ の位相であり、これはちょうど $M = r^2 e^{i\arg\phi_-}$ を与える。GIT商の側では、$\mathbb{C}^\times$ の作用 $(\phi_+, \phi_-) \to (t\phi_+, t^{-1}\phi_-)$ は第2章の双曲的スケーリングそのものであり、閉じた軌道は双曲線 $\phi_+\phi_- = M \neq 0$ と原点のみである。開半軸（$\phi_+ = 0$ または $\phi_- = 0$ で原点以外）は閉包が原点を含み、原点と同一視される。
+シンプレクティック商の側から次元を確認しよう。$\mathbb{C}^2$ は実4次元、D平坦条件 $|\phi_+|^2 - |\phi_-|^2 = 0$ が実1本、$U(1)$ による商が実1次元を減らすので、$4 - 1 - 1 = 2$（複素1次元）となり、$M \in \mathbb{C}$ と一致する。実際、$|\phi_+| = |\phi_-| = r$ とし、ゲージ変換 $(\phi_+, \phi_-) \to (e^{i\alpha}\phi_+, e^{-i\alpha}\phi_-)$ で $\phi_+$ を実正にとれば、残る自由度は $r$ と $\phi_-$ の位相であり、これはちょうど $M = r^2 e^{i\arg\phi_-}$ を与える。GIT商の側では、$\mathbb{C}^\times$ の作用 $(\phi_+, \phi_-) \to (t\phi_+, t^{-1}\phi_-)$ は第\ref{ch:group-action}章の双曲的スケーリングそのものであり、閉じた軌道は双曲線 $\phi_+\phi_- = M \neq 0$ と原点のみである。開半軸（$\phi_+ = 0$ または $\phi_- = 0$ で原点以外）は閉包が原点を含み、原点と同一視される。
 \end{note}
 
 \paragraph{例：$\mathbb{CP}^{N-1}$ とFIパラメータ}
-$G = U(1)$、電荷 $+1$ の $N$ 個の場 $\phi_1, \dots, \phi_N$、$W = 0$ とし、FIパラメータ $\xi$ を入れる（4次元ではゲージ・アノマリーのため不整合であるが、2次元の $\mathcal{N} = (2,2)$ 理論、すなわちWittenの\textbf{ゲージ化線形シグマ模型}として意味を持つ）。D平坦条件は
+$G = U(1)$、電荷 $+1$ の $N$ 個の場 $\phi_1, \dots, \phi_N$、$W = 0$ とし、FIパラメータ $\xi$ を入れる（4次元ではゲージ・アノマリーのため不整合であるが、2次元の $\mathcal{N} = (2,2)$ 理論、すなわちWittenの\textbf{ゲージ化線形シグマ模型}\cite{witten1993phases}として意味を持つ）。D平坦条件は
 \begin{equation}
     \sum_{i=1}^{N} |\phi_i|^2 = \xi
 \end{equation}
 である。
 \begin{itemize}
-    \item $\xi > 0$：解は半径 $\sqrt{\xi}$ の球面 $S^{2N-1}$ であり、$U(1)$ で割って $\mathcal{M}_{\text{vac}} = S^{2N-1}/U(1) \cong \mathbb{CP}^{N-1}$（第2章のHopf束の例）。GIT商の側では、$\xi > 0$ の安定性条件は「$\phi \neq 0$」であり、$(\mathbb{C}^N \setminus \{0\})/\mathbb{C}^\times = \mathbb{CP}^{N-1}$ を与える。$\xi$ は $\mathbb{CP}^{N-1}$ の大きさ（K\"ahler類）を決める。
+    \item $\xi > 0$：解は半径 $\sqrt{\xi}$ の球面 $S^{2N-1}$ であり、$U(1)$ で割って $\mathcal{M}_{\text{vac}} = S^{2N-1}/U(1) \cong \mathbb{CP}^{N-1}$（第\ref{ch:group-action}章のHopf束の例）。GIT商の側では、$\xi > 0$ の安定性条件は「$\phi \neq 0$」であり、$(\mathbb{C}^N \setminus \{0\})/\mathbb{C}^\times = \mathbb{CP}^{N-1}$ を与える。$\xi$ は $\mathbb{CP}^{N-1}$ の大きさ（K\"ahler類）を決める。
     \item $\xi = 0$：解は原点のみで、$\mathcal{M}_{\text{vac}}$ は1点。
     \item $\xi < 0$：解が存在せず、超対称性が自発的に破れる。
 \end{itemize}
-このように、FIパラメータは真空のモジュライ空間の形そのものを変える。低エネルギーでは、この理論は標的空間 $\mathbb{CP}^{N-1}$ のNLSMとなる。電荷を適切に選べば、同じ構成でCalabi--Yau多様体を標的空間とするNLSMが得られ（第7章）、$\xi$ はCalabi--Yau多様体のK\"ahlerモジュライとなる。
+このように、FIパラメータは真空のモジュライ空間の形そのものを変える。低エネルギーでは、この理論は標的空間 $\mathbb{CP}^{N-1}$ のNLSMとなる。電荷を適切に選べば、同じ構成でCalabi--Yau多様体を標的空間とするNLSMが得られ（第\ref{ch:calabi-yau}章）、$\xi$ はCalabi--Yau多様体のK\"ahlerモジュライとなる。
 
 \paragraph{例：超対称QCDのメソン}
 $G = SU(N_c)$ で、基本表現の $Q^i$ と反基本表現の $\tilde{Q}_{\tilde{\imath}}$ をそれぞれ $N_f$ 個持ち、$W = 0$ とする（\textbf{超対称QCD}）。$N_f < N_c$ の場合、ゲージ不変な正則多項式は\textbf{メソン}
@@ -1765,24 +2400,55 @@ $G = SU(N_c)$ で、基本表現の $Q^i$ と反基本表現の $\tilde{Q}_{\til
 ここまでの議論は古典的なものであった。量子効果を取り入れると、真空のモジュライ空間は次のような運命をたどる。
 
 \begin{itemize}
-    \item \textbf{対称性で保護された平坦方向}：$G/H$ の方向は量子効果でも持ち上がらない（対称性によって、すべての点のエネルギーが等しいことが保証される）。ただし時空次元 $D = 2$ では、Coleman--Mermin--Wagnerの定理により連続対称性の自発的破れは起こらない。NGボソンの揺らぎが赤外で発散し、真空は $G/H$ 上の一点に留まれず、量子論的にはモジュライ空間全体にわたって「平均化」される。
+    \item \textbf{対称性で保護された平坦方向}：$G/H$ の方向は量子効果でも持ち上がらない（対称性によって、すべての点のエネルギーが等しいことが保証される）。ただし時空次元 $D = 2$ では、Coleman--Mermin--Wagnerの定理\cite{coleman1973}により連続対称性の自発的破れは起こらない。NGボソンの揺らぎが赤外で発散し、真空は $G/H$ 上の一点に留まれず、量子論的にはモジュライ空間全体にわたって「平均化」される。
     \item \textbf{偶発的な平坦方向（超対称でない理論）}：対称性で保護されていない平坦方向は、一般にループ補正（Coleman--Weinbergポテンシャル）によって持ち上がる。
-    \item \textbf{超対称理論の平坦方向}：超ポテンシャルは摂動論では補正を受けない（\textbf{非繰り込み定理}）ため、平坦方向は摂動論の全次数で保たれる。しかし非摂動効果によって変化しうる。例えば $N_f < N_c$ の超対称QCDでは、インスタントン（第5章）などの効果によりAffleck--Dine--Seiberg超ポテンシャル
+    \item \textbf{超対称理論の平坦方向}：超ポテンシャルは摂動論では補正を受けない（\textbf{非繰り込み定理}）ため、平坦方向は摂動論の全次数で保たれる。しかし非摂動効果によって変化しうる。例えば $N_f < N_c$ の超対称QCDでは、インスタントン（第\ref{ch:instanton}章）などの効果によりAffleck--Dine--Seiberg超ポテンシャル\cite{ads1984}
     \begin{equation}
         W_{\text{ADS}} = (N_c - N_f)\left( \frac{\Lambda^{3N_c - N_f}}{\det M} \right)^{1/(N_c - N_f)}
     \end{equation}
-    が生成され、古典的なモジュライ空間は完全に持ち上がる（ポテンシャルが $\det M \to \infty$ に向かって転がり落ち、安定な真空が存在しない）。$N_f = N_c$ では、古典的な関係式 $\det M - B\tilde{B} = 0$ が量子的に $\det M - B\tilde{B} = \Lambda^{2N_c}$ と\textbf{変形}され、原点の特異点が解消される（Seiberg）。
-    \item \textbf{$\mathcal{N} = 2$ 超対称性}：さらに強い超対称性があると、モジュライ空間は持ち上がらず、その上の計量（有効結合定数）が厳密に決定できる。第1章で触れたSeiberg--Witten理論では、$SU(2)$ 理論のクーロン枝 $u = \langle\mathrm{Tr}\Phi^2\rangle \in \mathbb{C}$ の上で、古典的な特異点 $u = 0$ が量子的には2つの特異点 $u = \pm\Lambda^2$ に分裂し、そこでモノポールやダイオンが質量ゼロになる。
+    が生成され、古典的なモジュライ空間は完全に持ち上がる（ポテンシャルが $\det M \to \infty$ に向かって転がり落ち、安定な真空が存在しない）。$N_f = N_c$ では、古典的な関係式 $\det M - B\tilde{B} = 0$ が量子的に $\det M - B\tilde{B} = \Lambda^{2N_c}$ と\textbf{変形}され、原点の特異点が解消される（Seiberg\cite{seiberg1994}）。
+    \item \textbf{$\mathcal{N} = 2$ 超対称性}：さらに強い超対称性があると、モジュライ空間は持ち上がらず、その上の計量（有効結合定数）が厳密に決定できる。第\ref{ch:intro}章で触れたSeiberg--Witten理論では、$SU(2)$ 理論のクーロン枝 $u = \langle\mathrm{Tr}\Phi^2\rangle \in \mathbb{C}$ の上で、古典的な特異点 $u = 0$ が量子的には2つの特異点 $u = \pm\Lambda^2$ に分裂し、そこでモノポールやダイオンが質量ゼロになる。
 \end{itemize}
 
-いずれの場合も、モジュライ空間の特異点や変形は、「新しい軽い自由度」の出現や「強結合のダイナミクス」と直結している。これは第5章のインスタントンのモジュライ空間で見た状況と全く同じ構造であり、モジュライ空間の幾何学が物理を支配するという本講義の主題を、もう一つの角度から示している。
+いずれの場合も、モジュライ空間の特異点や変形は、「新しい軽い自由度」の出現や「強結合のダイナミクス」と直結している。これは第\ref{ch:instanton}章のインスタントンのモジュライ空間で見た状況と全く同じ構造であり、モジュライ空間の幾何学が物理を支配するという本講義の主題を、もう一つの角度から示している。
 
 次章では、超弦理論のコンパクト化において余剰次元の形そのものが真空のモジュライとなる状況、すなわちCalabi--Yau多様体の複素構造とK\"ahler構造のモジュライを扱う。
 \chapter{弦理論・Calabi--Yau多様体：複素構造・K\"ahler構造}
+\label{ch:calabi-yau}
 
-超弦理論は10次元時空においてのみ無矛盾に定式化される。我々が住む4次元時空を導出するためには、余分な6次元の空間を微小なコンパクト空間 $X$ に丸め込む「コンパクト化（Compactification）」を行う必要がある。このとき、余剰次元空間 $X$ の幾何学的形状が、4次元有効理論の物理（ゲージ群、物質場の世代数、結合定数）を決定づける。
+超弦理論は10次元時空においてのみ無矛盾に定式化される。我々が住む4次元時空を導出するためには、余分な6次元の空間を微小なコンパクト空間 $X$ に丸め込む「コンパクト化（Compactification）」を行う必要がある（図\ref{fig:compactification}）。このとき、余剰次元空間 $X$ の幾何学的形状が、4次元有効理論の物理（ゲージ群、物質場の世代数、結合定数）を決定づける。
 
-本章では、4次元に超対称性を残すコンパクト化の条件として現れる\textbf{Calabi--Yau（カラビ・ヤウ）多様体}を導入し、その幾何学的な変形（モジュライ）が低エネルギーにおいてどのように質量ゼロのスカラー場として振る舞うのかを解説する。第3章の変形理論（小平・スペンサー理論、Bogomolov--Tian--Todorovの定理）と第6章の真空のモジュライ・非線形シグマ模型が、ここで一つに合流する。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    \fill[blue!6] (0,0) -- (6,0) -- (7.6,2.2) -- (1.6,2.2) -- cycle;
+    \draw[thick, blue!60!black] (0,0) -- (6,0) -- (7.6,2.2) -- (1.6,2.2) -- cycle;
+    \node[blue!60!black] at (6.9,0.3) {$M^{1,3}$};
+    \foreach \j in {0,1,2} {
+        \foreach \i in {0,1,2,3,4} {
+            \pgfmathsetmacro{\px}{0.8 + 1.15*\i + 0.55*\j}
+            \pgfmathsetmacro{\py}{0.35 + 0.7*\j}
+            \fill (\px,\py) circle (0.025);
+            \shade[ball color=orange!60] (\px,\py+0.17) circle (0.13);
+        }
+    }
+    % 拡大図
+    \draw[gray, dashed] (5.25,1.92) -- (8.6,3.0);
+    \draw[gray, dashed] (5.25,1.92) -- (8.6,0.8);
+    \begin{scope}[xshift=9.6cm, yshift=1.9cm]
+        \shade[ball color=orange!25] plot[smooth cycle] coordinates {(-1,0) (-0.6,0.8) (0.2,1.0) (0.9,0.6) (1.1,-0.2) (0.5,-0.9) (-0.4,-0.8)};
+        \draw[thick, orange!70!black] plot[smooth cycle] coordinates {(-1,0) (-0.6,0.8) (0.2,1.0) (0.9,0.6) (1.1,-0.2) (0.5,-0.9) (-0.4,-0.8)};
+        \draw[orange!70!black] (-0.45,0.05) to[bend left=40] (0.45,0.05);
+        \draw[orange!70!black] (-0.35,0.15) to[bend right=40] (0.35,0.15);
+        \node[font=\small] at (0,-1.3) {6次元のCY多様体 $X$};
+        \node[font=\scriptsize] at (0,-1.7) {（大きさ $\sim$ 弦の長さ程度）};
+    \end{scope}
+\end{tikzpicture}
+\caption{コンパクト化 $M^{10} = M^{1,3} \times X$ の描像。4次元時空 $M^{1,3}$（青）の各点に、小さな6次元空間 $X$（橙）が付随している。$X$ の大きさや形（モジュライ）が時空の点ごとに変化すると、それは4次元の質量ゼロのスカラー場（モジュライ場）として観測される。}
+\label{fig:compactification}
+\end{figure}
+
+本章では、4次元に超対称性を残すコンパクト化の条件として現れる\textbf{Calabi--Yau（カラビ・ヤウ）多様体}を導入し、その幾何学的な変形（モジュライ）が低エネルギーにおいてどのように質量ゼロのスカラー場として振る舞うのかを解説する（全般的な文献として\cite{greenestringtheorycalabiyau1997}を挙げておく。弦理論と超対称性の基礎事項は付録\ref{app:string}・付録\ref{app:susy}にまとめた）。第\ref{ch:deformation}章の変形理論（小平・スペンサー理論、Bogomolov--Tian--Todorovの定理）と第\ref{ch:vacuum}章の真空のモジュライ・非線形シグマ模型が、ここで一つに合流する。
 
 \section{超対称性の保存とCalabi--Yau多様体}
 
@@ -1815,7 +2481,7 @@ $G = SU(N_c)$ で、基本表現の $Q^i$ と反基本表現の $\tilde{Q}_{\til
 (2) 並行移動で不変なスピノルが存在することは、ホロノミー群がそのスピノルを固定する部分群に含まれることを意味する。$SO(6) \cong SU(4)/\mathbb{Z}_2$ のスピノル表現はカイラルな $\mathbf{4}$ であり、$\mathbf{4}$ の1つのベクトルを固定する $SU(4)$ の部分群は $SU(3)$ である。
 \end{note}
 
-ホロノミー群がちょうど $SU(3)$ となるコンパクトなK\"ahler多様体を\textbf{Calabi--Yau 3-fold（CY3）}と呼ぶ。（ホロノミーがより小さい $T^6$ や $K3 \times T^2$ は、より多くの共変定数スピノルを持ち、より多くの超対称性を残す。）CY3の存在を保証し、その計量を制御するのが次の定理である。
+ホロノミー群がちょうど $SU(3)$ となるコンパクトなK\"ahler多様体を\textbf{Calabi--Yau 3-fold（CY3）}と呼ぶ。（ホロノミーがより小さい $T^6$ や $K3 \times T^2$ は、より多くの共変定数スピノルを持ち、より多くの超対称性を残す。）CY3の存在を保証し、その計量を制御するのが次の定理である\cite{yau1978}。
 
 \begin{mythm}{Calabi予想（Yauの定理）}{yau}
 $X$ をコンパクトなK\"ahler多様体で、第一Chern類が $c_1(X) = 0$（実係数で）であるものとする。このとき、$X$ の各K\"ahler類 $[J] \in H^{1,1}(X)$ の中に、Ricci平坦なK\"ahler計量がただ一つ存在する。
@@ -1853,7 +2519,7 @@ $h^{2,1} = 101$ を、多項式の係数を数えることで確かめよう。5
 \begin{equation*}
     \binom{5 + 5 - 1}{5} = \binom{9}{5} = 126
 \end{equation*}
-である。一方、座標の線形変換 $GL(5, \mathbb{C})$（$25$ 次元）で移り合う多項式は同じ多様体を定める（全体のスカラー倍も含めてちょうど $GL(5)$ で割ればよい）。よって複素構造の変形の数は $126 - 25 = 101$ であり、小平・スペンサー理論で計算される $\dim H^1(X, T_X) = h^{2,1}$ に一致する。第2章の言葉で言えば、複素構造のモジュライ空間は「多項式の空間を $GL(5, \mathbb{C})$ で割った商」として実現されている。
+である。一方、座標の線形変換 $GL(5, \mathbb{C})$（$25$ 次元）で移り合う多項式は同じ多様体を定める（全体のスカラー倍も含めてちょうど $GL(5)$ で割ればよい）。よって複素構造の変形の数は $126 - 25 = 101$ であり、小平・スペンサー理論で計算される $\dim H^1(X, T_X) = h^{2,1}$ に一致する。第\ref{ch:group-action}章の言葉で言えば、複素構造のモジュライ空間は「多項式の空間を $GL(5, \mathbb{C})$ で割った商」として実現されている。
 \end{note}
 
 \section{計量の変形とモジュライの分解}
@@ -1864,63 +2530,143 @@ $h^{2,1} = 101$ を、多項式の係数を数えることで確かめよう。5
 \begin{equation}
     \Delta_L\, \delta g_{mn} \equiv -\nabla^p\nabla_p\, \delta g_{mn} - 2R_{mpnq}\,\delta g^{pq} = 0
 \end{equation}
-となる。これは第3章の「線形化方程式 $+$ ゲージ固定 $=$ 楕円型方程式」という構造の、重力版である。複素多様体であるCY3上では、変形テンソル $\delta g$ はその添字の型によって、混合成分 $\delta g_{i\bar{j}}$ と純粋成分 $\delta g_{ij}, \delta g_{\bar{i}\bar{j}}$ に分類され、Lichnerowicz作用素はこの分解を保つ。
+となる。これは第\ref{ch:deformation}章の「線形化方程式 $+$ ゲージ固定 $=$ 楕円型方程式」という構造の、重力版である。複素多様体であるCY3上では、変形テンソル $\delta g$ はその添字の型によって、混合成分 $\delta g_{i\bar{j}}$ と純粋成分 $\delta g_{ij}, \delta g_{\bar{i}\bar{j}}$ に分類され、Lichnerowicz作用素はこの分解を保つ。
 
 \begin{mythm}{CY3の計量のモジュライ}{cy-moduli}
 CY3 $X$ 上のRicci平坦計量の（微分同相を除いた）無限小変形の空間は
 \begin{equation*}
     H^{1,1}(X, \mathbb{R}) \;\oplus\; H^{2,1}(X)
 \end{equation*}
-と同型である。第1項（実次元 $h^{1,1}$）はK\"ahler類の変形、第2項（複素次元 $h^{2,1}$）は複素構造の変形に対応する。さらにBogomolov--Tian--Todorovの定理（第3章）により複素構造の変形には障害がなく、K\"ahler類はK\"ahler錐の中で自由に動かせるので、モジュライ空間は局所的に滑らかで、その次元はこれらに等しい。
+と同型である。第1項（実次元 $h^{1,1}$）はK\"ahler類の変形、第2項（複素次元 $h^{2,1}$）は複素構造の変形に対応する。さらにBogomolov--Tian--Todorovの定理（第\ref{ch:deformation}章）により複素構造の変形には障害がなく、K\"ahler類はK\"ahler錐の中で自由に動かせるので、モジュライ空間は局所的に滑らかで、その次元はこれらに等しい。
 \end{mythm}
 
 \subsection{K\"ahler構造の変形（$\delta g_{i\bar{j}}$）}
 
 混合成分の変形 $\delta g_{i\bar{j}}$ は、K\"ahler形式 $J = i g_{i\bar{j}}\, dz^i \wedge d\bar{z}^{\bar{j}}$ の変形 $\delta J = i\,\delta g_{i\bar j}\, dz^i \wedge d\bar z^{\bar j}$ に対応する。Lichnerowicz方程式は、$\delta J$ が調和 $(1,1)$ 形式であることと同値になり、Hodge理論により調和 $(1,1)$ 形式の空間は $H^{1,1}(X)$ と同型である。したがって、この変形の自由度はHodge数 $h^{1,1}$ によって数え上げられる。
 
-物理的には、これは「Calabi--Yau多様体の2次元サイクル $C$ や4次元サイクルの体積（サイズ）を変える変形」である。実際、2サイクル $C$ の体積は $\mathrm{Vol}(C) = \int_C J$ で与えられ、$J$ を基底 $\{\omega_a\}$ で $J = \sum_a v^a \omega_a$ と展開した係数 $v^a$ がサイズを表す実パラメータとなる。体積が正であるという条件から、$v^a$ はK\"ahler錐と呼ばれる錐の内部を動く。
+物理的には、これは「Calabi--Yau多様体の2次元サイクル $C$ や4次元サイクルの体積（サイズ）を変える変形」である。実際、2サイクル $C$ の体積は $\mathrm{Vol}(C) = \int_C J$ で与えられ、$J$ を基底 $\{\omega_a\}$ で $J = \sum_a v^a \omega_a$ と展開した係数 $v^a$ がサイズを表す実パラメータとなる。体積が正であるという条件から、$v^a$ はK\"ahler錐と呼ばれる錐の内部を動く（図\ref{fig:kahler-cone}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    \fill[blue!10] (0,0) -- (20:3.2) arc (20:70:3.2) -- cycle;
+    \draw[->] (0,0) -- (3.4,0) node[right] {$v^1$};
+    \draw[->] (0,0) -- (0,3.3) node[above] {$v^2$};
+    \draw[very thick, red!70!black] (0,0) -- (20:3.2) node[right, font=\scriptsize, align=left] {壁：曲線 $C_1$ の\\体積 $\to 0$};
+    \draw[very thick, red!70!black] (0,0) -- (70:3.2) node[above, font=\scriptsize, align=center] {壁：曲線 $C_2$ の体積 $\to 0$};
+    \node at (45:1.9) {K\"ahler錐};
+    \fill[blue!70!black] (40:1.2) circle (0.05) node[right, font=\scriptsize] {$J = v^a\omega_a$};
+    \draw[->, blue!70!black] (40:1.2) -- (40:2.4) node[above left, font=\scriptsize] {全体を拡大};
+\end{tikzpicture}
+\caption{K\"ahler錐（$h^{1,1} = 2$ の場合の模式図）。K\"ahler類 $J = v^1\omega_1 + v^2\omega_2$ は、すべての曲線・曲面の体積が正となる錐の内部を動く。錐の壁では、ある曲線の体積がゼロに潰れ、多様体の位相が変化しうる（フロップ転移など）。原点から遠ざかる方向は多様体全体を大きくする方向である。}
+\label{fig:kahler-cone}
+\end{figure}
+
 
 弦理論では、計量に加えて反対称テンソル場（B場）$B_{mn}$ が存在し、その調和 $(1,1)$ 成分 $B = \sum_a b^a\omega_a$ も質量ゼロのスカラー場を与える。両者は
 \begin{equation}
     t^a = b^a + i v^a \qquad (a = 1, \dots, h^{1,1})
 \end{equation}
-と組み合わされて\textbf{複素化されたK\"ahlerモジュライ}となる。これらを総称して\textbf{K\"ahlerモジュライ}と呼ぶ。$b^a$ は周期的（$b^a \sim b^a + 1$）であり、これは第3章のWilsonラインの周期性と同じ「大きなゲージ変換」による同一視である。
+と組み合わされて\textbf{複素化されたK\"ahlerモジュライ}となる。これらを総称して\textbf{K\"ahlerモジュライ}と呼ぶ。$b^a$ は周期的（$b^a \sim b^a + 1$）であり、これは第\ref{ch:deformation}章のWilsonラインの周期性と同じ「大きなゲージ変換」による同一視である。
 
 \subsection{複素構造の変形（$\delta g_{\bar{i}\bar{j}}$）}
 
-純粋成分の変形 $\delta g_{\bar{i}\bar{j}}$ は、第3章で議論した「複素構造の変形」に対応する。
+純粋成分の変形 $\delta g_{\bar{i}\bar{j}}$ は、第\ref{ch:deformation}章で議論した「複素構造の変形」に対応する。
 
 \begin{note}
 計量の純粋成分 $\delta g_{\bar{i}\bar{j}}$ がなぜ複素構造の変形を記述するのかを確認する。元のエルミート計量 $g_{i\bar{k}}$ を用いて添字を一つ持ち上げることで、接束に値をとる $(0,1)$ 形式（Beltrami微分）
 \begin{equation*}
     \mu^{\ i}_{\bar{j}} \equiv g^{i\bar{k}}\, \delta g_{\bar{k}\bar{j}}
 \end{equation*}
-を定義できる。新しい計量で「$(1,1)$ 型」となるのは、$dz^i$ ではなく $dz^i + \mu^i_{\bar j}d\bar z^{\bar j}$ を正則な1形式とみなすような複素構造であり、これはまさに第3章のBeltrami微分による複素構造の変形である。Lichnerowicz方程式は、この $\mu$ が $\bar{\partial}$ に関する調和形式であること（$\bar{\partial} \mu = 0$ かつ $\bar{\partial}^\dagger \mu = 0$）を要求する。すなわち $[\mu] \in H^1(X, T_X)$ である。
+を定義できる。新しい計量で「$(1,1)$ 型」となるのは、$dz^i$ ではなく $dz^i + \mu^i_{\bar j}d\bar z^{\bar j}$ を正則な1形式とみなすような複素構造であり、これはまさに第\ref{ch:deformation}章のBeltrami微分による複素構造の変形である。Lichnerowicz方程式は、この $\mu$ が $\bar{\partial}$ に関する調和形式であること（$\bar{\partial} \mu = 0$ かつ $\bar{\partial}^\dagger \mu = 0$）を要求する。すなわち $[\mu] \in H^1(X, T_X)$ である。
 
 さらにCY3においては、正則3形式 $\Omega$ を用いて同型写像を構成できる。$\mu$ を $\Omega$ に縮約させると、
 \begin{equation*}
     \mu \mapsto \Omega_{ijl}\, \mu^{\ l}_{\bar{k}}\, dz^i \wedge dz^j \wedge d\bar{z}^{\bar{k}} \in H^{2,1}(X)
 \end{equation*}
-という $(2,1)$ 形式が得られ、これが同型 $H^1(X, T_X) \cong H^{2,1}(X)$ を与える（第3章の $T_X \cong \Lambda^{2}T^*_X$）。したがって、複素構造の変形の自由度はHodge数 $h^{2,1}$ に等しい。
+という $(2,1)$ 形式が得られ、これが同型 $H^1(X, T_X) \cong H^{2,1}(X)$ を与える（第\ref{ch:deformation}章の $T_X \cong \Lambda^{2}T^*_X$）。したがって、複素構造の変形の自由度はHodge数 $h^{2,1}$ に等しい。
 \end{note}
 
 物理的には、これは「Calabi--Yau多様体の3次元サイクルの形を変える変形」である。3サイクルの基底 $\{A_I, B^I\}$（$I = 0, \dots, h^{2,1}$、交叉数 $A_I \cdot B^J = \delta_I^J$）をとり、正則3形式の\textbf{周期}
 \begin{equation}
     X^I = \int_{A_I}\Omega, \qquad F_I = \int_{B^I}\Omega
 \end{equation}
-を考えると、$X^I$ は（$\Omega$ の全体のスケールを除いて）複素構造モジュライ空間の局所的な射影座標となる。これらを\textbf{複素構造モジュライ}と呼ぶ。
+を考えると、$X^I$ は（$\Omega$ の全体のスケールを除いて）複素構造モジュライ空間の局所的な射影座標となる。これらを\textbf{複素構造モジュライ}と呼ぶ（図\ref{fig:cycles}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0]
+    \useasboundingbox (-2.8,-1.9) rectangle (7.6,1.5);
+    % トーラス
+    \draw[thick] (0,0) ellipse (2.6 and 1.3);
+    \begin{scope}
+        \clip (0,-1.9) ellipse (2.6 and 2.6);
+        \draw[thick] (0,2.25) ellipse (2.6 and 2.6);
+    \end{scope}
+    \begin{scope}
+        \clip (0,2.25) ellipse (2.6 and 2.6);
+        \draw[thick] (0,-2.25) ellipse (2.6 and 2.6);
+    \end{scope}
+    % A サイクル（チューブを一周）
+    \draw[very thick, red!70!black] (0,-1.3) arc (270:90:0.2 and 0.48);
+    \draw[very thick, red!70!black, dashed] (0,-1.3) arc (-90:90:0.2 and 0.48);
+    \node[red!70!black, below] at (0,-1.35) {$A$};
+    % B サイクル（穴のまわりを一周）
+    \draw[very thick, blue!70!black] (0,0) ellipse (1.95 and 0.85);
+    \node[blue!70!black, right] at (1.95,0.15) {$B$};
+    % 右：周期
+    \node[align=left] at (5.4,0.3) {$X^0 = \displaystyle\int_A \Omega$, \quad $F_0 = \displaystyle\int_B \Omega$};
+    \node[align=left, font=\small] at (5.4,-0.6) {$A \cdot B = 1$};
+\end{tikzpicture}
+\caption{周期の模式図（トーラスの場合）。交叉数 $1$ の2つのサイクル $A$（赤）と $B$（青）の上で正則形式 $\Omega$ を積分したものが周期である。トーラスでは $\Omega = dz$ で、周期の比 $\tau = \int_B\Omega/\int_A\Omega$ が複素構造モジュライとなる。CY3では、$2(h^{2,1} + 1)$ 個の3サイクル $\{A_I, B^I\}$ の上で正則3形式を積分する。}
+\label{fig:cycles}
+\end{figure}
+
 
 \paragraph{例：トーラス（1次元のCalabi--Yau多様体）}
-2次元トーラス $T^2$ は $c_1 = 0$ の1次元複素多様体であり、Calabi--Yau多様体の最も簡単な例である。Hodge数は $h^{1,1} = h^{1,0} = 1$ であり、
+2次元トーラス $T^2$ は $c_1 = 0$ の1次元複素多様体であり、Calabi--Yau多様体の最も簡単な例である（図\ref{fig:T2-deformations}）。Hodge数は $h^{1,1} = h^{1,0} = 1$ であり、
 \begin{itemize}
-    \item \textbf{複素構造モジュライ}：第1章・第3章の $\tau \in \mathbb{H}$。正則1形式 $\Omega = dz$ の周期の比 $\tau = \int_B dz / \int_A dz$ で与えられる。
+    \item \textbf{複素構造モジュライ}：第\ref{ch:intro}章・第\ref{ch:deformation}章の $\tau \in \mathbb{H}$。正則1形式 $\Omega = dz$ の周期の比 $\tau = \int_B dz / \int_A dz$ で与えられる。
     \item \textbf{複素化されたK\"ahlerモジュライ}：$\rho = b + i\,\mathrm{Area}/(4\pi^2\alpha')$（$b$ はB場の積分）。$b \sim b + 1$ の周期性と、$\rho \to -1/\rho$ に対応するT双対性により、$\rho$ も $\mathbb{H}/SL(2, \mathbb{Z})$ に値をとる。
 \end{itemize}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.85]
+    % 元の格子
+    \begin{scope}
+        \fill[gray!15] (0,0) -- (2,0) -- (2.6,1.6) -- (0.6,1.6) -- cycle;
+        \draw[thick] (0,0) -- (2,0) -- (2.6,1.6) -- (0.6,1.6) -- cycle;
+        \node[below] at (1,0) {$1$};
+        \node[left] at (0.3,0.85) {$\tau$};
+        \node at (1.3,-0.9) {元のトーラス};
+    \end{scope}
+    % K\"ahler 変形
+    \begin{scope}[xshift=4.2cm]
+        \fill[blue!15] (0,0) -- (2.8,0) -- (3.64,2.24) -- (0.84,2.24) -- cycle;
+        \draw[thick, blue!70!black] (0,0) -- (2.8,0) -- (3.64,2.24) -- (0.84,2.24) -- cycle;
+        \draw[gray, dashed] (0,0) -- (2,0) -- (2.6,1.6) -- (0.6,1.6) -- cycle;
+        \node at (1.8,-0.9) {K\"ahler変形};
+        \node[font=\scriptsize] at (1.8,-1.35) {大きさ（面積）が変わる};
+    \end{scope}
+    % 複素構造変形
+    \begin{scope}[xshift=9.2cm]
+        \fill[red!15] (0,0) -- (2,0) -- (3.3,1.3) -- (1.3,1.3) -- cycle;
+        \draw[thick, red!70!black] (0,0) -- (2,0) -- (3.3,1.3) -- (1.3,1.3) -- cycle;
+        \draw[gray, dashed] (0,0) -- (2,0) -- (2.6,1.6) -- (0.6,1.6) -- cycle;
+        \node[left] at (0.75,0.75) {$\tau'$};
+        \node at (1.6,-0.9) {複素構造変形};
+        \node[font=\scriptsize] at (1.6,-1.35) {形（$\tau$）が変わる};
+    \end{scope}
+\end{tikzpicture}
+\caption{トーラスの2種類の変形。格子の基本平行四辺形（左）を相似に拡大するのがK\"ahler変形（中央）、形の比 $\tau$ を変えるのが複素構造変形（右）である。CY3でも同様に、計量の変形は「大きさ」（$h^{1,1}$ 個）と「形」（$h^{2,1}$ 個）に分かれる。}
+\label{fig:T2-deformations}
+\end{figure}
+
 弦理論の $T^2$ コンパクト化のモジュライ空間は（局所的に）$\mathcal{M}_\tau \times \mathcal{M}_\rho$ であり、T双対性の一つ（1方向のT双対）は $\tau \leftrightarrow \rho$ を入れ替える。これが次節で述べるミラー対称性の最も簡単な例である。
 
 \section{特殊幾何学（Special Geometry）と有効理論}
 
-4次元の低エネルギー有効理論において、これら $h^{1,1}$ 個のK\"ahlerモジュライと $h^{2,1}$ 個の複素構造モジュライは、質量ゼロのスカラー場として現れる。第6章で見たように、これらのスカラー場が張る真空のモジュライ空間 $\mathcal{M}$ は、元の高エネルギー理論から非線形シグマ模型の標的空間として計量を受け継ぐ。
+4次元の低エネルギー有効理論において、これら $h^{1,1}$ 個のK\"ahlerモジュライと $h^{2,1}$ 個の複素構造モジュライは、質量ゼロのスカラー場として現れる。第\ref{ch:vacuum}章で見たように、これらのスカラー場が張る真空のモジュライ空間 $\mathcal{M}$ は、元の高エネルギー理論から非線形シグマ模型の標的空間として計量を受け継ぐ。
 
 どの超対称性が残り、モジュライがどの多重項に入るかは弦理論の種類によって異なる。
 \begin{itemize}
@@ -1972,7 +2718,33 @@ K\"ahlerモジュライ空間 $\mathcal{M}_K$ も古典的には特殊K\"ahler�
 
 \section{モジュライ空間の特異点：コニフォールド}
 
-複素構造モジュライ空間 $\mathcal{M}_C$ は一般にコンパクトではなく、特異点を持つ。典型的なのは、ある3サイクル（位相的には $S^3$）が潰れる\textbf{コニフォールド点}である。quinticの例では $\psi^5 = 1$ がこれに当たり、そこでは多様体 $X$ 自身が特異点（局所的に $\sum_{i=1}^4 w_i^2 = 0$ という形の錐）を持つ。
+複素構造モジュライ空間 $\mathcal{M}_C$ は一般にコンパクトではなく、特異点を持つ。典型的なのは、ある3サイクル（位相的には $S^3$）が潰れる\textbf{コニフォールド点}である。quinticの例では $\psi^5 = 1$ がこれに当たり、そこでは多様体 $X$ 自身が特異点（局所的に $\sum_{i=1}^4 w_i^2 = 0$ という形の錐）を持つ（図\ref{fig:conifold}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    \foreach \r/\xs/\lab in {0.55/0/{$|z|$ 大}, 0.22/3.6/{$|z|$ 小}, 0.0/7.2/{$z = 0$}} {
+        \begin{scope}[xshift=\xs cm]
+            \draw[thick] plot[domain=-1.4:1.4, samples=60, smooth] ({-sqrt(\r*\r + 0.5*\x*\x)}, \x);
+            \draw[thick] plot[domain=-1.4:1.4, samples=60, smooth] ({sqrt(\r*\r + 0.5*\x*\x)}, \x);
+            \draw (0,1.4) ellipse ({sqrt(\r*\r + 0.98)} and 0.15);
+            \draw (0,-1.4) ellipse ({sqrt(\r*\r + 0.98)} and 0.15);
+            \node at (0,-2.0) {\lab};
+        \end{scope}
+    }
+    % 首の S^3
+    \draw[very thick, red!70!black] (0,0) ellipse (0.55 and 0.1);
+    \draw[very thick, red!70!black] (3.6,0) ellipse (0.22 and 0.05);
+    \fill[red!70!black] (7.2,0) circle (0.06);
+    \node[red!70!black, font=\scriptsize] at (0.0,0.35) {$S^3$};
+    \node[red!70!black, font=\scriptsize, right] at (7.3,0.05) {特異点};
+    \draw[->, thick] (1.4,0) -- (2.3,0);
+    \draw[->, thick] (5.0,0) -- (5.9,0);
+\end{tikzpicture}
+\caption{コニフォールド転移の模式図（3次元の $S^3$ を円で描いている）。複素構造のモジュライ $z = \int_{S^3}\Omega$ を $0$ に近づけると、首の部分の $S^3$（赤）が潰れ、$z = 0$ で多様体は錐状の特異点を持つ。タイプIIB弦理論では、この $S^3$ に巻き付いたD3ブレーンの質量が $|z|$ に比例し、$z \to 0$ で質量ゼロとなる。}
+\label{fig:conifold}
+\end{figure}
+
 
 コニフォールド点の近くでは、潰れる $S^3$ 上の周期 $z = \int_{S^3}\Omega$ が局所座標となり、もう一方の双対な周期は
 \begin{equation}
@@ -1981,9 +2753,9 @@ K\"ahlerモジュライ空間 $\mathcal{M}_K$ も古典的には特殊K\"ahler�
 という対数的な振る舞いをする。したがって $z$ の周りを1周すると $F_z \to F_z + z$ という\textbf{モノドロミー}が生じ、モジュライ空間の計量 $g_{z\bar z} \sim -\ln|z|^2$ は $z \to 0$ で対数的に発散する（ただし原点までの距離は有限）。
 
 \begin{note}
-一見すると、これは低エネルギー有効理論が $z = 0$ で破綻していることを示しているように見える。Stromingerはこの問題を次のように解決した。タイプIIB弦理論では、D3ブレーンが潰れる $S^3$ に巻き付いた状態は、質量が周期に比例する $M \propto |z|$ 粒子（4次元ではブラックホール）として振る舞う。$z \to 0$ でこの粒子は\textbf{質量ゼロ}となり、有効理論から積分消去してはならない新たな軽い自由度となる。対数的な特異性は、まさにこの質量ゼロの荷電粒子を積分消去したことによる1ループの効果（Seiberg--Witten理論のモノポールと同じ機構）として再現される。
+一見すると、これは低エネルギー有効理論が $z = 0$ で破綻していることを示しているように見える。Stromingerはこの問題を次のように解決した\cite{strominger1995}。タイプIIB弦理論では、D3ブレーンが潰れる $S^3$ に巻き付いた状態は、質量が周期に比例する $M \propto |z|$ 粒子（4次元ではブラックホール）として振る舞う。$z \to 0$ でこの粒子は\textbf{質量ゼロ}となり、有効理論から積分消去してはならない新たな軽い自由度となる。対数的な特異性は、まさにこの質量ゼロの荷電粒子を積分消去したことによる1ループの効果（Seiberg--Witten理論のモノポールと同じ機構）として再現される。
 
-ここでも、第5章（小インスタントン）や第6章（Seiberg--Witten）と全く同じく、\textbf{モジュライ空間の特異点 $=$ 新しい軽い自由度の出現点}という原理が働いている。
+ここでも、第\ref{ch:instanton}章（小インスタントン）や第\ref{ch:vacuum}章（Seiberg--Witten）と全く同じく、\textbf{モジュライ空間の特異点 $=$ 新しい軽い自由度の出現点}という原理が働いている。
 \end{note}
 
 \section{ミラー対称性の予兆}
@@ -1992,124 +2764,577 @@ K\"ahlerモジュライ空間 $\mathcal{M}_K$ も古典的には特殊K\"ahler�
 \begin{equation}
     h^{1,1}(X) = h^{2,1}(Y), \quad h^{2,1}(X) = h^{1,1}(Y), \qquad \mathcal{M}_K(X) \cong \mathcal{M}_C(Y)
 \end{equation}
-これを\textbf{ミラー対称性（Mirror Symmetry）}と呼ぶ。Euler数は $\chi(X) = -\chi(Y)$ と符号が反転する。quintic（$h^{1,1} = 1,\ h^{2,1} = 101$）のミラー $Y$ は $h^{1,1} = 101,\ h^{2,1} = 1$ を持ち、その1次元の複素構造モジュライ空間がquinticのK\"ahlerモジュライ空間に対応する。
+これを\textbf{ミラー対称性（Mirror Symmetry）}と呼ぶ（図\ref{fig:mirror}）。Euler数は $\chi(X) = -\chi(Y)$ と符号が反転する。quintic（$h^{1,1} = 1,\ h^{2,1} = 101$）のミラー $Y$ は $h^{1,1} = 101,\ h^{2,1} = 1$ を持ち、その1次元の複素構造モジュライ空間がquinticのK\"ahlerモジュライ空間に対応する。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[box/.style={draw, thick, rounded corners, minimum width=3.2cm, minimum height=0.8cm, align=center}]
+    \node[box, fill=blue!8] (A) at (0,2) {タイプIIA 弦理論 on $X$};
+    \node[box, fill=red!8] (B) at (7,2) {タイプIIB 弦理論 on $Y$};
+    \draw[<->, very thick] (A) -- node[above] {物理的に同等} (B);
+    \node[box] (KX) at (0,0.5) {$\mathcal{M}_K(X)$\\{\scriptsize $h^{1,1}(X)$ 次元・量子補正あり}};
+    \node[box] (CX) at (0,-1.2) {$\mathcal{M}_C(X)$\\{\scriptsize $h^{2,1}(X)$ 次元}};
+    \node[box] (KY) at (7,-1.2) {$\mathcal{M}_K(Y)$\\{\scriptsize $h^{1,1}(Y)$ 次元}};
+    \node[box] (CY) at (7,0.5) {$\mathcal{M}_C(Y)$\\{\scriptsize $h^{2,1}(Y)$ 次元・古典的に厳密}};
+    \draw[<->, very thick, blue!70!black] (KX) -- node[above, font=\scriptsize] {ミラー写像} (CY);
+    \draw[<->, very thick, red!70!black] (CX) -- (KY);
+\end{tikzpicture}
+\caption{ミラー対称性。$X$ 上のタイプIIA弦理論と $Y$ 上のタイプIIB弦理論が同等であり、$X$ のK\"ahlerモジュライ空間と $Y$ の複素構造モジュライ空間（およびその逆）が入れ替わる。世界面インスタントンの補正を含む左上の量を、古典的な周期積分で厳密に計算できる右上の量に翻訳できる。}
+\label{fig:mirror}
+\end{figure}
 
 K\"ahlerモジュライ空間の計量には、前節で見た世界面インスタントンに由来する無限個の補正が含まれており、これを直接計算することは極めて困難である。しかし、複素構造モジュライ空間の計量は古典的な周期積分だけで厳密に定まり、量子補正を受けない（タイプIIBではディラトンがハイパー多重項に入るため、ベクトル多重項のモジュライ空間は $g_s$ 補正も受けず、また世界面の計算でも $\alpha'$ に依存しない）。ミラー対称性を用いれば、計算が困難なK\"ahler幾何学（量子幾何学）の情報を、双対な多様体の複素幾何学（古典幾何学）の周期積分に翻訳して解くことができる。
 
 \paragraph{例：quinticの有理曲線の数え上げ}
-Candelas, de la Ossa, Green, Parkesは1991年、ミラー多様体の周期積分（Picard--Fuchs方程式の解）を計算し、それをミラー写像でquinticのK\"ahlerモジュライに翻訳することで、quintic上の次数 $d$ の有理曲線の数 $n_d$ を予言した。
+Candelas, de la Ossa, Green, Parkesは1991年\cite{candelas1991}、ミラー多様体の周期積分（Picard--Fuchs方程式の解）を計算し、それをミラー写像でquinticのK\"ahlerモジュライに翻訳することで、quintic上の次数 $d$ の有理曲線の数 $n_d$ を予言した。
 \begin{equation}
     n_1 = 2875, \qquad n_2 = 609250, \qquad n_3 = 317206375, \quad \dots
 \end{equation}
 $n_1 = 2875$（直線の数）と $n_2 = 609250$（2次曲線の数）は古典的な代数幾何学で知られていたが、$n_3$ 以降は物理からの予言であり、後に数学的に証明された。モジュライ空間の代数幾何学的な構造が、弦理論の非摂動的なダイナミクスを厳密に解き明かす最強の武器となるのである。
 
 \begin{note}
-現象論的な観点からは、質量ゼロのモジュライ場は観測と矛盾する（長距離の第5の力や、宇宙論的なモジュライ問題を引き起こす）。したがって現実的なコンパクト化では、モジュライに質量を与えて真空のモジュライ空間の特定の点に固定する\textbf{モジュライ安定化}が必要となる。タイプIIBでは、3形式フラックスを入れることで超ポテンシャル $W = \int_X G_3 \wedge \Omega$（Gukov--Vafa--Witten）が生じ、複素構造モジュライとディラトンが固定される。K\"ahlerモジュライは非摂動効果（D7ブレーン上のゲージーノ凝縮など）で固定される（KKLT）。これは第6章で見た「量子効果によるモジュライ空間の持ち上がり」の弦理論版である。
+現象論的な観点からは、質量ゼロのモジュライ場は観測と矛盾する（長距離の第5の力や、宇宙論的なモジュライ問題を引き起こす）。したがって現実的なコンパクト化では、モジュライに質量を与えて真空のモジュライ空間の特定の点に固定する\textbf{モジュライ安定化}が必要となる。タイプIIBでは、3形式フラックスを入れることで超ポテンシャル $W = \int_X G_3 \wedge \Omega$（Gukov--Vafa--Witten\cite{gvw2000}）が生じ、複素構造モジュライとディラトンが固定される。K\"ahlerモジュライは非摂動効果（D7ブレーン上のゲージーノ凝縮など）で固定される（KKLT\cite{kklt2003}）。これは第\ref{ch:vacuum}章で見た「量子効果によるモジュライ空間の持ち上がり」の弦理論版である。
 \end{note}
 \chapter{一般相対論・幾何構造：計量や曲面の分類}
+\label{ch:gravity}
 
 これまでの章では、固定された背景時空（ミンコフスキー時空など）の上で定義されるゲージ場やスカラー場のモジュライ空間を考察してきた。しかし、一般相対性理論においては「時空の計量（Metric）」そのものが力学変数として振る舞う。本章では、計量のなす無限次元空間を微分同相写像で割った商空間（モジュライ空間）の構造を調べ、重力場における真の物理的自由度がどのように抽出されるのかを議論する。
 
-特に、2次元の計量のモジュライ空間は、次章以降で本格的に扱う「リーマン面のモジュライ（Teichm\"uller空間）」や弦理論の経路積分と完全に一致し、局所的な自由度がゼロになるという劇的な帰結をもたらす。
+特に、2次元の計量のモジュライ空間は、次章以降で本格的に扱う「リーマン面のモジュライ（Teichm\"uller空間）」に一致し、局所的な自由度がゼロになるという劇的な帰結をもたらす。第\ref{ch:group-action}章の商空間、第\ref{ch:deformation}章の変形理論と指数定理、第\ref{ch:bundle}章のGauss--Bonnetの定理が、ここで重力の言葉に翻訳される。
 
 \section{計量の空間と微分同相群による商}
 
-多様体 $M$ 上の滑らかな計量テンソル $g_{\mu\nu}(x)$ の全体がなす空間を $\mathrm{Met}(M)$ と表す。本講義ではローレンツ多様体を主に扱うため、計量の符号系は $(-+++)$ を採用する。
-計量テンソルは対称テンソルであるため、$D$ 次元時空においては各点で $\frac{1}{2}D(D+1)$ 個の独立な成分を持つ。
+多様体 $M$ 上の滑らかな計量テンソル $g_{\mu\nu}(x)$ の全体がなす空間を $\mathrm{Met}(M)$ と表す。計量テンソルは対称テンソルであるため、$D$ 次元多様体においては各点で $\frac{1}{2}D(D+1)$ 個の独立な成分を持つ。
 
-一般相対論における「ゲージ対称性」とは、任意の座標変換の自由度、すなわち多様体 $M$ 上の微分同相写像のなす群 $\mathrm{Diff}(M)$ である。微分同相写像 $f: M \to M$ のもとで、計量は引き戻し（pull-back） $f^* g$ によって変換される。
-真の物理的な時空の幾何学は、特定の座標系の取り方に依存しない。したがって、重力理論における「物理的状態の空間」は、計量の空間を微分同相群で割った商空間として定義される。
+一般相対論における「ゲージ対称性」とは、任意の座標変換の自由度、すなわち多様体 $M$ 上の微分同相写像のなす群 $\mathrm{Diff}(M)$ である。微分同相写像 $f: M \to M$ のもとで、計量は引き戻し（pull-back）$f^* g$ によって変換される。真の物理的な時空の幾何学は、特定の座標系の取り方に依存しない。
+
+\begin{mydef}{幾何のモジュライ空間}{}
+$\mathrm{Diff}(M)$ は $\mathrm{Met}(M)$ に引き戻し $g \mapsto f^*g$ で（右から）作用する。その商空間
+\begin{equation*}
+    \mathcal{M}_{\text{geom}}(M) = \mathrm{Met}(M) / \mathrm{Diff}(M)
+\end{equation*}
+を、$M$ 上の\textbf{幾何（計量の同値類）のモジュライ空間}と呼ぶ。運動方程式（例えばEinstein方程式）を満たす計量に制限したものを、その方程式の解のモジュライ空間と呼ぶ。
+\end{mydef}
+
+この作用は一般には自由ではない。計量 $g$ における固定部分群は、$g$ の\textbf{等長変換群} $\mathrm{Isom}(M, g)$ であり、そのリー代数はKillingベクトル場 $\nabla_\mu\xi_\nu + \nabla_\nu\xi_\mu = 0$ の空間である。第\ref{ch:group-action}章の一般論がそのまま当てはまる。$M$ がコンパクトならば $\mathrm{Isom}(M, g)$ はコンパクトなリー群であり、Ebinのスライス定理\cite{ebin1970}により、$\mathrm{Met}(M)/\mathrm{Diff}(M)$ は等長変換群を持たない計量の近傍では（無限次元の）多様体、有限の等長変換群を持つ計量の近傍ではオービフォールド、連続的な等長変換群を持つ計量の近傍ではより深刻な特異点を持つ。対称性の高い計量ほど、モジュライ空間の特異な点に位置するのである。
+
+\paragraph{例：平坦トーラスのモジュライ}
+$n$ 次元トーラス $T^n = \mathbb{R}^n/\mathbb{Z}^n$ 上の平坦な計量は、定数行列 $g_{ij}$（正定値対称）で与えられる。座標の線形変換で $\mathbb{Z}^n$ を保つもの、すなわち $GL(n, \mathbb{Z})$ による変換で移り合う計量は同じ幾何を与えるので、平坦計量のモジュライ空間は
 \begin{equation}
-    \mathcal{M}_{\text{geom}} = \mathrm{Met}(M) / \mathrm{Diff}(M)
+    \mathcal{M}_{\text{flat}}(T^n) = \left\{ \text{正定値対称行列 } g_{ij} \right\} / GL(n, \mathbb{Z}) \cong GL(n, \mathbb{Z}) \backslash GL(n, \mathbb{R}) / O(n)
 \end{equation}
-この空間 $\mathcal{M}_{\text{geom}}$ を、John Wheelerらは「スーパースペース（Superspace）」と呼んだ（超対称性のスーパースペースとは異なる概念であることに注意）。重力の量子化（特に正準量子重力）とは、この無限次元のモジュライ空間 $\mathcal{M}_{\text{geom}}$ 上のシュレディンガー方程式（Wheeler-DeWitt方程式）を解くことに他ならない。
+となり、その次元は $\frac{1}{2}n(n+1)$ である。$n = 2$ では、全体の面積（1次元）と形 $\tau \in \mathbb{H}/SL(2, \mathbb{Z})$（2次元）に分かれ、第\ref{ch:intro}章のトーラスのモジュライ空間が再現される。$T^n$ はCalabi--Yau多様体の最も簡単な例でもあり、第\ref{ch:calabi-yau}章のRicci平坦計量のモジュライの原型である。
+
+\paragraph{Wheelerのスーパースペース}
+正準量子重力では、時空 $M = \mathbb{R} \times \Sigma$ を時間方向と空間 $\Sigma$（3次元）に分解し、空間の計量 $h_{ij}$ を正準変数とする。このとき物理的な配位空間は、\textbf{空間の}計量の空間を空間の微分同相で割った
+\begin{equation}
+    \mathcal{S}(\Sigma) = \mathrm{Riem}(\Sigma) / \mathrm{Diff}(\Sigma)
+\end{equation}
+であり、Wheelerはこれを\textbf{スーパースペース（Superspace）}と呼んだ（超対称性のスーパースペースとは異なる概念であることに注意）。時間方向の微分同相（時間の取り直し）に対応する拘束条件はハミルトニアン拘束として残り、量子論ではスーパースペース上の波動関数に対する\textbf{Wheeler--DeWitt方程式} $\hat{\mathcal{H}}\Psi[h] = 0$ となる。
 
 \section{作用の変形と物理的自由度の数え上げ}
 
-真空の一般相対論のダイナミクスは、Einstein-Hilbert作用によって記述される。
+真空の一般相対論のダイナミクスは、Einstein--Hilbert作用によって記述される。
 \begin{equation}
-    S_{EH} = \frac{1}{16\pi G_N} \int_M d^D x \sqrt{-g} R
+    S_{EH} = \frac{1}{16\pi G_N} \int_M d^D x \sqrt{-g}\, R
 \end{equation}
-ここで $g = \det(g_{\mu\nu})$ であり、$R$ はスカラー曲率である。
-モジュライ空間の接ベクトル（運動方程式を満たす物理的な無限小変形）を抽出するために、計量を $g_{\mu\nu} \to g_{\mu\nu} + \delta g_{\mu\nu}$ と変形し、作用の停留条件を計算する。
+ここで $g = \det(g_{\mu\nu})$ であり、$R$ はスカラー曲率である。モジュライ空間の接ベクトル（運動方程式を満たす物理的な無限小変形）を抽出するために、計量を $g_{\mu\nu} \to g_{\mu\nu} + \delta g_{\mu\nu}$ と変形し、作用の停留条件を計算する。
 
 \begin{note}
-計量の変分に対する曲率の変分を計算しよう。
-まず、逆計量と行列式の変分は以下のようになる。
-\begin{equation}
-    \delta g^{\mu\nu} = - g^{\mu\rho} g^{\nu\sigma} \delta g_{\rho\sigma}, \quad \delta \sqrt{-g} = \frac{1}{2} \sqrt{-g} g^{\mu\nu} \delta g_{\mu\nu}
-\end{equation}
-次に、Levi-Civita接続（クリストッフェル記号 $\Gamma^\rho_{\mu\nu}$）の変分 $\delta \Gamma^\rho_{\mu\nu}$ を考える。$\Gamma$ 自身はテンソルではないが、その変分 $\delta \Gamma$ はテンソルとして振る舞うため、共変微分 $\nabla$ を用いて次のように書ける。
-\begin{equation}
+計量の変分に対する曲率の変分を計算しよう。まず、逆計量と行列式の変分は以下のようになる。
+\begin{equation*}
+    \delta g^{\mu\nu} = - g^{\mu\rho} g^{\nu\sigma} \delta g_{\rho\sigma}, \quad \delta \sqrt{-g} = \frac{1}{2} \sqrt{-g}\, g^{\mu\nu} \delta g_{\mu\nu}
+\end{equation*}
+次に、Levi-Civita接続（Christoffel記号 $\Gamma^\rho_{\mu\nu}$）の変分 $\delta \Gamma^\rho_{\mu\nu}$ を考える。$\Gamma$ 自身はテンソルではないが、2つの接続の差はテンソルである（第\ref{ch:bundle}章で見た「接続の空間はアフィン空間」の重力版）ので、その変分は共変微分 $\nabla$ を用いて次のように書ける。
+\begin{equation*}
     \delta \Gamma^\rho_{\mu\nu} = \frac{1}{2} g^{\rho\sigma} \left( \nabla_\mu \delta g_{\nu\sigma} + \nabla_\nu \delta g_{\mu\sigma} - \nabla_\sigma \delta g_{\mu\nu} \right)
-\end{equation}
-Riemann曲率テンソルの縮約であるRicciテンソル $R_{\mu\nu} = \partial_\rho \Gamma^\rho_{\mu\nu} - \dots$ の変分は、Palatiniの恒等式として知られる以下の式になる。
-\begin{equation}
+\end{equation*}
+Ricciテンソル $R_{\mu\nu} = \partial_\rho \Gamma^\rho_{\mu\nu} - \dots$ の変分は、Palatiniの恒等式として知られる以下の式になる。
+\begin{equation*}
     \delta R_{\mu\nu} = \nabla_\rho (\delta \Gamma^\rho_{\mu\nu}) - \nabla_\nu (\delta \Gamma^\rho_{\mu\rho})
-\end{equation}
+\end{equation*}
 作用の変分を計算すると、
 \begin{align*}
-    \delta (\sqrt{-g} R) &= \delta (\sqrt{-g} g^{\mu\nu} R_{\mu\nu}) \\
-    &= (\delta \sqrt{-g}) R + \sqrt{-g} (\delta g^{\mu\nu}) R_{\mu\nu} + \sqrt{-g} g^{\mu\nu} \delta R_{\mu\nu} \\
-    &= \sqrt{-g} \left[ \frac{1}{2} g^{\mu\nu} R - R^{\mu\nu} \right] \delta g_{\mu\nu} + \sqrt{-g} \nabla_\rho V^\rho
+    \delta (\sqrt{-g} R) &= \delta (\sqrt{-g}\, g^{\mu\nu} R_{\mu\nu}) \\
+    &= (\delta \sqrt{-g}) R + \sqrt{-g}\, (\delta g^{\mu\nu}) R_{\mu\nu} + \sqrt{-g}\, g^{\mu\nu} \delta R_{\mu\nu} \\
+    &= \sqrt{-g} \left[ \frac{1}{2} g^{\mu\nu} R - R^{\mu\nu} \right] \delta g_{\mu\nu} + \sqrt{-g}\, \nabla_\rho V^\rho
 \end{align*}
-表面項 $\nabla_\rho V^\rho$ を無視すると、作用が任意の変形 $\delta g_{\mu\nu}$ に対して停留する条件として、Einstein方程式 $R_{\mu\nu} - \frac{1}{2} g_{\mu\nu} R = 0$ が得られる。
+となる（$V^\rho = g^{\mu\nu}\delta\Gamma^\rho_{\mu\nu} - g^{\mu\rho}\delta\Gamma^\nu_{\mu\nu}$）。表面項 $\nabla_\rho V^\rho$ を無視すると、作用が任意の変形 $\delta g_{\mu\nu}$ に対して停留する条件として、Einstein方程式 $R_{\mu\nu} - \frac{1}{2} g_{\mu\nu} R = 0$ が得られる。
 \end{note}
 
-さて、線形化された重力波（微小な計量の揺らぎ）の「物理的な自由度」の数を数えてみよう。
-計量 $g_{\mu\nu}$ は $\frac{1}{2}D(D+1)$ 個の成分を持つ。
-一方、無限小の微分同相変換は、ベクトル場 $\xi^\mu(x)$ に沿ったLie微分 $\mathcal{L}_\xi$ で与えられる。計量テンソルの変分は
+さて、線形化された重力波（微小な計量の揺らぎ）の「物理的な自由度」の数を数えてみよう。計量 $g_{\mu\nu}$ は $\frac{1}{2}D(D+1)$ 個の成分を持つ。一方、無限小の微分同相変換は、ベクトル場 $\xi^\mu(x)$ に沿ったLie微分 $\mathcal{L}_\xi$ で与えられ、計量テンソルの変分は
 \begin{equation}
     \delta_\xi g_{\mu\nu} = \nabla_\mu \xi_\nu + \nabla_\nu \xi_\mu
 \end{equation}
-となる。ベクトル場 $\xi^\mu$ は $D$ 個の任意関数（局所自由度）を持つ。
-ゲージ理論と同様に、時間発展を決定できない非物理的な方向（ゲージ自由度）を消去すると、物理的なプロパゲーターに乗る局所自由度の数は以下のようになる。
-\begin{equation}
-    \text{重力子の自由度} = \frac{1}{2}D(D+1) - 2 \times D = \frac{1}{2}D(D-3)
-\end{equation}
-$D=4$ の場合、$\frac{1}{2} \times 4 \times 1 = 2$ となり、重力波が2つの偏極モード（プラス・モードとクロス・モード）を持つという事実と一致する。
+となる。ベクトル場 $\xi^\mu$ は $D$ 個の任意関数を含む。
+
+\begin{myprop}{重力子の自由度}{graviton-dof}
+$D$ 次元の一般相対論において、伝播する（局所的な）物理的自由度の数は
+\begin{equation*}
+    \frac{1}{2}D(D+1) - 2D = \frac{1}{2}D(D-3)
+\end{equation*}
+である。
+\end{myprop}
+
+ゲージ自由度は「2回」差し引かれることに注意しよう。1回目はゲージ固定（$D$ 個のゲージ条件、例えば調和ゲージ $\nabla^\mu \bar{h}_{\mu\nu} = 0$）であり、2回目は、ゲージ固定後もなお残る残余ゲージ変換、あるいは同じことだが時間発展を含まない $D$ 個の拘束条件（Einstein方程式の $G_{0\mu}$ 成分）である。これは電磁気学において $A_\mu$ の $D$ 成分からゲージ固定と Gauss則で2つが除かれ、$D - 2$ 個の偏極が残るのと同じ構造である。
+
+\begin{itemize}
+    \item $D = 4$：$\frac{1}{2} \times 4 \times 1 = 2$。重力波が2つの偏極モード（プラス・モードとクロス・モード）を持つという事実と一致する。
+    \item $D = 3$：$\frac{1}{2} \times 3 \times 0 = 0$。3次元重力には伝播する重力子が存在しない。それでも理論は自明ではなく、大域的な自由度が残る。実際、3次元の重力は（宇宙項に応じて）$ISO(2,1)$ や $SO(2,2)$ などをゲージ群とするChern--Simons理論として書き直され、その解のモジュライ空間は第\ref{ch:deformation}章で扱った\textbf{平坦接続のモジュライ空間} $\mathrm{Hom}(\pi_1(\Sigma), G)/G$ に一致する\cite{witten1988}。
+    \item $D = 2$：$\frac{1}{2} \times 2 \times (-1) = -1$。自由度が負になってしまう。これは次節で解消される。
+\end{itemize}
 
 \section{2次元重力とWeyl不変性：局所自由度の消失}
 
-上記の自由度数え上げの公式 $\frac{1}{2}D(D-3)$ に $D=2$ を代入すると、$-\frac{1}{2} \times 2 \times 1 = -1$ となり、物理的な自由度が負になってしまうように見える。このパラドックスは、弦理論の世界面上の量子重力を理解する上で最も重要な出発点となる。
+上記の公式で $D = 2$ とすると物理的な自由度が負になってしまうように見える。このパラドックスは、弦理論の世界面上の量子重力を理解する上で最も重要な出発点となる。
 
-2次元多様体（世界面 $\Sigma$）上の計量 $g_{ab}$ ($a,b=1,2$) は、$\frac{1}{2} \times 2 \times 3 = 3$ 個の独立な成分を持つ。
-これに対して、微分同相変換 $\xi^a$ は2つの自由度を持つ。
-さらに弦理論においては、作用が計量の局所的なスケール変換（Weyl変換）に対しても不変であるという強力な対称性が課される。
+まず、2次元ではEinstein--Hilbert作用そのものが力学を持たない。
+
+\begin{myprop}{2次元のEinstein--Hilbert作用}{2d-EH}
+閉曲面 $\Sigma$ 上のEuclid化されたEinstein--Hilbert作用はトポロジカルであり、
+\begin{equation*}
+    \frac{1}{4\pi}\int_\Sigma d^2x \sqrt{g}\, R = \chi(\Sigma) = 2 - 2g
+\end{equation*}
+が任意の計量に対して成り立つ。特に、その変分は恒等的にゼロである（$R_{ab} - \frac{1}{2}g_{ab}R \equiv 0$）。
+\end{myprop}
+
+\begin{note}
+2次元ではスカラー曲率はGauss曲率の2倍 $R = 2K$ であり、面積要素は $dA = \sqrt{g}\,d^2x$ である。したがって左辺は $\frac{1}{2\pi}\int_\Sigma K\, dA$ であり、第\ref{ch:bundle}章で特性類の例として見たGauss--Bonnetの定理により $\chi(\Sigma)$ に等しい。また2次元では、Riemann曲率テンソルの独立成分は1つだけで $R_{abcd} = \frac{R}{2}(g_{ac}g_{bd} - g_{ad}g_{bc})$ と書けるので、縮約して $R_{ab} = \frac{R}{2}g_{ab}$、すなわちEinsteinテンソルは恒等的にゼロである。
+\end{note}
+
+したがって、2次元の重力の作用は位相不変量 $\chi$ に比例する項だけであり、弦理論ではこれが弦の結合定数 $g_s^{-\chi}$ の重みとして種数展開を与える。弦の力学は、世界面の計量 $g_{ab}$ に結合した物質場（埋め込み $X^\mu$）の\textbf{Polyakov作用}
+\begin{equation}
+    S_P = \frac{1}{4\pi\alpha'}\int_\Sigma d^2\sigma \sqrt{g}\, g^{ab}\partial_a X^\mu \partial_b X_\mu
+\end{equation}
+で記述される\cite{polchinskistringtheoryvolume12005}。この作用は微分同相に加えて、計量の局所的なスケール変換（\textbf{Weyl変換}）
 \begin{equation}
     g_{ab}(x) \to e^{2\omega(x)} g_{ab}(x)
 \end{equation}
-Weyl変換のパラメータ $\omega(x)$ が1つの局所自由度を持つため、対称性の自由度は計 $2 + 1 = 3$ となる。
+に対しても不変である（2次元では $\sqrt{g}\,g^{ab}$ がWeyl不変であるため）。
+
+2次元多様体上の計量は $\frac{1}{2} \times 2 \times 3 = 3$ 個の独立な成分を持つ。これに対して、微分同相変換 $\xi^a$ は2つ、Weyl変換のパラメータ $\omega(x)$ は1つの局所自由度を持ち、対称性の自由度は計 $2 + 1 = 3$ となる。
 
 \begin{note}
-微小変形における自由度を式で確認する。
-微小な微分同相変換 $\xi^a$ と微小なWeyl変換 $\omega$ による計量の変化は、
-\begin{equation}
-    \delta g_{ab} = \nabla_a \xi_b + \nabla_b \xi_a + 2\omega g_{ab}
-\end{equation}
-である。代数的には、$g_{ab}$ は対称2階テンソル（3成分）、$\xi_a$ はベクトル（2成分）、$\omega g_{ab}$ は計量に比例するトレース成分（1成分）である。
-2次元においては、任意の計量テンソル場 $g_{ab}(x)$ に対して、適当な $\xi^a(x)$ と $\omega(x)$ を選ぶことで、局所的に計量を平坦なミンコフスキー計量（あるいはユークリッド計量 $\delta_{ab}$）に完全に変換できることが証明されている。これを「共形平坦性（Conformally flat）」と呼ぶ。
+微小変形における自由度を式で確認する。微小な微分同相変換 $\xi^a$ と微小なWeyl変換 $\omega$ による計量の変化は、
+\begin{equation*}
+    \delta g_{ab} = \nabla_a \xi_b + \nabla_b \xi_a + 2\omega\, g_{ab}
+\end{equation*}
+である。これをトレースレス部分とトレース部分に分けると
+\begin{equation*}
+    \delta g_{ab} = (P_1\xi)_{ab} + (2\omega + \nabla\cdot\xi)\, g_{ab}, \qquad (P_1\xi)_{ab} \equiv \nabla_a\xi_b + \nabla_b\xi_a - g_{ab}\nabla\cdot\xi
+\end{equation*}
+となる。トレース部分（1成分）は $\omega$ で任意に動かせ、トレースレス部分（2成分）は $\xi^a$（2成分）に作用する1階の微分作用素 $P_1$ で動かせる。したがって局所的には、任意の計量変形はゲージ変換で打ち消せる。
 \end{note}
 
-局所的な自由度の収支は $3 - (2 + 1) = 0$ となる。すなわち、\textbf{2次元重力においては局所的に伝播する重力子（グラビトン）は存在しない。}
+局所的な自由度の収支は $3 - (2 + 1) = 0$ となる。すなわち、\textbf{2次元重力においては局所的に伝播する重力子（グラビトン）は存在しない}。これを有限の変換の言葉で述べたのが、次の定理である。
+
+\begin{mythm}{等温座標の存在}{isothermal}
+2次元Riemann多様体の任意の点の近傍には、計量が $g = e^{2\omega(x)}(dx^2 + dy^2)$ という形になる座標（\textbf{等温座標}）が存在する。すなわち、任意の2次元計量は局所的に共形平坦である。
+\end{mythm}
+
+等温座標 $z = x + iy$ どうしの座標変換は（向きを保つならば）正則関数で与えられるので、2次元の向き付けられたRiemann多様体には自然に\textbf{複素構造}が定まり、リーマン面となる。すなわち、「計量をWeyl変換で割ったもの（共形構造）」と「複素構造」は同じものである。
 
 \section{大域的なモジュライとTeichm\"uller空間への帰着}
 
-局所的な自由度がゼロであるからといって、計量のモジュライ空間 $\mathcal{M}_{\text{geom}}$ が「1つの点」に潰れてしまうわけではない。第1章のトーラスの例で先取りしたように、多様体 $\Sigma$ のトポロジー（種数 $g$）が非自明な場合、滑らかな座標変換とWeyl変換を尽くしても決して相殺できない\textbf{「大域的な」計量の自由度}が残るのである。
+局所的な自由度がゼロであるからといって、計量のモジュライ空間が「1つの点」に潰れてしまうわけではない。第\ref{ch:intro}章のトーラスの例で先取りしたように、曲面 $\Sigma$ のトポロジー（種数 $g$）が非自明な場合、滑らかな座標変換とWeyl変換を尽くしても決して相殺できない\textbf{「大域的な」計量の自由度}が残るのである。まず、各共形類の中から標準的な代表元を選べることが重要である。
 
-微分同相変換群 $\mathrm{Diff}(\Sigma)$ の単位元と連続的につながっている部分群を $\mathrm{Diff}_0(\Sigma)$、Weyl変換の群を $\mathrm{Weyl}(\Sigma)$ とする。弦の経路積分においてこれらの局所的なゲージ自由度で商をとった空間
-\begin{equation}
-    \frac{\mathrm{Met}(\Sigma)}{\mathrm{Diff}_0(\Sigma) \ltimes \mathrm{Weyl}(\Sigma)}
-\end{equation}
-は、まさに2次元曲面の複素構造（あるいは共形同値類）を分類する\textbf{タイヒミュラー空間（Teichm\"uller space）} $\mathcal{T}_g$ に他ならない。
+\begin{mythm}{一意化定理}{uniformization}
+種数 $g$ の閉曲面 $\Sigma$ 上の任意の計量は、Weyl変換によって、定曲率計量にただ一つ移すことができる。曲率の符号は種数で決まり、
+\begin{equation*}
+    K = +1\ (g = 0), \qquad K = 0,\ \text{面積} = 1\ (g = 1), \qquad K = -1\ (g \ge 2)
+\end{equation*}
+である。
+\end{mythm}
 
-さらに、連続変形できない「大きな座標変換（Large diffeomorphisms）」である写像類群（Mapping Class Group） $\Gamma_g = \mathrm{Diff}(\Sigma) / \mathrm{Diff}_0(\Sigma)$ による作用で割ることで、最終的なリーマン面のモジュライ空間
-\begin{equation}
-    \mathcal{M}_g = \mathcal{T}_g / \Gamma_g
-\end{equation}
-が得られる。種数 $g \ge 2$ の場合、このモジュライ空間は複素次元で $3g - 3$（実次元で $6g - 6$）次元の複雑な空間となる。
+曲率の符号は、Gauss--Bonnetの定理 $\int K\, dA = 2\pi(2 - 2g)$ と整合している。したがって、Weyl変換で割ることは「定曲率計量に制限すること」と同じであり、残る問題は定曲率計量を微分同相で分類することになる。
 
-弦理論における散乱振幅の計算は、すべての計量についての無限次元の経路積分が、Fadeev-Popovゴーストの行列式（測度）を伴って、この有限次元空間 $\mathcal{M}_g$ 上の積分へと劇的に還元されることを意味する。重力のダイナミクスが、完全に代数幾何学的な「モジュライ積分」に帰着するのである。
+\begin{mydef}{Teichm\"uller空間と写像類群}{}
+微分同相変換群 $\mathrm{Diff}(\Sigma)$ の単位元と連続的につながっている部分群を $\mathrm{Diff}_0(\Sigma)$、Weyl変換の群を $\mathrm{Weyl}(\Sigma)$ とする。
+\begin{enumerate}
+    \item 商空間
+    \begin{equation*}
+        \mathcal{T}_g = \frac{\mathrm{Met}(\Sigma)}{\mathrm{Diff}_0(\Sigma) \ltimes \mathrm{Weyl}(\Sigma)}
+    \end{equation*}
+    を\textbf{Teichm\"uller空間}と呼ぶ。
+    \item 連続変形できない「大きな座標変換」のなす群
+    \begin{equation*}
+        \Gamma_g = \mathrm{Diff}^+(\Sigma) / \mathrm{Diff}_0(\Sigma)
+    \end{equation*}
+    を\textbf{写像類群（Mapping Class Group）}と呼ぶ（$\mathrm{Diff}^+$ は向きを保つ微分同相）。
+    \item リーマン面のモジュライ空間を $\mathcal{M}_g = \mathcal{T}_g / \Gamma_g$ で定める。
+\end{enumerate}
+\end{mydef}
+
+\begin{myprop}{Teichm\"uller空間の構造}{teichmuller}
+\begin{enumerate}
+    \item $g \ge 2$ のとき、$\mathcal{T}_g$ は $\mathbb{R}^{6g-6}$ と同相（特に可縮）であり、複素次元 $3g - 3$ の複素多様体である。
+    \item 写像類群 $\Gamma_g$ は $\mathcal{T}_g$ に真性不連続に作用するので、$\mathcal{M}_g = \mathcal{T}_g / \Gamma_g$ はオービフォールドである（第\ref{ch:group-action}章）。
+    \item $g = 1$ のとき、$\mathcal{T}_1 = \mathbb{H}$、$\Gamma_1 = SL(2, \mathbb{Z})$ であり、$\mathcal{M}_1 = \mathbb{H}/SL(2, \mathbb{Z})$ は第\ref{ch:intro}章のトーラスのモジュライ空間に一致する。
+\end{enumerate}
+\end{myprop}
+
+$\mathcal{T}_g$ の次元は、第\ref{ch:deformation}章で計算した $\dim_{\mathbb{C}} H^1(\Sigma, T_\Sigma) = 3g - 3$ に一致している。これは偶然ではなく、計量の変形の言葉で直接見ることができる。
+
+\begin{note}
+前節の作用素 $P_1$（ベクトル場 $\to$ トレースレス対称テンソル）を考える。トレースレスな計量変形 $\delta g$ のうち、$\mathrm{im}\, P_1$（微分同相）で動かせないものがモジュライの方向であり、$L^2$ 内積で直交補空間をとると、それは $\ker P_1^\dagger$（\textbf{正則2次微分}、第\ref{ch:deformation}章の $H^0(\Sigma, K^2)$）と同一視される。一方 $\ker P_1$ は計量を保つ（Weyl変換を除いて）ベクトル場、すなわち\textbf{共形Killingベクトル}であり、第\ref{ch:deformation}章の $H^0(\Sigma, T_\Sigma)$ に対応する。Riemann--Rochの定理（あるいは $P_1$ に対する指数定理）を実次元で書くと
+\begin{equation*}
+    \dim_{\mathbb{R}} \ker P_1^\dagger - \dim_{\mathbb{R}} \ker P_1 = 6g - 6
+\end{equation*}
+である。
+\begin{itemize}
+    \item $g \ge 2$：共形Killingベクトルはなく（$\ker P_1 = 0$）、モジュライは $6g - 6$ 個。
+    \item $g = 1$：共形Killingベクトルは並進の2個、モジュライは $\tau$ の2個（実次元）。
+    \item $g = 0$：共形Killingベクトルは $PSL(2, \mathbb{C})$ の6個、モジュライは0個。
+\end{itemize}
+これは第\ref{ch:deformation}章の命題（リーマン面の変形と自己同型）を、計量の言葉で言い直したものである。
+\end{note}
+
+弦理論における散乱振幅の計算は、すべての計量についての無限次元の経路積分が、Faddeev--Popovゴーストの行列式（測度）を伴って、この有限次元空間 $\mathcal{M}_g$ 上の積分へと劇的に還元されることを意味する\cite{polchinskistringtheoryvolume12005}。モジュライ方向の $6g-6$ 個の積分にはそれぞれ $b$ ゴーストの零モードが対応し（第\ref{ch:deformation}章）、共形Killingベクトル（$c$ ゴーストの零モード）は頂点演算子の位置を固定することで処理される。重力のダイナミクスが、完全に代数幾何学的な「モジュライ積分」に帰着するのである。
 
 次章（第III部：発展的視点）では、このリーマン面のモジュライ空間の構造をさらに深く掘り下げ、境界の退化（コンパクト化）やモジュライ・スタックとしての性質を詳述していく。
+
+\appendix
+
+\chapter{超対称性の基礎}
+\label{app:susy}
+
+本文の第\ref{ch:instanton}章〜第\ref{ch:calabi-yau}章では、超対称性に関する事実をいくつも用いた。この付録では、それらを理解するために必要な最小限の事項をまとめる。詳しい導出は標準的な教科書に譲り、ここでは「何が定義で、何が成り立つか」と、本文のどこで使われるかに重点を置く。計量の符号は本文と同じく $(-+++)$ とし、スピノルの規約による符号の違いには立ち入らない。
+
+\section{超対称性代数}
+
+超対称性とは、ボソンとフェルミオンを入れ替える対称性である。その生成子 $Q$ はスピノルの添字を持ち、ボソンの状態をフェルミオンの状態に（あるいはその逆に）移す。
+
+\begin{mydef}{4次元の超対称性代数}{}
+4次元の $\mathcal{N}$ 拡張超対称性代数は、Poincar\'e代数に、2成分Weylスピノルの生成子 $Q^A_\alpha$ とその共役 $\bar{Q}_{\dot\alpha A}$（$A = 1, \dots, \mathcal{N}$）を加えたもので、主要な関係式は
+\begin{equation*}
+    \{ Q^A_\alpha, \bar{Q}_{\dot\beta B} \} = 2\,\delta^A_B\, \sigma^\mu_{\alpha\dot\beta} P_\mu, \qquad
+    \{ Q^A_\alpha, Q^B_\beta \} = 2\,\epsilon_{\alpha\beta} Z^{AB}
+\end{equation*}
+である（符号と規格化は規約による）。$P_\mu$ はエネルギー運動量、$Z^{AB} = -Z^{BA}$ は他のすべての生成子と可換な\textbf{中心電荷}である（$\mathcal{N} \ge 2$ でのみ現れうる）。
+\end{mydef}
+
+生成子 $Q$ の成分の数（\textbf{超対称性の数}、supercharge の数）は $4\mathcal{N}$ である。4次元の $\mathcal{N} = 1, 2, 4$ はそれぞれ 4, 8, 16 個の超対称性に対応する。10次元のタイプII弦理論は32個の超対称性を持ち、これは4次元に換算すると $\mathcal{N} = 8$ に相当する。コンパクト化で何個が残るかは、第\ref{ch:calabi-yau}章で見たように内部空間 $X$ の共変定数スピノルの数で決まる。
+
+\paragraph{エネルギーの正値性と超対称な真空}
+第1の関係式をスピノルの添字について和をとると、ハミルトニアンは
+\begin{equation}
+    H = P^0 = \frac{1}{4}\sum_{\alpha} \left( Q_\alpha Q_\alpha^\dagger + Q_\alpha^\dagger Q_\alpha \right)
+\end{equation}
+と書ける（$\mathcal{N} = 1$、規格化は規約による）。右辺は正定値演算子の和なので、任意の状態 $|\psi\rangle$ に対して $\langle\psi|H|\psi\rangle \ge 0$ であり、等号は $Q_\alpha|\psi\rangle = Q^\dagger_\alpha|\psi\rangle = 0$、すなわち $|\psi\rangle$ が超対称性で不変なときに限る。したがって、
+\begin{center}
+    \textbf{超対称性が破れていない} $\iff$ \textbf{真空のエネルギーがゼロ}
+\end{center}
+が成り立つ。第\ref{ch:vacuum}章で、超対称な真空を $V = 0$ の条件で求めたのはこのためである。
+
+\paragraph{BPS限界}
+中心電荷 $Z$ がある場合、同様の正値性の議論から、質量 $M$ の粒子に対して
+\begin{equation}
+    M \ge |Z|
+\end{equation}
+（規格化は規約による）という不等式が得られる。等号を満たす状態を\textbf{BPS状態}と呼ぶ。BPS状態は超対称性の一部で不変であり、通常より小さい（短い）多重項をなす。そのため、結合定数などのパラメータを連続的に変えても、多重項の大きさが急に変わることはできず、BPS状態は「安定」に存在し続け、その質量は中心電荷で厳密に決まる。
+
+\begin{note}
+BPS限界は、本文で見た「Bogomol'nyi限界」の量子論的な版である。第\ref{ch:instanton}章のインスタントンは作用 $S \ge 8\pi^2|k|/g^2$ を、第\ref{ch:calabi-yau}章のコニフォールドで質量ゼロになるD3ブレーンは質量 $M \propto |z|$（$z$ は周期、すなわち中心電荷）を、それぞれ飽和している。平方完成によって下限を得て、1階の方程式で飽和させるという古典論の議論は、超対称性代数の正値性 $\{Q, Q^\dagger\} \ge 0$ を古典的に実現したものと見ることができる。
+\end{note}
+
+\section{超対称多重項}
+
+超対称性の生成子はボソンとフェルミオンを入れ替えるので、粒子は\textbf{多重項}をなし、各多重項はボソンとフェルミオンを同数（自由度で数えて）含む。本文に現れる多重項を表にまとめておく（自由度は質量ゼロの場合の物理的な自由度、オンシェル）。
+
+\begin{center}\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llll}
+    \hline
+    超対称性 & 多重項 & 成分 & 本文での役割 \\
+    \hline
+    $\mathcal{N} = 1$ & カイラル多重項 & 複素スカラー $\phi$、Weylフェルミオン $\psi$ & 物質場、モジュライ場 \\
+    $\mathcal{N} = 1$ & ベクトル多重項 & ゲージ場 $A_\mu$、ゲージーノ $\lambda$ & ゲージ場 \\
+    $\mathcal{N} = 2$ & ベクトル多重項 & $A_\mu$、複素スカラー $\Phi$、Weyl $\times 2$ & クーロン枝、$u = \mathrm{Tr}\Phi^2$ \\
+    $\mathcal{N} = 2$ & ハイパー多重項 & 複素スカラー $\times 2$、Weyl $\times 2$ & ヒッグス枝 \\
+    \hline
+\end{tabular}
+\end{center}
+
+\section{$\mathcal{N} = 1$ 超対称理論のラグランジアン}
+
+$\mathcal{N} = 1$ 超対称理論は、次の3つのデータで決まる。
+\begin{itemize}
+    \item \textbf{K\"ahlerポテンシャル} $K(\phi, \bar\phi)$：実関数。スカラー場の運動項を決める。
+    \item \textbf{超ポテンシャル} $W(\phi)$：\textbf{正則}関数。湯川結合とポテンシャルを決める。
+    \item \textbf{ゲージ運動関数} $f(\phi)$：正則関数。ゲージ結合定数と $\theta$ 角を $f = \frac{1}{g^2} - \frac{i\theta}{8\pi^2}$ の形で決める。
+\end{itemize}
+ボソン部分のラグランジアンは
+\begin{equation}
+    \mathcal{L}_{\text{bos}} = -g_{i\bar\jmath}\,\partial_\mu\phi^i \partial^\mu\bar\phi^{\bar\jmath} - \frac{1}{4g^2}F^a_{\mu\nu}F^{a\mu\nu} - V(\phi, \bar\phi), \qquad g_{i\bar\jmath} = \frac{\partial^2 K}{\partial\phi^i\partial\bar\phi^{\bar\jmath}}
+\end{equation}
+であり、スカラー場は\textbf{K\"ahler多様体を標的空間とする非線形シグマ模型}（第\ref{ch:vacuum}章）となる。これが、超対称理論のモジュライ空間が常にK\"ahler多様体（さらに $\mathcal{N} = 2$ では特殊K\"ahler・超K\"ahler多様体）となる理由である。
+
+\begin{myprop}{スカラーポテンシャル}{susy-potential}
+$\mathcal{N} = 1$ 超対称理論のスカラーポテンシャルは
+\begin{equation*}
+    V = g^{i\bar\jmath}\,\frac{\partial W}{\partial\phi^i}\overline{\frac{\partial W}{\partial\phi^j}} + \frac{g^2}{2}\sum_a (D^a)^2, \qquad D^a = \phi^\dagger T^a \phi - \xi^a
+\end{equation*}
+で与えられる（簡単のため単純なゲージ群、または $U(1)$ 因子ごとに同じ式）。第1項をF項、第2項をD項と呼ぶ。
+\end{myprop}
+
+\begin{note}
+超場の成分には、運動項を持たない\textbf{補助場}（カイラル多重項の $F^i$、ベクトル多重項の $D^a$）が含まれる。平坦な $K = \sum\bar\phi\phi$ の場合、補助場を含むラグランジアンの関連部分は
+\begin{equation*}
+    \mathcal{L} \supset \bar{F}_i F^i + \left( F^i \frac{\partial W}{\partial\phi^i} + \text{h.c.} \right) + \frac{1}{2}D^aD^a - g D^a\left( \phi^\dagger T^a\phi - \xi^a \right)
+\end{equation*}
+である（符号は規約による）。補助場は代数的に消去できる：$F^i$ について変分すると $\bar{F}_i = -\partial W/\partial\phi^i$、$D^a$ について変分すると $D^a = g(\phi^\dagger T^a\phi - \xi^a)$。これを代入すると
+\begin{equation*}
+    \mathcal{L} \supset -\left|\frac{\partial W}{\partial\phi^i}\right|^2 - \frac{g^2}{2}\left( \phi^\dagger T^a\phi - \xi^a \right)^2 = -V
+\end{equation*}
+となり、命題の式（$g_{i\bar\jmath} = \delta_{i\bar\jmath}$ の場合）を得る。$V$ は2乗の和なので $V \ge 0$ であり、$V = 0$ の条件が第\ref{ch:vacuum}章のF平坦条件・D平坦条件である。
+\end{note}
+
+\paragraph{非繰り込み定理}
+超対称理論の最も強力な性質の一つが、量子補正に対する保護である。
+
+\begin{mythm}{非繰り込み定理}{nonrenormalization}
+$\mathcal{N} = 1$ 超対称理論において、超ポテンシャル $W$ は摂動論のどの次数でも補正を受けない。K\"ahlerポテンシャル $K$ は補正を受けうる。
+\end{mythm}
+
+Seibergは、この定理を「正則性」から簡潔に導いた\cite{seiberg1994}。結合定数を背景のカイラル超場の真空期待値とみなすと、有効超ポテンシャルはそれらの正則関数でなければならない。正則関数は、対称性と極限での振る舞いから強く制限されるため、多くの場合ただ一つに決まってしまう。第\ref{ch:vacuum}章のAffleck--Dine--Seiberg超ポテンシャルや、Seibergの量子変形 $\det M - B\tilde{B} = \Lambda^{2N_c}$ は、この方法で決定されたものである。摂動論では保護されても、非摂動効果（インスタントンなど）は $e^{-8\pi^2/g^2}$ のように結合定数の正則関数 $e^{-8\pi^2 f}$ として $W$ に寄与しうることに注意しよう。
+
+\paragraph{Witten指数}
+超対称性が自発的に破れるかどうかを判定する道具として、\textbf{Witten指数}
+\begin{equation}
+    \mathrm{Tr}(-1)^F e^{-\beta H}
+\end{equation}
+がある（$F$ はフェルミオン数）。$E > 0$ の状態はボソンとフェルミオンが対になって寄与が打ち消すので、この量は $E = 0$ の状態（超対称な真空）の数の「ボソン－フェルミオン」の差だけを数え、$\beta$ やパラメータの連続的な変化に依存しない。Witten指数が非ゼロならば、超対称性は破れない。これは第\ref{ch:deformation}章の指数定理と同じく、「連続変形で変わらない整数」の典型例である。
+
+\section{$\mathcal{N} = 2$ 超対称性と特殊幾何}
+
+$\mathcal{N} = 2$ 超対称性があると、制約はさらに強くなる。$\mathcal{N} = 2$ ベクトル多重項のスカラー $a^I$（$I = 1, \dots, r$、$r$ はゲージ群のランク）の低エネルギー有効作用は、ただ一つの正則関数（\textbf{プレポテンシャル}）$\mathcal{F}(a)$ で完全に決まる。
+
+\begin{myprop}{剛体特殊K\"ahler幾何}{rigid-special}
+$\mathcal{N} = 2$ ベクトル多重項のクーロン枝の低エネルギー有効理論は、プレポテンシャル $\mathcal{F}(a)$ により
+\begin{equation*}
+    K = \mathrm{Im}\left( \bar{a}^I \frac{\partial\mathcal{F}}{\partial a^I} \right), \qquad
+    g_{I\bar J} = \mathrm{Im}\,\tau_{IJ}, \qquad
+    \tau_{IJ} = \frac{\partial^2\mathcal{F}}{\partial a^I \partial a^J}
+\end{equation*}
+で与えられる。$\tau_{IJ}$ は有効ゲージ結合定数 $\tau = \frac{\theta}{2\pi} + \frac{4\pi i}{g^2}$ である。
+\end{myprop}
+
+計量 $\mathrm{Im}\,\tau$ が正定値でなければならないこと、また $\tau$ が正則関数であることから、$\tau$ は $\mathcal{M}$ 全体で定数でない限り必ず特異点を持つ（正則関数の虚部は調和関数なので、至る所で正にはなれない）。Seiberg--Witten理論\cite{seibergwitten1994}は、この特異点が「モノポールやダイオンが質量ゼロになる点」であり、特異点のまわりのモノドロミーが $SL(2, \mathbb{Z})$ の元で与えられることを見抜き、$\mathcal{F}$ を厳密に決定した（第\ref{ch:intro}章・第\ref{ch:vacuum}章）。第\ref{ch:calabi-yau}章のCalabi--Yau多様体の複素構造モジュライ空間の特殊幾何は、この構造の重力を含む版（局所特殊K\"ahler幾何）である。
+
+\begin{note}
+第\ref{ch:instanton}章の最後で触れたWittenの\textbf{トポロジカル・ツイスト}は、$\mathcal{N} = 2$ 理論の $SU(2)_R$ 対称性（$\mathcal{N} = 2$ の2つの超対称性を回す内部対称性）と、時空の回転群の一部を組み替える操作である。ツイスト後は、超対称性の生成子の一つ $\mathcal{Q}$ がスカラーとなり、任意の曲がった4次元多様体上で定義でき、$\mathcal{Q}^2 = 0$ を満たす。$\mathcal{Q}$ で不変な観測量の期待値は計量によらず、経路積分は $\mathcal{Q}$ の固定点、すなわちインスタントンのモジュライ空間上の積分に局所化する。これがDonaldson不変量を与える。
+\end{note}
+
+
+\chapter{弦理論の基礎}
+\label{app:string}
+
+本文の第\ref{ch:intro}章（モジュラー不変性）、第\ref{ch:instanton}章（Dブレーンとインスタントン）、第\ref{ch:calabi-yau}章（コンパクト化とミラー対称性）、第\ref{ch:gravity}章（Polyakov作用とモジュライ積分）では、弦理論の基本事項を前提とした。この付録ではそれらをまとめる。標準的な文献として\cite{polchinskistringtheoryvolume12005,polchinskistringtheoryvolume2005}を挙げておく。
+
+\section{弦の作用と臨界次元}
+
+弦は、時空 $M$ の中を運動する1次元の物体であり、時間発展すると2次元の面（\textbf{世界面} $\Sigma$）を掃く。世界面の座標を $\sigma^a = (\tau, \sigma)$ とし、埋め込みを $X^\mu(\sigma)$ と書く。
+
+\begin{mydef}{Polyakov作用}{}
+世界面上に独立な計量 $h_{ab}$ を導入し、
+\begin{equation*}
+    S_P[X, h] = -\frac{1}{4\pi\alpha'}\int_\Sigma d^2\sigma \sqrt{-h}\, h^{ab}\, \partial_a X^\mu \partial_b X^\nu\, \eta_{\mu\nu}
+\end{equation*}
+を\textbf{Polyakov作用}と呼ぶ。$\alpha'$ は弦の長さの2乗の次元を持つ定数（Regge勾配）であり、弦の張力は $T = 1/(2\pi\alpha')$ である。
+\end{mydef}
+
+$h_{ab}$ の運動方程式を解いて代入すると、世界面の面積に比例する\textbf{Nambu--Goto作用} $-T\int d^2\sigma\sqrt{-\det(\partial_aX\cdot\partial_bX)}$ に戻る。Polyakov作用は、世界面の微分同相とWeyl変換 $h_{ab} \to e^{2\omega}h_{ab}$ のもとで不変であり、これを用いて世界面の計量を（局所的に）平坦にとれる（\textbf{共形ゲージ}、第\ref{ch:gravity}章）。共形ゲージで残る対称性は2次元の共形変換であり、弦の理論は世界面上の\textbf{2次元共形場理論}として記述される。
+
+\begin{myprop}{臨界次元}{critical-dim}
+Weyl対称性が量子論でも保たれるためには、世界面の理論の全中心電荷がゼロでなければならない。ゴースト場の寄与はボソン弦で $c_{\text{gh}} = -26$、超弦で $c_{\text{gh}} = -15$ であり、時空座標1つあたりの寄与はボソン弦で $1$、超弦で $\frac{3}{2}$（ボソン $1$ $+$ フェルミオン $\frac{1}{2}$）であるから、
+\begin{equation*}
+    D_{\text{boson}} = 26, \qquad \frac{3}{2}D_{\text{super}} = 15 \ \Rightarrow\ D_{\text{super}} = 10
+\end{equation*}
+でなければならない。
+\end{myprop}
+
+\begin{note}
+Weyl対称性が量子論で破れることは、エネルギー運動量テンソルのトレースが
+\begin{equation*}
+    \langle T^a{}_a \rangle = -\frac{c}{12}R
+\end{equation*}
+とゼロにならないこと（\textbf{Weylアノマリー}、規格化は規約による）に現れる。$R$ は世界面のスカラー曲率である。$c = 0$ でなければ、計量の共形因子 $e^{2\omega}$ が力学的な自由度（Liouville場）として残ってしまい、第\ref{ch:gravity}章の「局所的な自由度がゼロ」という議論が成り立たない。臨界次元は、2次元重力の局所自由度が量子論でも本当に消えるための条件である。
+\end{note}
+
+\section{弦のスペクトル}
+
+弦の振動の各モードが、時空の粒子として観測される。閉弦の場合、右向きと左向きの振動の励起レベル $N, \tilde{N}$ を用いて、ボソン弦の質量公式は
+\begin{equation}
+    m^2 = \frac{4}{\alpha'}(N - 1) = \frac{4}{\alpha'}(\tilde{N} - 1), \qquad N = \tilde{N}
+\end{equation}
+となる（$N = \tilde{N}$ は\textbf{レベル一致条件}）。
+\begin{itemize}
+    \item $N = \tilde{N} = 0$：$m^2 < 0$ の\textbf{タキオン}。ボソン弦の不安定性を示す。
+    \item $N = \tilde{N} = 1$：質量ゼロの状態 $\alpha^\mu_{-1}\tilde{\alpha}^\nu_{-1}|0\rangle$。これを対称・反対称・トレース部分に分けると、\textbf{重力子} $g_{\mu\nu}$、\textbf{反対称テンソル場} $B_{\mu\nu}$、\textbf{ディラトン} $\Phi$ が得られる。
+\end{itemize}
+弦理論が必然的に重力を含むのは、この質量ゼロの重力子の存在による。第\ref{ch:calabi-yau}章でK\"ahlerモジュライを複素化したB場は、この $B_{\mu\nu}$ である。
+
+超弦理論では、世界面上のフェルミオンに対する境界条件の選び方を、\textbf{GSO射影}によって制限する。これによりタキオンが取り除かれ、時空の超対称性が実現する。GSO射影の選び方は、第\ref{ch:intro}章で触れたトーラス上の\textbf{モジュラー不変性}によって決まる。
+
+\section{弦の相互作用と種数展開}
+
+弦の相互作用は、世界面のトポロジーによって表される。$n$ 個の閉弦の散乱振幅は、境界のない向き付けられた曲面について、種数 $g$ ごとの和として
+\begin{equation}
+    \mathcal{A}_n = \sum_{g = 0}^{\infty} g_s^{2g - 2 + n} \int_{\mathcal{M}_{g,n}} (\cdots)
+\end{equation}
+と書かれる（図\ref{fig:genus-expansion}）。ここで $g_s = e^{\langle\Phi\rangle}$ は\textbf{弦の結合定数}であり、ディラトンの真空期待値で決まる。第\ref{ch:gravity}章で見たように、2次元のEinstein--Hilbert作用はEuler数 $\chi = 2 - 2g$ に比例するので、ディラトンとの結合 $\frac{\Phi}{4\pi}\int\sqrt{h}R = \Phi\chi$ が各種数に $g_s^{-\chi} = g_s^{2g - 2}$ の重みを与える。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    % 球面
+    \shade[ball color=blue!15] (0,0) circle (0.8);
+    \draw[thick] (0,0) circle (0.8);
+    \draw[dashed] (0.8,0) arc (0:180:0.8 and 0.2);
+    \draw (-0.8,0) arc (180:360:0.8 and 0.2);
+    \node at (0,-1.3) {$g = 0$：$g_s^{-2}$};
+    \node at (1.5,0) {$+$};
+    % トーラス
+    \begin{scope}[xshift=3.3cm]
+        \draw[thick] (0,0) ellipse (1.3 and 0.75);
+        \begin{scope}
+            \clip (0,-1.0) ellipse (1.3 and 1.3);
+            \draw[thick] (0,1.1) ellipse (1.3 and 1.3);
+        \end{scope}
+        \begin{scope}
+            \clip (0,1.1) ellipse (1.3 and 1.3);
+            \draw[thick] (0,-1.1) ellipse (1.3 and 1.3);
+        \end{scope}
+        \node at (0,-1.3) {$g = 1$：$g_s^{0}$};
+    \end{scope}
+    \node at (5.0,0) {$+$};
+    % 種数2
+    \begin{scope}[xshift=7.4cm]
+        \draw[thick] plot[smooth cycle] coordinates {(-2.0,0) (-1.6,0.7) (-0.8,0.8) (0,0.45) (0.8,0.8) (1.6,0.7) (2.0,0) (1.6,-0.7) (0.8,-0.8) (0,-0.45) (-0.8,-0.8) (-1.6,-0.7)};
+        \foreach \x in {-1.0, 1.0} {
+            \draw[thick] (\x-0.45,0.05) to[bend right=40] (\x+0.45,0.05);
+            \draw[thick] (\x-0.35,-0.0) to[bend left=40] (\x+0.35,-0.0);
+        }
+        \node at (0,-1.3) {$g = 2$：$g_s^{2}$};
+    \end{scope}
+    \node at (10.0,0) {$+\ \cdots$};
+\end{tikzpicture}
+\caption{弦の摂動論（真空振幅）の種数展開。種数 $g$ の世界面は $g_s^{2g-2}$ の重みを持ち、その寄与はリーマン面のモジュライ空間 $\mathcal{M}_g$（第\ref{ch:gravity}章）上の積分で与えられる。$g = 1$ の項が第\ref{ch:intro}章で扱ったトーラスの1ループ振幅である。}
+\label{fig:genus-expansion}
+\end{figure}
+
+各種数の寄与は、世界面の計量についての経路積分であるが、第\ref{ch:gravity}章で見たように、ゲージ対称性（微分同相とWeyl変換）で割ると有限次元のモジュライ空間 $\mathcal{M}_{g,n}$（$n$ 個の頂点演算子の位置を含む）上の積分に帰着する。弦の摂動論とは、本質的に「リーマン面のモジュライ空間上の積分論」なのである。モジュライ空間の境界（第\ref{ch:intro}章のカスプや、Deligne--Mumfordコンパクト化の境界）は、弦が長いチューブで結ばれる極限、すなわち場の理論的な粒子の伝播に対応する。
+
+\section{5つの超弦理論}
+
+10次元の無矛盾な超弦理論は、次の5つが知られている。
+
+\begin{center}\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llll}
+    \hline
+    理論 & 超対称性の数 & ゲージ群 & Dブレーン \\
+    \hline
+    タイプIIA & 32（非カイラル） & なし（摂動論的） & D0, D2, D4, D6, D8 \\
+    タイプIIB & 32（カイラル） & なし（摂動論的） & D$(-1)$, D1, D3, D5, D7, D9 \\
+    タイプI & 16 & $SO(32)$ & D1, D5, D9 \\
+    ヘテロティック $SO(32)$ & 16 & $SO(32)$ & なし \\
+    ヘテロティック $E_8 \times E_8$ & 16 & $E_8 \times E_8$ & なし \\
+    \hline
+\end{tabular}
+\end{center}
+
+ホロノミー $SU(3)$ のCalabi--Yau多様体へのコンパクト化では、10次元の超対称性の $1/4$ が残る（第\ref{ch:calabi-yau}章）。タイプII理論では $32 \to 8$（4次元 $\mathcal{N} = 2$）、ヘテロティック理論では $16 \to 4$（4次元 $\mathcal{N} = 1$）となる。
+
+\section{円周へのコンパクト化とT双対性}
+
+コンパクト化の最も簡単な例として、1つの方向 $X^{9}$ を半径 $R$ の円周 $X^9 \sim X^9 + 2\pi R$ にとろう。閉弦は、この方向に
+\begin{itemize}
+    \item \textbf{運動量} $p = n/R$（$n \in \mathbb{Z}$、量子力学的な周期性から量子化される）
+    \item \textbf{巻き付き数} $w \in \mathbb{Z}$（弦が円周に $w$ 回巻き付く。点粒子にはない、弦に特有の自由度）
+\end{itemize}
+を持ちうる。ボソン弦の場合、9次元から見た質量は
+\begin{equation}
+    m^2 = \left( \frac{n}{R} \right)^2 + \left( \frac{wR}{\alpha'} \right)^2 + \frac{2}{\alpha'}\left( N + \tilde{N} - 2 \right), \qquad N - \tilde{N} = nw
+\end{equation}
+となる。第2項は、巻き付いた弦の長さ $2\pi R w$ に張力 $1/(2\pi\alpha')$ を掛けたエネルギーである。
+
+\begin{myprop}{T双対性}{T-duality}
+上の質量公式（およびレベル一致条件）は、置き換え
+\begin{equation*}
+    R \ \longleftrightarrow\ \frac{\alpha'}{R}, \qquad n \ \longleftrightarrow\ w
+\end{equation*}
+のもとで不変である。半径 $R$ と $\alpha'/R$ の円周上の弦理論は、相互作用まで含めて同等である。
+\end{myprop}
+
+\begin{note}
+質量公式で $R \to \alpha'/R$、$n \leftrightarrow w$ とすると、
+\begin{equation*}
+    \left( \frac{n}{R} \right)^2 \to \left( \frac{wR}{\alpha'} \right)^2, \qquad \left( \frac{wR}{\alpha'} \right)^2 \to \left( \frac{n}{R} \right)^2
+\end{equation*}
+と第1項と第2項が入れ替わるだけであり、$nw$ も不変である。したがってスペクトルは完全に一致する。直観的には、小さな円周上の「運動量モード」は、大きな円周上の「巻き付きモード」と区別がつかない。弦理論には、$\sqrt{\alpha'}$ より短い距離は実質的に存在しないのである。
+\end{note}
+
+T双対性のもとで、モジュライ空間の点 $R$ と $\alpha'/R$ は同一視されるので、円周の半径のモジュライ空間は $R \ge \sqrt{\alpha'}$ に制限される（第\ref{ch:group-action}章の言葉では、$\mathbb{Z}_2$ による商）。自己双対点 $R = \sqrt{\alpha'}$ では、$\mathbb{Z}_2$ の固定点となり、実際に新たな質量ゼロの状態が現れてゲージ対称性が $U(1)^2 \to SU(2)^2$ に拡大する。第\ref{ch:calabi-yau}章のトーラスの例で見た $\rho \to -1/\rho$ はこのT双対性であり、ミラー対称性は、Calabi--Yau多様体の中のトーラス・ファイバーに沿ったT双対性として理解できる（Strominger--Yau--Zaslow）。
+
+\section{Dブレーン}
+
+開弦の端点は、空間のどこにでも置けるわけではなく、ある部分多様体の上に束縛されうる。開弦の端点が乗る $(p+1)$ 次元の部分多様体を\textbf{D$p$ブレーン}と呼ぶ（$p$ は空間方向の次元）。Dブレーンは単なる境界条件ではなく、それ自身が力学的な物体であり、張力（質量密度）
+\begin{equation}
+    T_p = \frac{1}{(2\pi)^p g_s\, \alpha'^{(p+1)/2}}
+\end{equation}
+を持つ。$1/g_s$ に比例することから、Dブレーンは弱結合では非常に重い\textbf{非摂動的な}物体である。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+    % 2枚のブレーン
+    \fill[blue!10] (0,0) -- (3,0) -- (4,1.5) -- (1,1.5) -- cycle;
+    \draw[thick, blue!70!black] (0,0) -- (3,0) -- (4,1.5) -- (1,1.5) -- cycle;
+    \fill[red!10] (0,-2.4) -- (3,-2.4) -- (4,-0.9) -- (1,-0.9) -- cycle;
+    \draw[thick, red!70!black] (0,-2.4) -- (3,-2.4) -- (4,-0.9) -- (1,-0.9) -- cycle;
+    \node[blue!70!black] at (4.6,1.2) {D$p$ブレーン 1};
+    \node[red!70!black] at (4.6,-1.2) {D$p$ブレーン 2};
+    % 同じブレーン上の開弦
+    \draw[very thick, orange!80!black] (1.2,0.7) .. controls (1.5,1.5) and (2.0,1.4) .. (2.2,0.8);
+    \fill (1.2,0.7) circle (0.04);
+    \fill (2.2,0.8) circle (0.04);
+    \node[font=\scriptsize] at (1.75,1.6) {質量ゼロ（ゲージ場）};
+    % ブレーン間の開弦
+    \draw[very thick, green!50!black] (2.8,0.6) .. controls (3.2,0.0) and (2.6,-1.0) .. (3.0,-1.6);
+    \fill (2.8,0.6) circle (0.04);
+    \fill (3.0,-1.6) circle (0.04);
+    \draw[<->] (-0.4,0.5) -- node[left, font=\scriptsize] {距離 $d$} (-0.4,-1.6);
+    \node[font=\scriptsize, align=left] at (6.3,-0.25) {質量 $\propto d/(2\pi\alpha')$\\（W ボソン）};
+    \draw[->, gray] (5.3,-0.25) -- (3.1,-0.4);
+\end{tikzpicture}
+\caption{Dブレーンと開弦。同じブレーンに両端を持つ開弦（橙）は質量ゼロのゲージ場を与え、異なるブレーンを結ぶ開弦（緑）は、ブレーン間の距離 $d$ に比例する質量を持つ。ブレーンが重なる $d \to 0$ で後者も質量ゼロとなり、ゲージ対称性が $U(1) \times U(1)$ から $U(2)$ に拡大する。}
+\label{fig:D-branes}
+\end{figure}
+
+\begin{myprop}{Dブレーン上のゲージ理論}{brane-gauge}
+$N$ 枚の重なったD$p$ブレーンの上には、$(p+1)$ 次元の $U(N)$ ゲージ理論が実現する。その場の内容は次のとおりである。
+\begin{enumerate}
+    \item ブレーンに沿った方向の開弦の振動から、$U(N)$ ゲージ場 $A_a$。
+    \item ブレーンに垂直な $9 - p$ 方向の振動から、随伴表現のスカラー場 $X^i$（$N \times N$ エルミート行列）。
+\end{enumerate}
+スカラー場 $X^i$ の固有値は、各ブレーンの横方向の位置を表す。
+\end{myprop}
+
+開弦の両端にどのブレーンに乗っているかというラベル（\textbf{Chan--Paton因子}）$i, j = 1, \dots, N$ を付けると、開弦の状態は $N \times N$ 行列の成分となり、これがゲージ場が随伴表現をなす理由である（第\ref{ch:bundle}章）。ブレーンが離れると $X^i$ が対角的な真空期待値を持ち、非対角成分（異なるブレーンを結ぶ開弦）が質量を得て、ゲージ群は $U(1)^N$ に破れる（図\ref{fig:D-branes}）。これは第\ref{ch:vacuum}章の真空のモジュライ空間とヒッグス機構の弦理論的な実現であり、「ブレーンの配置の空間 $=$ ゲージ理論の真空のモジュライ空間」という辞書が成り立つ。
+
+\paragraph{ブレーンの中のブレーン}
+D$p$ブレーンは、D$(p+4)$ブレーンの世界体積の中に溶け込むと、その上のゲージ理論の\textbf{インスタントン}として振る舞う。第\ref{ch:instanton}章のD$(-1)$/D3系（ADHM構成）や、タイプI弦理論のD5/D9系（小インスタントン）はこの例である。D$p$ブレーン上の理論から見ると、D$(p+4)$ブレーンとの間の開弦の真空条件がADHM方程式となり、そのモジュライ空間がインスタントンのモジュライ空間を与える。
+
+\section{双対性の網とM理論}
+
+5つの超弦理論は、互いに独立な理論ではなく、さまざまな\textbf{双対性}で結ばれている。
+\begin{itemize}
+    \item \textbf{T双対性}：IIA on $S^1_R$ $\leftrightarrow$ IIB on $S^1_{\alpha'/R}$、ヘテロティック $SO(32)$ $\leftrightarrow$ ヘテロティック $E_8 \times E_8$（円周上）。
+    \item \textbf{S双対性}：IIB の $g_s \leftrightarrow 1/g_s$（より一般に、$\tau = C_0 + i/g_s$ に対する $SL(2, \mathbb{Z})$）、タイプI $\leftrightarrow$ ヘテロティック $SO(32)$。
+    \item \textbf{M理論}：IIA の強結合極限は11次元の理論（M理論）であり、11番目の方向の円周の半径は $R_{11} = g_s\sqrt{\alpha'}$ である。$E_8 \times E_8$ ヘテロティック弦理論の強結合極限は、区間 $S^1/\mathbb{Z}_2$ 上のM理論である。M理論には2次元のM2ブレーンと5次元のM5ブレーンがあり、第\ref{ch:instanton}章の $E_8 \times E_8$ の小インスタントンはM5ブレーンとして現れる。
+\end{itemize}
+IIB の $SL(2, \mathbb{Z})$ 双対性は、複素結合定数 $\tau$ に第\ref{ch:intro}章のトーラスの複素構造と全く同じ形で作用する。実際、IIB弦理論は12次元の理論（F理論）をトーラスでコンパクト化したもので、$\tau$ はそのトーラスの複素構造である、と解釈することもできる。このように、本講義で繰り返し現れたモジュライ空間 $\mathbb{H}/SL(2, \mathbb{Z})$ は、弦理論の双対性の中心にも位置している。
+
+\bibliographystyle{unsrt}
+\bibliography{references,マイライブラリ}
+
 \end{document}
