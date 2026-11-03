@@ -1,0 +1,16 @@
+# LaTeX のビルド生成物（PDF は残す）
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.lof
+*.lot
+
+# macOS
+.DS_Store
