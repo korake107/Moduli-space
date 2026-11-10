@@ -100,6 +100,12 @@
 % 計算過程などを書く注釈環境
 \newenvironment{note}{\vspace{1ex}\par\footnotesize\noindent\textbf{【注】}}{\par\vspace{1ex}}
 
+% 練習問題（各節末に置き、解答は章末にまとめる）
+\newcounter{exprob}[section]
+\renewcommand{\theexprob}{\thesection.\arabic{exprob}}
+\newcommand{\exprob}[1]{\par\medskip\noindent\refstepcounter{exprob}\label{#1}\textbf{問\,\theexprob}\quad}
+\newcommand{\exsol}[1]{\par\medskip\noindent\textbf{問\,\ref{#1} の解答}\quad}
+
 % 証明環境（amsthm）
 \renewcommand{\proofname}{証明}
 
@@ -364,7 +370,7 @@ $\tau \in \mathbb{H}$ を固定する。$\mathrm{Im}(\gamma\tau) = \mathrm{Im}\,
 
 \paragraph{付録}
 \begin{itemize}
-    \item \textbf{代数トポロジーの基礎（付録\ref{app:topology}）}：ホモトピーと被覆、基本群・高次ホモトピー群、写像度と巻き付き数、絡み数とHopf不変量、主束の自明性、de Rhamコホモロジー、ホモロジーと交点数、Euler数とBetti数。本文では初出の箇所から参照する。
+    \item \textbf{代数トポロジーの基礎（付録\ref{app:topology}）}：ホモトピーと被覆、基本群・高次ホモトピー群、写像度と巻き付き数、絡み数とHopf不変量、主束の自明性、de Rhamコホモロジー、ホモロジーと交点数、Euler数とBetti数、および練習問題と解答。本文では初出の箇所から参照する。
     \item \textbf{超対称性の基礎（付録\ref{app:susy}）}：超対称性代数とBPS限界、多重項、$\mathcal{N}=1$ のラグランジアンと非繰り込み定理、$\mathcal{N}=2$ の特殊幾何。
     \item \textbf{弦理論の基礎（付録\ref{app:string}）}：Polyakov作用と臨界次元、種数展開、5つの超弦理論、T双対性、Dブレーン、双対性の網。
 \end{itemize}
@@ -3609,7 +3615,7 @@ $\mathcal{T}_g$ の次元は、第\ref{ch:deformation}章で計算した $\dim_{
 \chapter{代数トポロジーの基礎}
 \label{app:topology}
 
-本文では、基本群・ホモトピー群・写像度・de Rhamコホモロジー・ホモロジーといった代数トポロジーの概念を、モジュライ空間やゲージ場の大域的な性質を調べる道具として繰り返し用いた。この付録では、それらを本文で必要になる範囲で、定義・直観・代表的な例・本文での使われ方の順にまとめる。証明は概略にとどめ、厳密な扱いは標準的な教科書（例えば Hatcher『Algebraic Topology』、Bott--Tu『Differential Forms in Algebraic Topology』、中原『理論物理学のための幾何学とトポロジー』）に譲る。
+本文では、基本群・ホモトピー群・写像度・de Rhamコホモロジー・ホモロジーといった代数トポロジーの概念を、モジュライ空間やゲージ場の大域的な性質を調べる道具として繰り返し用いた。この付録では、それらを本文で必要になる範囲で、定義・直観・代表的な例・本文での使われ方の順にまとめる。証明は概略にとどめ、厳密な扱いは標準的な教科書（例えば Hatcher『Algebraic Topology』、Bott--Tu『Differential Forms in Algebraic Topology』、中原『理論物理学のための幾何学とトポロジー』）に譲る。各節の終わりには内容を確認する簡単な練習問題を置き、その解答は最後の\ref{sec:topo-solutions}節にまとめた。
 
 全体を貫く考え方は次の1つである。
 \begin{quote}
@@ -3640,6 +3646,11 @@ $F(\cdot, t)$ は「時刻 $t$ における写像」であり、ホモトピー�
 \end{itemize}
 
 以下で導入する基本群・ホモトピー群・de Rhamコホモロジー・ホモロジーはすべて\textbf{ホモトピー不変}、すなわちホモトピー同値な空間に対して同型な群を与える。特に同相な空間に対しては同型である。したがって、これらの群が異なれば2つの空間は同相ではない、と結論できる。
+
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-rn}任意の空間 $X$ からの2つの連続写像 $f_0, f_1: X \to \mathbb{R}^n$ はホモトピックであることを示せ。
+
+\exprob{ex:topo-cylinder}円柱 $S^1 \times \mathbb{R}$ が円周 $S^1$ とホモトピー同値であることを示せ。
 
 %==============================================================
 \section{被覆空間}
@@ -3673,6 +3684,9 @@ $F(\cdot, t)$ は「時刻 $t$ における写像」であり、ホモトピー�
 $\tilde{X}$ が単連結（\ref{sec:topo-pi1}節）であるような被覆 $p: \tilde{X} \to X$ を\textbf{普遍被覆}と呼ぶ。
 \end{mydef}
 上の表のうち $\mathbb{R} \to S^1$、$\mathbb{C} \to E_\Lambda$、$S^n \to \mathbb{RP}^n$（$n \ge 2$）、$SU(2) \to SO(3)$ は普遍被覆である。普遍被覆 $\tilde{X} \to X = \tilde{X}/\Gamma$ では $\pi_1(X) \cong \Gamma$ が成り立つ（次節）。
+
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-lift}被覆 $p: \mathbb{R} \to S^1$、$p(s) = e^{2\pi i s}$ について、ループ $\gamma(t) = e^{4\pi i t}$（$0 \le t \le 1$）を $\tilde{\gamma}(0) = 0$ となるように持ち上げよ。持ち上げた道の終点から何がわかるか。
 
 %==============================================================
 \section{基本群}
@@ -3745,6 +3759,10 @@ $X \times Y$ 内のループは $X$ 成分と $Y$ 成分のループの組であ
     \item $\pi_1(S^3) = 0 \neq \mathbb{Z} = \pi_1(S^2 \times S^1)$ から、Hopf束が自明でないことが従う（第\ref{ch:group-action}章、\ref{sec:topo-bundle}節）。
 \end{itemize}
 
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-pi1}次の空間の基本群を求めよ。
+(a) $\mathbb{R}^2 \setminus \{0\}$　(b) $\mathbb{R}^3 \setminus \{0\}$　(c) $\mathbb{R}^3$ から $z$ 軸を除いた空間　(d) $S^1 \times S^2$
+
 %==============================================================
 \section{高次ホモトピー群}
 \label{sec:topo-pin}
@@ -3808,6 +3826,12 @@ $SU(2)$ の元は
 \paragraph{写像空間のホモトピー群}
 第\ref{ch:group-action}章のSingerの定理では、基点付きゲージ群 $\mathcal{G}_0 = \{ g: S^4 \to G \mid g(*) = e \}$ について $\pi_k(\mathcal{G}_0) \cong \pi_{k+4}(G)$ を用いた。これは次のように理解できる。$S^k$ から $\mathcal{G}_0$ への写像とは、$S^k$ の各点ごとに写像 $S^4 \to G$ が与えられたもの、すなわち2変数の写像 $S^k \times S^4 \to G$ のことである。基点の条件により、部分集合 $S^k \vee S^4 = (S^k \times \{*\}) \cup (\{*\} \times S^4)$ は $e$ に写る。これを1点に潰した空間（\textbf{スマッシュ積}）$S^k \wedge S^4 = S^k \times S^4 / (S^k \vee S^4)$ は $S^{k+4}$ と同相である。例えば $S^1 \times S^1 = T^2$ から $a, b$ サイクルを潰すと、正方形の内部だけが残って $S^2$ になる（図\ref{fig:topo-loops}右）。したがって $\pi_k(\mathcal{G}_0)$ は $S^{k+4}$ から $G$ への写像の類 $\pi_{k+4}(G)$ と同一視される。
 
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-pin}次のホモトピー群を求めよ。
+(a) $\pi_2(S^2 \times S^1)$　(b) $\pi_3(S^2 \times S^3)$　(c) $\pi_3(T^n)$
+
+\exprob{ex:topo-sun}ファイバー束 $SU(N-1) \to SU(N) \to S^{2N-1}$ のホモトピー完全列を用いて、$SU(N)$（$N \ge 2$）が単連結であることを示せ。
+
 %==============================================================
 \section{写像度と巻き付き数}
 \label{sec:topo-degree}
@@ -3861,6 +3885,16 @@ $M, N$ を同じ次元 $n$ の向き付けられた閉多様体（$N$ は連結�
 \end{itemize}
 物理で「巻き付き数」と呼ばれる量は、このように写像度の特別な場合であり、場の配位を連続変形しても変わらない整数として、トポロジカルな電荷を与える。
 
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-deg-s1}写像 $f: S^1 \to S^1$、$f(z) = \bar{z}^3$ の写像度を、(a) 正則値の逆像を数える方法、(b) 巻き付き数の積分公式、の2通りで求めよ。
+
+\exprob{ex:topo-deg-rational}有理関数 $f(z) = \dfrac{z^2 + 1}{z - 2}$ を写像 $\mathbb{CP}^1 \to \mathbb{CP}^1$ とみたときの写像度を求めよ。
+
+\exprob{ex:topo-antipodal}
+(a) $S^2$ の対蹠写像 $x \mapsto -x$ は恒等写像にホモトピックでないことを示せ。
+(b) $S^1$ の対蹠写像 $z \mapsto -z$ は恒等写像にホモトピックであることを示せ。
+(c) (a) を用いて、$S^2$ 上には至る所で $0$ にならない連続な接ベクトル場が存在しないこと（\textbf{毛玉の定理}）を示せ。
+
 %==============================================================
 \section{絡み数とHopf不変量}
 \label{sec:topo-hopf}
@@ -3893,6 +3927,9 @@ $\mathbb{R}^3$（または $S^3$）内の交わらない2本の向き付き閉�
 
 \paragraph{Hopf不変量1の写像とAdamsの定理}
 同様のHopf不変量は写像 $S^{2m-1} \to S^m$（$m$ 偶数）に対して定義される。Adamsの定理によれば、Hopf不変量 $1$ の写像が存在するのは $m = 2, 4, 8$（と自明な $m = 1$）に限られ、それらは $\mathbb{C}, \mathbb{H}, \mathbb{O}$（と $\mathbb{R}$）によるHopf束で実現される（第\ref{ch:instanton}章\ref{sec:quaternion-hopf}節）。
+
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-hopf-link}Hopf写像 $x_a = z^\dagger \sigma_a z$（$z = (z_1, z_2)$、$|z_1|^2 + |z_2|^2 = 1$）について、北極 $x = (0, 0, 1)$ と南極 $x = (0, 0, -1)$ の逆像を求め、それらの絡み数が $\pm 1$ であることを示せ。
 
 %==============================================================
 \section{主束の自明性と球面上の束の分類}
@@ -3931,6 +3968,11 @@ $S^n$ を北半球 $D_N$ と南半球 $D_S$（どちらも可縮な円板）に�
 \end{tabular}
 \end{center}
 最後の行は、時間的ゲージで真空を分類するときに「束」ではなく「ゲージ変換 $g: S^3 \to SU(N)$ の巻き付き数 $\pi_3$」が現れる理由でもある（第\ref{ch:instanton}章の $\theta$ 真空）。
+
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-z2}$S^1$ 上の主 $\mathbb{Z}_2$ 束（2重被覆）を、$S^1$ を2つの弧に分けて貼り合わせる方法で分類せよ。
+
+\exprob{ex:topo-su2}$S^2$ 上の主 $SU(2)$ 束、$S^3$ 上の主 $SU(2)$ 束は、いずれもすべて自明であることを示せ。$S^2$ 上の $U(1)$ 束と比べると何が違うか。
 
 %==============================================================
 \section{微分形式とde Rhamコホモロジー}
@@ -3976,6 +4018,11 @@ $H^k_{\mathrm{dR}}$ は「閉形式のうち、ポテンシャルを持たない
 \paragraph{特性類との関係}
 Chern--Weil理論（第\ref{ch:bundle}章）では、曲率 $F$ から作った閉形式（例えば $\mathrm{Tr}\,F$、$\mathrm{Tr}(F \wedge F)$）のde Rhamコホモロジー類が接続の選び方によらないことを示した。これが特性類であり、その積分（Chern数・インスタントン数）は整数値をとる。整数性は、上の貼り合わせ構成と巻き付き数（\ref{sec:topo-degree}節・\ref{sec:topo-bundle}節）から理解できる。
 
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-closed}
+(a) $\mathbb{R}^2 \setminus \{0\}$ 上の1形式 $\alpha = \dfrac{x\,dy - y\,dx}{x^2 + y^2}$ が閉形式であることを直接計算で確かめよ。
+(b) $\mathbb{R}^3 \setminus \{0\}$ 上の2形式 $F = \dfrac{x\,dy \wedge dz + y\,dz \wedge dx + z\,dx \wedge dy}{r^3}$（$r = |x|$）が閉形式であるが完全形式でないことを示せ。
+
 %==============================================================
 \section{ホモロジーとサイクル}
 \label{sec:topo-homology}
@@ -4020,6 +4067,9 @@ $k$ サイクル $A$ と $(n - k)$ サイクル $B$ は、一般の位置では�
     \item トーラス（$n = 2$、$k = 1$）：$a \cdot b = 1 = -b \cdot a$。
     \item Calabi--Yau 3-fold（$n = 6$、$k = 3$）：3サイクルどうしの交点数は反対称であり、交点数が $A_I \cdot B^J = \delta_I^J$、$A_I \cdot A_J = B^I \cdot B^J = 0$ となる\textbf{シンプレクティック基底} $\{A_I, B^I\}$ がとれる（第\ref{ch:calabi-yau}章）。この基底の取り替えのうち交点数を保つものが $Sp(2h^{2,1} + 2, \mathbb{Z})$ であり、トーラスの $SL(2, \mathbb{Z}) = Sp(2, \mathbb{Z})$ の一般化である。コニフォールドのモノドロミーはその一例である。
 \end{itemize}
+
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-torus-cycle}トーラスの $a$ サイクルに沿って2周、$b$ サイクルに沿って1周する閉曲線 $c$ を考える（$c = 2a + b$）。交点数 $c \cdot a$、$c \cdot b$ を求めよ。また、複素トーラス $E_\Lambda$ で $\int_a dz = \omega_1$、$\int_b dz = \omega_2$ のとき、$\int_c dz$ を求めよ。
 
 %==============================================================
 \section{Euler数とBetti数}
@@ -4069,6 +4119,106 @@ Euler数は、Gauss--Bonnetの定理（第\ref{ch:bundle}章）
     H^k(X, \mathbb{C}) = \bigoplus_{p + q = k} H^{p,q}(X), \qquad b_k = \sum_{p + q = k} h^{p,q}, \qquad h^{p,q} = \dim H^{p,q}(X)
 \end{equation}
 ここで $H^{p,q}$ はDolbeaultコホモロジー（$\bar\partial$ に関する閉形式 $/$ 完全形式、第\ref{ch:deformation}章）であり、$h^{p,q}$ を\textbf{Hodge数}と呼ぶ。Hodge数は複素共役による対称性 $h^{p,q} = h^{q,p}$ とSerre双対性 $h^{p,q} = h^{n-p,n-q}$ を満たし、ダイアモンド状に並べて表示される（Hodgeダイアモンド、第\ref{ch:calabi-yau}章）。ダイアモンドの上から $k + 1$ 段目の和が $b_k$ であり、\eqref{eq:euler-betti} によってEuler数が計算できる。
+
+\paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
+\exprob{ex:topo-euler}
+(a) 立方体の表面のEuler数を、頂点・辺・面の数から求めよ。
+(b) $\mathbb{CP}^2$ と $S^2 \times S^2$ の胞体分割を与え、Euler数とBetti数を求めよ。
+(c) 半径 $R$ の球面についてGauss--Bonnetの定理を確かめよ。
+
+%==============================================================
+\section{練習問題の解答}
+\label{sec:topo-solutions}
+
+\exsol{ex:topo-rn}
+$F(x, t) = (1 - t) f_0(x) + t f_1(x)$ とおけば、これは連続で $F(\cdot, 0) = f_0$、$F(\cdot, 1) = f_1$ を満たす。$\mathbb{R}^n$ では2点を結ぶ線分が常に空間内にあるので、この線形補間が使える。特に、可縮な空間への写像はすべて定値写像にホモトピックであり、ホモトピー類は1つしかない。（ゲージ接続の空間 $\mathcal{A}$ もアフィン空間なので、同じ議論が成り立つ。）
+
+\exsol{ex:topo-cylinder}
+$f: S^1 \times \mathbb{R} \to S^1$ を射影 $f(z, s) = z$、$g: S^1 \to S^1 \times \mathbb{R}$ を $g(z) = (z, 0)$ とする。$f \circ g = \mathrm{id}_{S^1}$ である。また $g \circ f(z, s) = (z, 0)$ であり、$F((z, s), t) = (z, ts)$ が $g \circ f$ から $\mathrm{id}$ へのホモトピーを与える。よって $S^1 \times \mathbb{R} \simeq S^1$。したがって $\pi_1(S^1 \times \mathbb{R}) \cong \mathbb{Z}$ である。
+
+\exsol{ex:topo-lift}
+$p(\tilde{\gamma}(t)) = e^{2\pi i \tilde{\gamma}(t)} = e^{4\pi i t}$ かつ $\tilde{\gamma}(0) = 0$ を満たす連続な道は $\tilde{\gamma}(t) = 2t$ である（持ち上げの一意性）。終点は $\tilde{\gamma}(1) = 2$ であり、始点との差 $2$ が巻き付き数である。すなわち $\gamma$ は $S^1$ を2周するループであり、$\pi_1(S^1) \cong \mathbb{Z}$ の元 $2$ を表す。
+
+\exsol{ex:topo-pi1}
+(a) $\mathbb{R}^2 \setminus \{0\} \simeq S^1$（$x \mapsto x/|x|$）なので $\mathbb{Z}$。
+(b) $\mathbb{R}^3 \setminus \{0\} \simeq S^2$ であり $S^2$ は単連結なので $0$。
+(c) $(x, y, z) \mapsto (x, y)$ により $\mathbb{R}^2 \setminus \{0\}$ とホモトピー同値（ホモトピー $F((x, y, z), t) = (x, y, (1 - t)z)$ で $z$ 方向を潰す）なので $\mathbb{Z}$。巻き付き数は「$z$ 軸のまわりを何周するか」である。物理的には、無限に長いソレノイドの外側の空間であり、Aharonov--Bohm効果の位相 $e^{ie\oint A}$ はこの巻き付き数ごとに異なる値をとる。
+(d) 直積の公式より $\pi_1(S^1) \times \pi_1(S^2) \cong \mathbb{Z} \times 0 = \mathbb{Z}$。
+(b) と (c) の違いは、3次元空間で「点」を除いてもループは引っかからないが、「直線」を除くと引っかかる、ということである。
+
+\exsol{ex:topo-pin}
+直積の公式 $\pi_k(X \times Y) \cong \pi_k(X) \times \pi_k(Y)$ と球面のホモトピー群の表を用いる。
+(a) $\pi_2(S^2) \times \pi_2(S^1) \cong \mathbb{Z} \times 0 = \mathbb{Z}$。
+(b) $\pi_3(S^2) \times \pi_3(S^3) \cong \mathbb{Z} \times \mathbb{Z}$。
+(c) $\pi_3(S^1)^n = 0$。（あるいは、普遍被覆 $\mathbb{R}^n$ が可縮なので、$k \ge 2$ で $\pi_k(T^n) = 0$。）
+
+\exsol{ex:topo-sun}
+完全列の該当部分は
+\begin{equation*}
+    \pi_1(SU(N-1)) \to \pi_1(SU(N)) \to \pi_1(S^{2N-1})
+\end{equation*}
+である。$N \ge 2$ では $2N - 1 \ge 3$ なので $\pi_1(S^{2N-1}) = 0$。完全性より、2番目の写像の核（$=\pi_1(SU(N))$ 全体）は1番目の写像の像に等しいので、$\pi_1(SU(N-1)) \to \pi_1(SU(N))$ は全射である。$\pi_1(SU(2)) = \pi_1(S^3) = 0$ から出発して帰納的に $\pi_1(SU(N)) = 0$ を得る。一方、$U(N)$ は $\det: U(N) \to U(1)$ を通じて $\pi_1(U(N)) \cong \mathbb{Z}$ となり、単連結でない。
+
+\exsol{ex:topo-deg-s1}
+(a) 正則値として $1$ をとる。$\bar{z}^3 = 1$ の解は $z = 1, e^{\pm 2\pi i/3}$ の3点。$z = e^{i\varphi}$ とすると $f = e^{-3i\varphi}$ であり、偏角は $\varphi$ の $-3$ 倍で動くので、各点で $f$ は向きを反転する。よって $\deg f = -1 - 1 - 1 = -3$。
+(b) $t = f(e^{i\varphi}) = e^{-3i\varphi}$ に対し $t^{-1}dt = -3i\,d\varphi$ なので、$w = \frac{1}{2\pi i}\oint t^{-1}dt = \frac{1}{2\pi i}\cdot(-3i)\cdot 2\pi = -3$。両者は一致する。
+
+\exsol{ex:topo-deg-rational}
+正則値として $w = 0$ をとる。$f(z) = 0$ の解は $z = \pm i$ の2点。$f'(z) = \dfrac{z^2 - 4z - 1}{(z - 2)^2}$ であり、$f'(\pm i) = \dfrac{-2 \mp 4i}{(\pm i - 2)^2} \neq 0$ なので $0$ は確かに正則値である。正則写像は向きを保つので、各点の寄与は $+1$ であり、$\deg f = 2$。一般の $w$ に対しても、$f(z) = w$ は2次方程式 $z^2 + 1 = w(z - 2)$ となり、解はちょうど2個である（$w = \infty$ の逆像は $z = 2$ と $z = \infty$ の2点）。有理関数の写像度は、分子と分母の次数の大きい方に等しい。
+
+\exsol{ex:topo-antipodal}
+(a) $S^2 \subset \mathbb{R}^3$ の対蹠写像は3つの座標をすべて反転するので、写像度は $(-1)^3 = -1$。恒等写像の写像度は $1$ であり、写像度はホモトピー不変なので、両者はホモトピックでない。
+(b) $F(z, t) = e^{i\pi t} z$ が $\mathrm{id}$（$t = 0$）から $-\mathrm{id}$（$t = 1$）へのホモトピーを与える（$\pi$ だけ連続的に回転する）。写像度は $(-1)^2 = 1$ で、恒等写像と一致している。
+(c) $S^2$ 上に至る所で $0$ にならない接ベクトル場 $v$ があるとする。$u(x) = v(x)/|v(x)|$ は $x$ に直交する単位ベクトルなので、
+\begin{equation*}
+    F(x, t) = \cos(\pi t)\, x + \sin(\pi t)\, u(x)
+\end{equation*}
+は常に単位ベクトルであり、$S^2$ 上の写像である。$F(\cdot, 0) = \mathrm{id}$、$F(\cdot, 1) = -\mathrm{id}$ なので、恒等写像と対蹠写像がホモトピックになり、(a) に矛盾する。（$S^1$ では $u(z) = iz$ がそのような接ベクトル場であり、(b) のホモトピーはまさにこれで作られている。）
+
+\exsol{ex:topo-hopf-link}
+$x_3 = |z_1|^2 - |z_2|^2$ である。$|z_1|^2 + |z_2|^2 = 1$ と合わせると、$x_3 = 1$ は $z_2 = 0$、$x_3 = -1$ は $z_1 = 0$ と同値である。したがって逆像は
+\begin{equation*}
+    C_N = \{ (e^{i\alpha}, 0) \}, \qquad C_S = \{ (0, e^{i\beta}) \}
+\end{equation*}
+という2つの円周である。$C_N$ を境界とする円板として
+\begin{equation*}
+    D = \left\{ \left( z_1,\ \sqrt{1 - |z_1|^2} \right) \;\middle|\; |z_1| \le 1 \right\} \subset S^3
+\end{equation*}
+をとる（$z_2$ を非負の実数に制限したもの）。$|z_1| = 1$ のとき $z_2 = 0$ となるので、$\partial D = C_N$ である。$C_S$ と $D$ の交点は $z_1 = 0$ かつ $z_2 = e^{i\beta}$ が非負の実数、すなわち $z_2 = 1$ の1点だけである。この点で $D$ の接方向は $z_1$ 平面（実2次元）、$C_S$ の接方向は $z_2$ の位相方向であり、合わせて $S^3$ の接空間（実3次元）を張るので横断的に交わる。よって $\mathrm{Lk}(C_N, C_S) = \pm 1$（符号は向きの選び方による）であり、Hopf不変量 $|H| = 1$ を確かめられた。
+
+\exsol{ex:topo-z2}
+$S^1$ を2つの弧 $U_1, U_2$ に分けると、それぞれの上で束は自明 $U_i \times \mathbb{Z}_2$ である。$U_1 \cap U_2$ は2つの小さな弧 $I, J$ からなり、推移関数はそれぞれの上で定数 $g_I, g_J \in \mathbb{Z}_2 = \{\pm 1\}$ である（$\mathbb{Z}_2$ は離散的なので、連結な $I$ 上で連続な関数は定数）。$U_2$ 上の自明化を $\epsilon \in \mathbb{Z}_2$ で取り替えると $g_I, g_J$ は両方とも $\epsilon$ 倍されるので、不変なのは積 $g_I g_J$ だけである。したがって束は2種類ある。
+\begin{itemize}
+    \item $g_I g_J = +1$：自明な束 $S^1 \times \mathbb{Z}_2$（2つの円周の非交和）。
+    \item $g_I g_J = -1$：1周するとシートが入れ替わる束。全空間は連結な1つの円周であり、2重被覆 $z \mapsto z^2$ と同型である。
+\end{itemize}
+$g_I g_J$ は「1周したときのホロノミー」であり、$\mathrm{Hom}(\pi_1(S^1), \mathbb{Z}_2) = \mathrm{Hom}(\mathbb{Z}, \mathbb{Z}_2) \cong \mathbb{Z}_2$ と一致する（\ref{sec:topo-pi1}節の平坦接続の分類の離散版）。非自明なものは、Möbiusの帯の境界、あるいは周期的境界条件に対する反周期的境界条件（フェルミオンのRamond/Neveu--Schwarz境界条件）に対応する。
+
+\exsol{ex:topo-su2}
+貼り合わせ構成により、$S^n$ 上の主 $SU(2)$ 束は $\pi_{n-1}(SU(2)) = \pi_{n-1}(S^3)$ で分類される。$n = 2, 3$ では $\pi_1(S^3) = \pi_2(S^3) = 0$ なので、すべて自明である。一方 $S^2$ 上の $U(1)$ 束は $\pi_1(U(1)) \cong \mathbb{Z}$ で分類され、非自明な束（Diracモノポール）がある。違いは、$U(1)$ の推移関数 $e^{in\phi}$ は赤道で $U(1)$ に $n$ 回巻き付いてほどけないのに対し、$SU(2) \cong S^3$ の中ではどのループも縮められることにある。したがって純粋な $SU(2)$ ゲージ理論の束には磁荷の位相的な区別がなく、'tHooft--Polyakovモノポールの磁荷は、束ではなくHiggs場が無限遠で定める写像 $S^2 \to SU(2)/U(1) \cong S^2$ の類 $\pi_2(S^2) \cong \mathbb{Z}$ から生じる。
+
+\exsol{ex:topo-closed}
+(a) $\rho = x^2 + y^2$ とすると
+\begin{equation*}
+    d\alpha = \left[ \partial_x\!\left( \frac{x}{\rho} \right) + \partial_y\!\left( \frac{y}{\rho} \right) \right] dx \wedge dy = \left[ \frac{y^2 - x^2}{\rho^2} + \frac{x^2 - y^2}{\rho^2} \right] dx \wedge dy = 0.
+\end{equation*}
+(b) $F$ はベクトル場 $\bm{E} = \bm{r}/r^3$ の「流束2形式」であり、$dF = (\nabla \cdot \bm{E})\, dx \wedge dy \wedge dz$ である。$r \neq 0$ では
+\begin{equation*}
+    \nabla \cdot \frac{\bm{r}}{r^3} = \frac{3}{r^3} - \frac{3\,\bm{r} \cdot \bm{r}}{r^5} = 0
+\end{equation*}
+なので閉形式である。単位球面 $S^2$ 上では $r = 1$ であり、$F$ の制限は面積形式になるので $\int_{S^2} F = 4\pi$。もし $F = d\beta$ と書ければ、$S^2$ は境界を持たないのでStokesの定理より $\int_{S^2} F = 0$ となり矛盾する。したがって完全形式でない。これは $\mathbb{R}^3 \setminus \{0\} \simeq S^2$ から $H^2_{\mathrm{dR}} \cong \mathbb{R}$ となることの現れであり、物理的には原点に置いた点電荷（あるいは磁気単極子）のCoulomb場である。原点を除かなければ $\nabla \cdot \bm{E} = 4\pi\delta^3(\bm{r})$ となり、閉形式でなくなる。
+
+\exsol{ex:topo-torus-cycle}
+交点数は双線形であり、1サイクルどうしでは反対称（$a \cdot a = b \cdot b = 0$、$b \cdot a = -a \cdot b = -1$）なので
+\begin{equation*}
+    c \cdot a = 2\, a \cdot a + b \cdot a = -1, \qquad c \cdot b = 2\, a \cdot b + b \cdot b = 2.
+\end{equation*}
+$\int_c dz$ も $c$ の類について線形なので、$\int_c dz = 2\omega_1 + \omega_2$。周期はサイクルのホモロジー類だけで決まり、格子 $\Lambda$ の元を与える。
+
+\exsol{ex:topo-euler}
+(a) 頂点8、辺12、面6なので $\chi = 8 - 12 + 6 = 2$。立方体の表面は $S^2$ と同相であり、$\chi(S^2) = 2$ と一致する。
+(b) $\mathbb{CP}^2 = \mathbb{C}^2 \sqcup \mathbb{C}^1 \sqcup \mathbb{C}^0$ は0胞体・2胞体・4胞体を1つずつ持つので $\chi = 3$、Betti数は $(b_0, \dots, b_4) = (1, 0, 1, 0, 1)$。$S^2 = \{\text{点}\} \sqcup \mathbb{R}^2$ の直積から、$S^2 \times S^2$ は0胞体1つ（点 $\times$ 点）、2胞体2つ（$\mathbb{R}^2 \times$ 点、点 $\times \mathbb{R}^2$）、4胞体1つ（$\mathbb{R}^2 \times \mathbb{R}^2$）を持つので、$\chi = 1 + 2 + 1 = 4$、Betti数は $(1, 0, 2, 0, 1)$。どちらも偶数次元の胞体しかないので $b_k = c_k$ である。（一般に $\chi(X \times Y) = \chi(X)\chi(Y)$ であり、$\chi(S^2 \times S^2) = 2 \times 2 = 4$ とも一致する。）
+(c) 半径 $R$ の球面では $K = 1/R^2$、面積は $4\pi R^2$ なので、$\frac{1}{2\pi}\int K\,dA = \frac{1}{2\pi}\cdot\frac{1}{R^2}\cdot 4\pi R^2 = 2 = \chi(S^2)$。$R$ によらないことが、左辺が位相不変量であることを反映している。
 
 \chapter{超対称性の基礎}
 \label{app:susy}
