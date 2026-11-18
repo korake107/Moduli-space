@@ -203,6 +203,142 @@
 \begin{center}
     \emph{同じトーラスを指す異なるラベル $\tau, \tau'$ どうしの関係が、ちょうど $SL(2,\mathbb{Z})$ の作用で尽くされる}
 \end{center}
+
+\paragraph{なぜ同じ格子なら同じトーラスなのか}
+トーラスの定義
+\begin{equation*}
+    E_\Lambda = \mathbb{C}/\Lambda, \qquad z \sim w \iff z - w \in \Lambda
+\end{equation*}
+には、格子 $\Lambda$ という\textbf{点の集合}しか現れない。基底 $(\omega_1, \omega_2)$ も基本平行四辺形も定義には入っておらず、それらはトーラスを目で見るために選んだ「切り出し方」にすぎない。したがって、集合として $\Lambda = \Lambda'$ であれば、同値関係 $\sim$ がまったく同じなので、$E_\Lambda$ と $E_{\Lambda'}$ は文字通り同じものである。
+
+例えば $\tau$ と $\tau + 1$ を考えよう。$\tau + 1 = \tau + 1 \cdot 1 \in \mathbb{Z} + \mathbb{Z}\tau$ であり、逆に $\tau = (\tau + 1) - 1 \in \mathbb{Z} + \mathbb{Z}(\tau+1)$ なので、
+\begin{equation*}
+    \mathbb{Z} + \mathbb{Z}\tau = \mathbb{Z} + \mathbb{Z}(\tau + 1)
+\end{equation*}
+が集合として成り立つ。図\ref{fig:same-lattice}のように、格子点の並びはまったく同じであり、違うのはどの4点を結んで平行四辺形にするかだけである。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.3]
+    \begin{scope}
+        \foreach \m in {-1,0,1,2,3} \foreach \n in {0,1,2}
+            \fill ({\m + 0.3*\n}, {\n}) circle (0.04);
+        \fill[blue!12] (0,0) -- (1,0) -- (1.3,1) -- (0.3,1) -- cycle;
+        \draw[very thick, blue!70!black] (0,0) -- (1,0) -- (1.3,1) -- (0.3,1) -- cycle;
+        \draw[->, thick] (0,0) -- (1,0) node[midway, below] {$1$};
+        \draw[->, thick] (0,0) -- (0.3,1) node[pos=0.7, left] {$\tau$};
+        \node at (1.1,-0.75) {(A) 基底 $(1, \tau)$};
+    \end{scope}
+    \begin{scope}[xshift=5.2cm]
+        \foreach \m in {-1,0,1,2,3} \foreach \n in {0,1,2}
+            \fill ({\m + 0.3*\n}, {\n}) circle (0.04);
+        \fill[red!12] (0,0) -- (1,0) -- (2.3,1) -- (1.3,1) -- cycle;
+        \draw[very thick, red!70!black] (0,0) -- (1,0) -- (2.3,1) -- (1.3,1) -- cycle;
+        \draw[->, thick] (0,0) -- (1,0) node[midway, below] {$1$};
+        \draw[->, thick] (0,0) -- (1.3,1) node[pos=0.6, above left] {$\tau + 1$};
+        \node at (1.1,-0.75) {(B) 基底 $(1, \tau+1)$};
+    \end{scope}
+\end{tikzpicture}
+\caption{同じ格子 $\Lambda = \mathbb{Z} + \mathbb{Z}\tau$ に対する2通りの基本平行四辺形。黒点（格子点）の配置は (A) と (B) でまったく同じであり、どの4点を結ぶかが違うだけである。}
+\label{fig:same-lattice}
+\end{figure}
+
+(A) と (B) の平行四辺形が同じトーラスを表すことは、切り貼りで直接確かめられる（図\ref{fig:cut-paste-general}）。(A) を対角線 $0$--$(\tau+1)$ で2つの三角形に切り、左側の三角形を $+1$ だけ平行移動して右側に貼ると、(B) の平行四辺形になる。トーラス上では $z$ と $z + 1$ は同じ点なので、「$1$ だけずらして貼る」操作はトーラス上では何も動かしていない。(A) と (B) は、同じトーラスを別の場所で切り開いた展開図なのである。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.6]
+    \foreach \m in {-1,0,1,2,3} \foreach \n in {0,1}
+        \fill ({\m + 0.3*\n}, {\n}) circle (0.035);
+    % 元の平行四辺形 (A)
+    \draw[gray, dashed, thick] (0,0) -- (1,0) -- (1.3,1) -- (0.3,1) -- cycle;
+    % 左の三角形（移動前）
+    \fill[red!20] (0,0) -- (1.3,1) -- (0.3,1) -- cycle;
+    % 右の三角形（動かさない部分）
+    \fill[blue!15] (0,0) -- (1,0) -- (1.3,1) -- cycle;
+    % 左の三角形（移動後）
+    \fill[red!20] (1,0) -- (2.3,1) -- (1.3,1) -- cycle;
+    \draw[thick, red!70!black] (1,0) -- (2.3,1) -- (1.3,1) -- cycle;
+    \draw[thick, red!70!black, densely dotted] (0,0) -- (1.3,1) -- (0.3,1) -- cycle;
+    % (B) の輪郭
+    \draw[very thick, blue!70!black] (0,0) -- (1,0) -- (2.3,1) -- (1.3,1) -- cycle;
+    \draw[->, thick, red!70!black] (0.5,0.8) to[bend left=40] node[above] {$+1$} (1.5,0.8);
+    \node[below] at (0,0) {$0$};
+    \node[below] at (1,0) {$1$};
+    \node[above] at (0.3,1) {$\tau$};
+    \node[above] at (1.3,1) {$\tau+1$};
+    \node[above] at (2.3,1) {$\tau+2$};
+\end{tikzpicture}
+\caption{(A) の平行四辺形（破線）を対角線で切り、赤い三角形を $+1$ だけ平行移動すると (B) の平行四辺形（青の太線）が得られる。$1 \in \Lambda$ なので、この平行移動はトーラス上の恒等写像である。}
+\label{fig:cut-paste-general}
+\end{figure}
+
+より一般に、平面を格子 $\Lambda$ で敷き詰めた「壁紙」を思い浮かべるとよい（図\ref{fig:wallpaper}）。トーラスとは、この壁紙で $\Lambda$ ずつずれて重なる点をすべて同一視したものである。基本平行四辺形は繰り返しの「1単位」をどう切り取るかの選択にすぎず、正方形で切っても斜めの平行四辺形で切っても、繰り返している模様（トーラス）そのものは変わらない。基底の取り替え、すなわち $SL(2,\mathbb{Z})$ の作用は、この切り取り方を変える操作である。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    \clip (-0.6,-0.5) rectangle (5.6,3.5);
+    \foreach \m in {-3,...,6} \foreach \n in {-1,...,4}
+        \fill ({\m + 0.3*\n}, {\n}) circle (0.04);
+    % 同一視される点 z + Λ
+    \foreach \m in {-3,...,6} \foreach \n in {-1,...,4}
+        \fill[orange!90!black] ({\m + 0.3*\n + 0.45}, {\n + 0.35}) circle (0.055);
+    % 2通りの基本領域
+    \draw[very thick, blue!70!black] (0,0) -- (1,0) -- (1.3,1) -- (0.3,1) -- cycle;
+    \draw[very thick, red!70!black] (2.6,2) -- (3.6,2) -- (4.9,3) -- (3.9,3) -- cycle;
+    \node[blue!70!black, below] at (0.5,0) {(A)};
+    \node[red!70!black, above] at (4.4,3) {(B)};
+\end{tikzpicture}
+\caption{平面を格子 $\Lambda$ で敷き詰めた図。オレンジの点 $z + \Lambda$ はすべてトーラス上の1点に対応する。青の (A) も赤の (B) も、各オレンジ点のちょうど1つの代表を含むので、どちらもトーラス全体をちょうど1回覆う。}
+\label{fig:wallpaper}
+\end{figure}
+
+\paragraph{「1周ねじったトーラス」に見えることについて}
+(B) の平行四辺形から作ったトーラスは、(A) から作ったものを1周ねじったもののように見える。この直観は正しいが、ねじれているのは\textbf{トーラス上に描いた線（サイクル）}であって、\textbf{曲面そのもの}ではない。
+
+まず平行四辺形の左右の斜辺どうしを $z \sim z+1$ で貼り合わせて円筒を作り、次に両端の円（底辺と上辺からできる $a$ サイクル）を $z \sim z + \omega_2$ で貼り合わせてトーラスを作ると考える。(A) ではそのまま貼るが、(B) では端の円を\textbf{ちょうど1周（$360^\circ$）回してから}貼ることになる。ところが円を $360^\circ$ 回すと、円周上のすべての点は元の位置に戻る。したがって「1周回して貼る」と「そのまま貼る」とでは、どの点とどの点が同一視されるかが完全に一致し、出来上がる曲面は文字通り同じである。
+
+違いが見えるのは、円筒にあらかじめ線を描いておいた場合である（図\ref{fig:dehn-twist}）。端から端へまっすぐ引いた線（$b$ サイクル）は、1周ねじって貼るとトーラスに1周巻きつき、$b + a$ になる。これがDehnツイストであり、トーラスの自己同相写像としては恒等写像ではない（ホモロジーに $b \mapsto b + a$ として非自明に作用する）。しかし曲面とその複素構造は何も変わらない。$\tau$ は「トーラス＋サイクルの基底」に付けたラベルなので、$\tau \mapsto \tau + 1$ でラベルは変わるが、トーラスは同じなのである。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.2]
+    \begin{scope}
+        \draw[thick] (0,1) -- (4,1);
+        \draw[thick] (0,-1) -- (4,-1);
+        \draw[thick] (0,0) ellipse (0.35 and 1);
+        \draw[thick] (4,-1) arc (-90:90:0.35 and 1);
+        \draw[thick, dashed] (4,1) arc (90:270:0.35 and 1);
+        \draw[very thick, red!70!black] (0.35,0) -- (4.35,0);
+        \node[red!70!black, above] at (2,0) {$b$};
+        \node[blue!70!black, below] at (0,-1) {$a$};
+        \node[blue!70!black, below] at (4,-1) {$a$};
+        \node at (2,-1.6) {(A) そのまま貼る};
+    \end{scope}
+    \begin{scope}[xshift=6.3cm]
+        \draw[thick] (0,1) -- (4,1);
+        \draw[thick] (0,-1) -- (4,-1);
+        \draw[thick] (0,0) ellipse (0.35 and 1);
+        \draw[thick] (4,-1) arc (-90:90:0.35 and 1);
+        \draw[thick, dashed] (4,1) arc (90:270:0.35 and 1);
+        % 1周巻きつく線（表は実線、裏は破線）
+        \draw[very thick, red!70!black] (0.35,0) .. controls (0.9,-0.9) .. (1.3,-1);
+        \draw[very thick, red!70!black, dashed] (1.3,1) .. controls (2,0) .. (2.7,-1);
+        \draw[very thick, red!70!black] (2.7,1) .. controls (3.6,0.9) .. (4.35,0);
+        \node[red!70!black, above] at (3.3,0.6) {$b + a$};
+        \node[blue!70!black, below] at (0,-1) {$a$};
+        \node[blue!70!black, below] at (4,-1) {$a$};
+        \draw[->, thick] (4.85,0.6) arc (60:-240:0.25 and 0.7);
+        \node[right] at (5.05,0) {$360^\circ$};
+        \node at (2,-1.6) {(B) 1周ねじって貼る};
+    \end{scope}
+\end{tikzpicture}
+\caption{円筒の両端の円 $a$ を貼り合わせてトーラスを作る。(B) では端の円を $360^\circ$ 回してから貼るが、円周上の各点は元の位置に戻るので、同一視される点の組は (A) と同じであり、曲面としては同じトーラスである。違うのは、描いておいた線 $b$ が1周巻きついて $b + a$ になることだけである（Dehnツイスト）。}
+\label{fig:dehn-twist}
+\end{figure}
+
+整数回でないねじり方では状況が異なることにも注意しておく。角度 $\theta$ だけ回して貼ると、円周上の点は別の点に移るので同一視の仕方が変わり、$\tau \mapsto \tau + \theta/2\pi$ という一般には異なるトーラスになる。例えば半周（$\theta = \pi$）なら $\tau \mapsto \tau + \frac12$ であり、$\frac12 \notin \Lambda$ なので格子が変わる。同じトーラスに戻るのは $\theta \in 2\pi\mathbb{Z}$、すなわちちょうど整数回ねじったときだけであり、$T$ が $\tau \mapsto \tau + \frac12$ ではなく $\tau \mapsto \tau + 1$ である理由はここにある。
 という主張である。$\tau$ は座標のようなもので、$SL(2,\mathbb{Z})$ は「座標の取り替え」にあたる。
 
 \paragraph{円周との類比}
@@ -374,6 +510,19 @@ $\tau \in \mathbb{H}$ を固定する。$\mathrm{Im}(\gamma\tau) = \mathrm{Im}\,
     \item \textbf{超対称性の基礎（付録\ref{app:susy}）}：超対称性代数とBPS限界、多重項、$\mathcal{N}=1$ のラグランジアンと非繰り込み定理、$\mathcal{N}=2$ の特殊幾何。
     \item \textbf{弦理論の基礎（付録\ref{app:string}）}：Polyakov作用と臨界次元、種数展開、5つの超弦理論、T双対性、Dブレーン、双対性の網。
 \end{itemize}
+
+\paragraph{付録を読むタイミング}
+付録は最初に通読する必要はない。本文で初めて用語が出てきた箇所に「付録\ref{app:topology}の○○節を参照」と書いてあるので、そこで該当する節だけを読み、本文に戻ればよい。目安は次のとおりである。
+\begin{itemize}
+    \item \textbf{第\ref{ch:intro}章を読む前後}：付録\ref{sec:topo-covering}節（被覆空間）と\ref{sec:topo-homology}節（ホモロジーとサイクル）の前半。トーラスのモジュライと $SL(2,\mathbb{Z})$ の補足（\ref{sec:modular-supplement}節）で使う。
+    \item \textbf{第\ref{ch:group-action}章の途中}：付録\ref{sec:topo-homotopy}節（ホモトピーと可縮性）、\ref{sec:topo-pi1}節（基本群）、\ref{sec:topo-derham}節（de Rhamコホモロジー）、\ref{sec:topo-euler}節（Euler数）。ゲージ変換と閉形式・完全形式の関係、$\mathbb{CP}^n$ の例で必要になる。Gribov問題・Singerの定理の箇所では\ref{sec:topo-pin}節（高次ホモトピー群）と\ref{sec:topo-hopf}節（Hopf不変量）も使う。
+    \item \textbf{第\ref{ch:deformation}章}：トーラス上の平坦接続の例で\ref{sec:topo-pi1}節・\ref{sec:topo-derham}節を復習する程度でよい。
+    \item \textbf{第\ref{ch:bundle}章の前（最も重要）}：付録\ref{sec:topo-degree}節（写像度と巻き付き数）と\ref{sec:topo-bundle}節（主束の自明性と球面上の束の分類）。モノポールの巻き付き数やインスタントン数が「推移関数のホモトピー類」として定義されるので、この2節を先に読んでおくと第\ref{ch:bundle}章・第\ref{ch:instanton}章が格段に読みやすくなる。$\pi_3(SU(N))\cong\mathbb{Z}$ のために\ref{sec:topo-pin}節も使う。
+    \item \textbf{第\ref{ch:instanton}章}：新たに読む節はほとんどない。四元数Hopf束の箇所で\ref{sec:topo-covering}節・\ref{sec:topo-pin}節・\ref{sec:topo-hopf}節を復習する。
+    \item \textbf{第\ref{ch:vacuum}章の前}：付録\ref{app:susy}（超対称性の基礎）のうち、少なくとも $\mathcal{N}=1$ のラグランジアン（F項・D項ポテンシャル）の節。
+    \item \textbf{第\ref{ch:calabi-yau}章の前}：付録\ref{app:susy}の残り（特に $\mathcal{N}=2$ と特殊幾何）、付録\ref{app:string}（弦理論の基礎）の全体、付録\ref{sec:topo-homology}節（ホモロジー・Poincar\'e双対・交点数）の後半と\ref{sec:topo-euler}節（Betti数）。
+\end{itemize}
+代数トポロジーに不慣れな読者は、第\ref{ch:group-action}章を読み終えた時点で一度、付録\ref{app:topology}の\ref{sec:topo-homotopy}節〜\ref{sec:topo-bundle}節を練習問題とともに通読しておくのがよい。第II部で使うトポロジーの道具はほぼこの範囲に収まっている。
 
 次章では、この「物理的冗長性を割って真の自由度を取り出す」という手続きを数学的に定式化する「群作用と商空間」について詳しく見ていく。
 
@@ -770,7 +919,66 @@ $K \subset M \times M$ をコンパクトとし、$K_2$ をその第2成分へ�
 \begin{equation}
     t \cdot (\theta_1, \theta_2) = (\theta_1 + t,\ \theta_2 + \alpha t)
 \end{equation}
-で作用させる。この作用は自由であるが、各軌道は $T^2$ 内で稠密である（Kroneckerの定理）。すると空でない不変な開集合は $T^2$ 全体しかなく、$T^2/\mathbb{R}$ の開集合は $\emptyset$ と全体のみとなって、ハウスドルフ性が完全に失われる。
+で作用させる。この作用は自由であるが、各軌道は $T^2$ 内で\textbf{稠密}である（Kroneckerの定理）。
+
+部分集合 $A \subset X$ が稠密であるとは、$X$ のどの点のまわりにどんなに小さな開集合をとっても、その中に必ず $A$ の点が含まれること、すなわち $\overline{A} = X$ となることをいう。$A$ が $X$ と一致するわけではなく、$X$ のどこにでもいくらでも近づける、という意味である。典型例は $\mathbb{Q} \subset \mathbb{R}$ であり、有理数は数直線のごく一部にすぎないが、どの実数のすぐそばにも有理数がある。
+
+$T^2$ を正方形の対辺を貼り合わせたものとみなすと、軌道は傾き $\alpha$ の直線であり、正方形の端に達すると反対側から出てくる（図\ref{fig:irrational-rotation}）。$\alpha$ が有理数、例えば $\alpha = \frac12$ なら、$t = 2$ で $(\theta_1 + 2, \theta_2 + 1) \equiv (\theta_1, \theta_2)$ となって軌道は閉じた曲線になり、正方形の大部分を通らない。一方 $\alpha$ が無理数なら、出発点に戻るには $t \in \mathbb{Z}$ かつ $\alpha t \in \mathbb{Z}$ が必要であり、これは $t = 0$ 以外では起こらない。軌道は永遠に閉じず、少しずつずれた平行線を引き続け、線と線のすき間はいくらでも狭くなっていく。そのため正方形のどこに小さな円を描いても、いつか必ず軌道がその中を通る。ただし軌道は1次元の線なので面積は $0$ であり、正方形を本当に埋め尽くすわけではない（$\mathbb{Q}$ が $\mathbb{R}$ を埋め尽くさないのと同様である）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=2.4]
+    \begin{scope}
+        \draw[thick] (0,0) rectangle (1,1);
+        \begin{scope}
+            \clip (0,0) rectangle (1,1);
+            \foreach \c in {0, 0.5}
+                \draw[very thick, red!70!black] (0,\c) -- (1,\c+0.5);
+        \end{scope}
+        \node at (0.5,-0.2) {$\alpha = \frac12$（閉じる）};
+    \end{scope}
+    \foreach \N/\x in {6/1.4, 40/2.8} {
+        \begin{scope}[xshift=\x cm]
+            \draw[thick] (0,0) rectangle (1,1);
+            \begin{scope}
+                \clip (0,0) rectangle (1,1);
+                \foreach \k in {0,...,\numexpr\N-1\relax} {
+                    \pgfmathsetmacro{\c}{\k*1.41421356 - floor(\k*1.41421356)}
+                    \foreach \m in {0,1,2}
+                        \draw[red!70!black, thick] (0,\c-\m) -- (1,\c-\m+1.41421356);
+                }
+            \end{scope}
+            \node at (0.5,-0.2) {$\alpha = \sqrt2$，$\N$ 周};
+        \end{scope}
+    }
+\end{tikzpicture}
+\caption{$T^2 = \mathbb{R}^2/\mathbb{Z}^2$ 上の $\mathbb{R}$ 作用の軌道（正方形の対辺は同一視）。$\alpha$ が有理数なら軌道は閉じるが、無理数なら閉じずに平行線のすき間がいくらでも狭くなり、軌道は $T^2$ 内で稠密になる。}
+\label{fig:irrational-rotation}
+\end{figure}
+
+縦線 $\theta_1 = 0$ だけを見ると、軌道がこれを横切る高さは $0, \{\alpha\}, \{2\alpha\}, \{3\alpha\}, \dots$（$\{x\}$ は小数部分）である。これらは互いに重ならず、すき間はいくらでも小さくなる。これが後の注で用いる「$\{n\alpha\}$ は $[0,1)$ で稠密」という事実である（図\ref{fig:frac-n-alpha}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=9]
+    \foreach \N/\y in {4/0, 12/-0.12, 40/-0.24} {
+        \draw[thick] (0,\y) -- (1,\y);
+        \draw (0,\y-0.015) -- (0,\y+0.015);
+        \draw (1,\y-0.015) -- (1,\y+0.015);
+        \foreach \k in {0,...,\numexpr\N-1\relax} {
+            \pgfmathsetmacro{\c}{\k*1.41421356 - floor(\k*1.41421356)}
+            \fill[red!70!black] (\c,\y) circle (0.008);
+        }
+        \node[left] at (-0.02,\y) {$n < \N$};
+    }
+    \node[above] at (0,0.02) {$0$};
+    \node[above] at (1,0.02) {$1$};
+\end{tikzpicture}
+\caption{$\alpha = \sqrt2$ に対する $\{n\alpha\}$ の分布。$n$ を増やすと点は重ならずに詰まっていき、$[0,1)$ のどの小区間にも入るようになる。}
+\label{fig:frac-n-alpha}
+\end{figure}
+
+稠密性から、商空間の位相がつぶれることが分かる。$T^2/\mathbb{R}$ の開集合は、軌道を丸ごと含む（不変な）$T^2$ の開集合 $U$ に対応する。$U$ が空でなければある点のまわりの小さな円板を含み、軌道の稠密性からどの軌道もその円板を通る。$U$ は不変なので、その軌道は丸ごと $U$ に入り、結局 $U = T^2$ となる。したがって $T^2/\mathbb{R}$ の開集合は $\emptyset$ と全体のみとなって、どの2点も開集合で分離できず、ハウスドルフ性が完全に失われる。
 
 \begin{note}
 自由性：$t \cdot \theta = \theta$（$\mathbb{Z}^2$ を法として）ならば $t \in \mathbb{Z}$ かつ $\alpha t \in \mathbb{Z}$ である。$t \neq 0$ なら $\alpha = (\alpha t)/t \in \mathbb{Q}$ となって矛盾するので、$t = 0$。
@@ -870,7 +1078,64 @@ $\zeta = e^{2\pi i/n}$ とし、$\mathbb{Z}_n = \{ \zeta^k \}$ を $z \mapsto \z
 \label{fig:cone}
 \end{figure}
 
-興味深いのは、位相空間としては $w = z^n$ によって $\mathbb{C}/\mathbb{Z}_n \cong \mathbb{C}$ と同相であり、特異点が見えないことである。しかし平坦な計量 $|dz|^2$ を商に降ろすと、原点のまわりを1周したときの角度が $2\pi$ ではなく $2\pi/n$ となり、原点に曲率が集中した円錐特異点となる。オービフォールドの構造（局所群 $\mathbb{Z}_n$）は、位相だけでは見えないこの情報を記憶している。
+興味深いのは、位相空間としては $w = z^n$ によって $\mathbb{C}/\mathbb{Z}_n \cong \mathbb{C}$ と\textbf{同相}であり、特異点が見えないことである。
+
+ここで写像 $f: X \to Y$ が\textbf{同相写像}であるとは、$f$ が全単射で、$f$ も逆写像 $f^{-1}$ も連続であることをいう。直観的には、空間をゴム膜とみなして「伸ばしたり縮めたりはしてよいが、ちぎったり貼り付けたりはしない」変形で移り合うことである。位相は点どうしの「近さ」だけを見ており、\textbf{角度や長さは一切見ない}。例えば円周と正方形の周は同相である（正方形の角はゴムを引っ張れば丸くできる）が、円周と8の字は同相でない（1点で交わらせるには貼り付けが必要）。とがっているかどうかは、位相では区別されないのである。
+
+円錐で言えば、紙の円錐（パーティー帽）を上から押しつぶすと、頂点は中心に移り、平らな円板になる（図\ref{fig:cone-flatten}）。この操作では点は1対1に対応し、近い点は近い点に移り、ちぎりも貼りもしていない。したがって円錐の頂点の近傍は平らな円板と同相であり、頂点の「とがり」は位相の目には見えない。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0]
+    \begin{scope}
+        \draw[thick] (0,1.6) -- (-1.2,-0.6);
+        \draw[thick] (0,1.6) -- (1.2,-0.6);
+        \draw[thick] (-1.2,-0.6) arc (180:360:1.2 and 0.35);
+        \draw[thick, dashed] (1.2,-0.6) arc (0:180:1.2 and 0.35);
+        \fill[red!70!black] (0,1.6) circle (0.06);
+        \node at (0,-1.5) {円錐（頂点がとがる）};
+    \end{scope}
+    \draw[->, very thick] (1.8,0.4) -- node[above] {押しつぶす} (3.4,0.4);
+    \begin{scope}[xshift=5.2cm, yshift=0.4cm]
+        \draw[thick] (0,0) ellipse (1.3 and 0.4);
+        \fill[red!70!black] (0,0) circle (0.06);
+        \node at (0,-1.9) {平らな円板（同相）};
+    \end{scope}
+\end{tikzpicture}
+\caption{円錐を押しつぶすと平らな円板になる。点の対応は1対1で連続なので両者は同相であり、頂点（赤）は円板の中心という普通の点に移る。角度の情報（とがり）は位相では失われる。}
+\label{fig:cone-flatten}
+\end{figure}
+
+この押しつぶしを式で書いたものが $w = z^n$ である（図\ref{fig:zn-map}）。$z = re^{i\varphi}$ とすると $w = r^n e^{in\varphi}$ であり、偏角が $n$ 倍になるので、角度 $2\pi/n$ の扇形（基本領域）はちょうど角度 $2\pi$、すなわち平面全体に広がる。貼り合わせる2辺上の点 $z$ と $e^{2\pi i/n}z$ は、$(e^{2\pi i/n})^n = 1$ より同じ $w$ に移る。逆に $z^n = z'^n$ ならば $z' = e^{2\pi i k/n} z$ である。したがって $w = z^n$ は、$\mathbb{Z}_n$ で同一視される点をちょうど同じ点に移し、全単射 $\mathbb{C}/\mathbb{Z}_n \to \mathbb{C}$ を誘導する。この写像も、その逆写像（扇形の中で $n$ 乗根を一つ選ぶ写像）も連続なので、$\mathbb{C}/\mathbb{Z}_n \cong \mathbb{C}$ は同相である。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    \begin{scope}
+        \fill[blue!10] (0,0) -- (1.8,0) arc (0:72:1.8) -- cycle;
+        \draw[very thick, red!70!black] (0,0) -- (1.8,0);
+        \draw[very thick, red!70!black] (0,0) -- (72:1.8);
+        \draw[thick] (1.8,0) arc (0:72:1.8);
+        \draw (0.5,0) arc (0:72:0.5);
+        \node at (36:0.75) {$\frac{2\pi}{n}$};
+        \fill (0,0) circle (0.05);
+        \draw[->, red!70!black, thick] (1.5,0.25) to[bend right=40] node[right] {貼る} (64:1.6);
+        \node at (0.6,-0.6) {$z$ 平面の扇形};
+    \end{scope}
+    \draw[->, very thick] (2.4,0.7) -- node[above] {$w = z^n$} (3.8,0.7);
+    \begin{scope}[xshift=5.6cm, yshift=0.7cm]
+        \fill[blue!10] (0,0) circle (1.4);
+        \draw[thick] (0,0) circle (1.4);
+        \draw[very thick, red!70!black] (0,0) -- (1.4,0);
+        \fill (0,0) circle (0.05);
+        \node at (0,-1.9) {$w$ 平面全体};
+    \end{scope}
+\end{tikzpicture}
+\caption{$w = z^n$ による同相 $\mathbb{C}/\mathbb{Z}_n \cong \mathbb{C}$（図は $n = 5$）。偏角が $n$ 倍になるので、角度 $2\pi/n$ の扇形は平面全体に広がり、貼り合わせる2辺（赤）は $w$ 平面の同じ半直線に移る。継ぎ目はどこにも残らない。}
+\label{fig:zn-map}
+\end{figure}
+
+では何が違うのか。違いが現れるのは、長さや角度、すなわち計量を考えたときである。平坦な計量 $|dz|^2$ を商に降ろすと、原点のまわりを1周したときの角度が $2\pi$ ではなく $2\pi/n$ となり、原点に曲率が集中した円錐特異点となる。紙は伸び縮みしないので、紙の円錐は破かずには平らにならない。ゴムなら平らにできる。前者が計量、後者が位相の見方である。オービフォールドの構造（局所群 $\mathbb{Z}_n$）は、位相だけでは見えないこの「紙としてのとがり」の情報を記憶している。
 
 \paragraph{例：トーラスのモジュライ空間}
 第\ref{ch:intro}章のトーラスのモジュライ $\mathcal{M}_1 = \mathbb{H}/SL(2, \mathbb{Z})$ を考えよう。$-1 \in SL(2,\mathbb{Z})$ は $\tau \mapsto \tau$ と自明に作用するので、実効的に作用するのは $PSL(2, \mathbb{Z}) = SL(2, \mathbb{Z})/\{\pm 1\}$ であり、これは
@@ -878,6 +1143,128 @@ $\zeta = e^{2\pi i/n}$ とし、$\mathbb{Z}_n = \{ \zeta^k \}$ を $z \mapsto \z
     S: \tau \mapsto -\frac{1}{\tau}, \qquad T: \tau \mapsto \tau + 1
 \end{equation}
 で生成され、$\mathbb{H}$ に真性不連続に作用する。固定部分群を計算すると、$\tau = i$ では $\mathbb{Z}_2 = \langle S \rangle$、$\tau = e^{i\pi/3}$（およびそれと同じ軌道の $e^{2\pi i/3}$）では $\mathbb{Z}_3$ であり、それ以外の点（基本領域の内部）では自明である。
+
+ここで角括弧 $\langle g \rangle$ は、元 $g$ で\textbf{生成される部分群}、すなわち $g$ とその逆元を何回か掛け合わせて得られる元の全体
+\begin{equation*}
+    \langle g \rangle = \{ g^k \mid k \in \mathbb{Z} \} = \{ \dots, g^{-2}, g^{-1}, e, g, g^2, \dots \}
+\end{equation*}
+を表す（量子力学のブラ・ケット $\langle \psi |$ や期待値 $\langle O \rangle$ とは無関係である）。$g$ が有限位数 $n$（$g^n = e$ となる最小の $n \ge 1$）を持てば、$\langle g \rangle = \{ e, g, \dots, g^{n-1} \} \cong \mathbb{Z}_n$ となる。例えば $PSL(2, \mathbb{Z})$ では $S^2 = 1$ なので $\langle S \rangle = \{ 1, S \} \cong \mathbb{Z}_2$、$(ST)^3 = 1$ なので $\langle ST \rangle = \{ 1, ST, (ST)^2 \} \cong \mathbb{Z}_3$ である。複数の元 $g_1, \dots, g_k$ に対しても同様に、$\langle g_1, \dots, g_k \rangle$ はそれらとその逆元の任意の積全体がなす部分群を表す（例えば $PSL(2, \mathbb{Z}) = \langle S, T \rangle$）。
+
+ここで「真性不連続に作用する」とは、上で定義したとおり、任意のコンパクト集合 $K \subset \mathbb{H}$ に対して $\gamma K \cap K \neq \emptyset$ となる $\gamma$ が有限個しかないことである。直観的には、$\mathbb{H}$ のどの場所を見ても、その付近に重なってくる「群で動かしたコピー」は有限個しかない、ということである。図\ref{fig:tessellation}のように、基本領域 $\mathcal{F}$ を $PSL(2, \mathbb{Z})$ の各元で動かしたコピーは $\mathbb{H}$ を隙間なく敷き詰めるが、コピーは実軸に近づくほど小さくなり、無限個のコピーが集まってくるのは実軸（$\mathbb{H}$ の外）だけである。$\mathbb{H}$ の内部のコンパクト集合 $K$ は実軸から一定の距離だけ離れているので、$K$ に触れるコピーは有限個で済む。
+
+この性質は、$\mathrm{Im}(\gamma\tau) = \mathrm{Im}\,\tau / |c\tau + d|^2$ から確かめられる。$K$ 上で $\mathrm{Im}\,\tau$ は正の最小値 $y_0$ と最大値 $y_1$ を持ち、$|\tau|$ も有界である。$\gamma K \cap K \neq \emptyset$ ならば、ある $\tau \in K$ で $\mathrm{Im}(\gamma\tau) \ge y_0$、すなわち $|c\tau + d|^2 \le y_1/y_0$ でなければならない。$\mathrm{Im}(c\tau+d) = c\,\mathrm{Im}\,\tau$ なので $|c|$ が抑えられ、続いて $|d|$ も抑えられるから、許される整数の組 $(c, d)$ は有限個である。さらに $(c, d)$ を固定すると、$\gamma$ の第1行 $(a, b)$ は $T^k$ を左から掛ける自由度 $(a, b) \mapsto (a + kc, b + kd)$ を除いて決まり、$T^k$ は $\mathrm{Re}$ を $k$ だけずらすので、$K$ と交わる $k$ も有限個に限られる（$c = 0$ のときは $\gamma = \pm T^k$ であり、同様に $k$ が有限個に限られる）。
+
+真性不連続性が重要なのは、それによって商 $\mathbb{H}/PSL(2,\mathbb{Z})$ がハウスドルフになり、各点の固定部分群が有限群となって、上の定理からオービフォールドの構造が得られるからである。先に見た無理数回転のように、群の元が「遠くまで行って元の場所の近くに戻ってくる」と商の位相が壊れるが、$PSL(2,\mathbb{Z})$ の作用ではそのようなことは起こらない。$PSL(2, \mathbb{Z})$ は $\mathbb{H}$ の各点の近くでは有限個のコピーしか重ねないので、局所的には $\mathbb{R}^2/(\text{有限群})$ という形になる。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=2.2]
+    \begin{scope}
+        \clip (-2,0) rectangle (2,1.9);
+        \fill[blue!20] (-0.5,1.9) -- (-0.5,0.8660) arc (120:60:1) -- (0.5,1.9) -- cycle;
+        \draw[gray] (-1.8333,0) arc (0:180:0.0833);
+        \draw[gray] (-1.8000,0) arc (0:180:0.1000);
+        \draw[gray] (-1.7500,0) arc (0:180:0.1250);
+        \draw[gray] (-1.6667,0) arc (0:180:0.1667);
+        \draw[gray] (-1.5000,0) arc (0:180:0.2500);
+        \draw[gray] (-1.0000,0) arc (0:180:0.5000);
+        \draw[gray] (-1.8000,0) arc (0:180:0.0167);
+        \draw[gray] (-1.7500,0) arc (0:180:0.0250);
+        \draw[gray] (-1.6667,0) arc (0:180:0.0417);
+        \draw[gray] (-1.6000,0) arc (0:180:0.0333);
+        \draw[gray] (-1.5000,0) arc (0:180:0.0833);
+        \draw[gray] (-1.5000,0) arc (0:180:0.0500);
+        \draw[gray] (-1.4000,0) arc (0:180:0.0500);
+        \draw[gray] (-1.3333,0) arc (0:180:0.0833);
+        \draw[gray] (-1.0000,0) arc (0:180:0.2500);
+        \draw[gray] (-1.3333,0) arc (0:180:0.0333);
+        \draw[gray] (-1.2500,0) arc (0:180:0.0417);
+        \draw[gray] (-1.0000,0) arc (0:180:0.1667);
+        \draw[gray] (-1.2000,0) arc (0:180:0.0250);
+        \draw[gray] (-1.0000,0) arc (0:180:0.1250);
+        \draw[gray] (-1.1667,0) arc (0:180:0.0167);
+        \draw[gray] (-1.0000,0) arc (0:180:0.1000);
+        \draw[gray] (-1.0000,0) arc (0:180:0.0833);
+        \draw[gray] (-0.8333,0) arc (0:180:0.0833);
+        \draw[gray] (-0.8000,0) arc (0:180:0.1000);
+        \draw[gray] (-0.7500,0) arc (0:180:0.1250);
+        \draw[gray] (-0.6667,0) arc (0:180:0.1667);
+        \draw[gray] (-0.5000,0) arc (0:180:0.2500);
+        \draw[gray] (0.0000,0) arc (0:180:0.5000);
+        \draw[gray] (-0.8000,0) arc (0:180:0.0167);
+        \draw[gray] (-0.7500,0) arc (0:180:0.0250);
+        \draw[gray] (-0.6667,0) arc (0:180:0.0417);
+        \draw[gray] (-0.6000,0) arc (0:180:0.0333);
+        \draw[gray] (-0.5000,0) arc (0:180:0.0833);
+        \draw[gray] (-0.5000,0) arc (0:180:0.0500);
+        \draw[gray] (-0.4000,0) arc (0:180:0.0500);
+        \draw[gray] (-0.3333,0) arc (0:180:0.0833);
+        \draw[gray] (0.0000,0) arc (0:180:0.2500);
+        \draw[gray] (-0.3333,0) arc (0:180:0.0333);
+        \draw[gray] (-0.2500,0) arc (0:180:0.0417);
+        \draw[gray] (0.0000,0) arc (0:180:0.1667);
+        \draw[gray] (-0.2000,0) arc (0:180:0.0250);
+        \draw[gray] (0.0000,0) arc (0:180:0.1250);
+        \draw[gray] (-0.1667,0) arc (0:180:0.0167);
+        \draw[gray] (0.0000,0) arc (0:180:0.1000);
+        \draw[gray] (0.0000,0) arc (0:180:0.0833);
+        \draw[gray] (0.1667,0) arc (0:180:0.0833);
+        \draw[gray] (0.2000,0) arc (0:180:0.1000);
+        \draw[gray] (0.2500,0) arc (0:180:0.1250);
+        \draw[gray] (0.3333,0) arc (0:180:0.1667);
+        \draw[gray] (0.5000,0) arc (0:180:0.2500);
+        \draw[gray] (1.0000,0) arc (0:180:0.5000);
+        \draw[gray] (0.2000,0) arc (0:180:0.0167);
+        \draw[gray] (0.2500,0) arc (0:180:0.0250);
+        \draw[gray] (0.3333,0) arc (0:180:0.0417);
+        \draw[gray] (0.4000,0) arc (0:180:0.0333);
+        \draw[gray] (0.5000,0) arc (0:180:0.0833);
+        \draw[gray] (0.5000,0) arc (0:180:0.0500);
+        \draw[gray] (0.6000,0) arc (0:180:0.0500);
+        \draw[gray] (0.6667,0) arc (0:180:0.0833);
+        \draw[gray] (1.0000,0) arc (0:180:0.2500);
+        \draw[gray] (0.6667,0) arc (0:180:0.0333);
+        \draw[gray] (0.7500,0) arc (0:180:0.0417);
+        \draw[gray] (1.0000,0) arc (0:180:0.1667);
+        \draw[gray] (0.8000,0) arc (0:180:0.0250);
+        \draw[gray] (1.0000,0) arc (0:180:0.1250);
+        \draw[gray] (0.8333,0) arc (0:180:0.0167);
+        \draw[gray] (1.0000,0) arc (0:180:0.1000);
+        \draw[gray] (1.0000,0) arc (0:180:0.0833);
+        \draw[gray] (1.1667,0) arc (0:180:0.0833);
+        \draw[gray] (1.2000,0) arc (0:180:0.1000);
+        \draw[gray] (1.2500,0) arc (0:180:0.1250);
+        \draw[gray] (1.3333,0) arc (0:180:0.1667);
+        \draw[gray] (1.5000,0) arc (0:180:0.2500);
+        \draw[gray] (2.0000,0) arc (0:180:0.5000);
+        \draw[gray] (1.2000,0) arc (0:180:0.0167);
+        \draw[gray] (1.2500,0) arc (0:180:0.0250);
+        \draw[gray] (1.3333,0) arc (0:180:0.0417);
+        \draw[gray] (1.4000,0) arc (0:180:0.0333);
+        \draw[gray] (1.5000,0) arc (0:180:0.0833);
+        \draw[gray] (1.5000,0) arc (0:180:0.0500);
+        \draw[gray] (1.6000,0) arc (0:180:0.0500);
+        \draw[gray] (1.6667,0) arc (0:180:0.0833);
+        \draw[gray] (2.0000,0) arc (0:180:0.2500);
+        \draw[gray] (1.6667,0) arc (0:180:0.0333);
+        \draw[gray] (1.7500,0) arc (0:180:0.0417);
+        \draw[gray] (2.0000,0) arc (0:180:0.1667);
+        \draw[gray] (1.8000,0) arc (0:180:0.0250);
+        \draw[gray] (2.0000,0) arc (0:180:0.1250);
+        \draw[gray] (1.8333,0) arc (0:180:0.0167);
+        \draw[gray] (2.0000,0) arc (0:180:0.1000);
+        \draw[gray] (2.0000,0) arc (0:180:0.0833);
+        \foreach \k in {-2,...,2} \draw[gray] (\k,0) -- (\k,1.9);
+        \foreach \k in {-2,...,1} \draw[gray!60, dashed] (\k+0.5,0) -- (\k+0.5,1.9);
+        \foreach \k in {-2,...,2} \draw[gray!60, dashed] (\k+1,0) arc (0:180:1);
+    \end{scope}
+    \draw[thick, ->] (-2.1,0) -- (2.2,0) node[right] {$\mathrm{Re}\,\tau$};
+    \foreach \k in {-2,...,2} \node[below] at (\k,0) {$\k$};
+    \node[blue!70!black] at (0,1.45) {$\mathcal{F}$};
+\end{tikzpicture}
+\caption{上半平面 $\mathbb{H}$ の $PSL(2,\mathbb{Z})$ による敷き詰め。灰色の実線で囲まれた各三角形（頂点は有理数または $\infty$）は、基本領域 $\mathcal{F}$（青）のコピー6枚からなる（破線はその一部の境界）。コピーは実軸に近づくほど小さく密になるが、$\mathbb{H}$ の内部のどのコンパクト集合にも有限個のコピーしか触れない。これが真性不連続性である。}
+\label{fig:tessellation}
+\end{figure}
 
 \begin{note}
 $\tau = i$：$S(i) = -1/i = i$ であり、$PSL(2, \mathbb{Z})$ において $S^2 = 1$ なので、固定部分群は $\langle S \rangle \cong \mathbb{Z}_2$。
@@ -964,6 +1351,49 @@ Coulomb（Landau）ゲージ $\partial^\mu A_\mu = 0$ を考える。$A$ に無�
 を得る。$\partial^\mu A_\mu = 0$ を満たす $A$ に対して、変換後も $\partial^\mu (A_\mu + \delta A_\mu) = 0$ となる条件は $\partial^\mu D_\mu \epsilon = 0$、すなわち $\mathcal{M}_{\mathrm{FP}}\, \epsilon = 0$ である。
 \end{note}
 
+\paragraph{零モードとは何か}
+線形演算子 $\mathcal{M}$ の\textbf{零モード}とは、$\mathcal{M}\epsilon = 0$ を満たす $0$ でない $\epsilon$、すなわち固有値 $0$ の固有関数のことである。有限次元で言えば、行列 $M$ に対して $M\bm{v} = 0$ となる $\bm{v} \neq 0$ があることであり、これは $\det M = 0$ と同値である。したがって $\mathcal{M}_{\mathrm{FP}}$ が零モードを持つことは、Faddeev--Popov行列式 $\Delta_{\mathrm{FP}} = \det \mathcal{M}_{\mathrm{FP}}$ がゼロになることにほかならない。
+
+上の注の計算から、零モード $\epsilon$ の意味は明らかである。$\epsilon$ は「ゲージ条件 $\partial \cdot A = 0$ を（1次まで）破らずに $A$ を動かせる、自明でない無限小ゲージ変換」の方向である。幾何学的には、$A$ を通るゲージ軌道が、ゲージ固定面 $\{\partial \cdot A = 0\}$ と横断的に交わらず\textbf{接している}ことを意味する（図\ref{fig:gribov-tangent}）。軌道が面を横切っていれば、軌道に沿って少し動くと必ず面から外れるので零モードはない。軌道が面に接していると、接線方向には1次の範囲で面から外れずに動けるので、そこで同じ軌道の上の近接した2点が（無限小の意味で）ともにゲージ条件を満たす。これが\textbf{無限小Gribovコピー}である。有限次元の玩具模型では、$\Delta_{\mathrm{FP}} = r\cos\theta$ がゼロになる $\theta = \pm\pi/2$（円周が直線 $y = 0$ に平行になる点）がこれに当たり、Gribovコピーの対 $(r, 0)$ と $(-r, 0)$ を隔てる境界、すなわちGribov地平線の玩具版になっている。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.2]
+    \begin{scope}
+        \draw[very thick, blue!70!black] (-1.8,0) -- (1.8,0) node[right] {$\partial \cdot A = 0$};
+        \draw[very thick, red!70!black] (-0.9,-1.2) .. controls (0,0) .. (0.6,1.3) node[above] {ゲージ軌道};
+        \fill (0.0,0) circle (0.06);
+        \node at (0,-1.7) {(a) 横断的：零モードなし};
+    \end{scope}
+    \begin{scope}[xshift=5.6cm]
+        \draw[very thick, blue!70!black] (-1.8,0) -- (1.8,0) node[right] {$\partial \cdot A = 0$};
+        \draw[very thick, red!70!black] (-1.5,1.2) .. controls (-0.5,-0.05) and (0.5,-0.05) .. (1.5,1.2) node[above] {ゲージ軌道};
+        \fill (0,0.03) circle (0.06);
+        \draw[->, thick] (0,0.03) -- (0.8,0.03) node[above] {$\epsilon$};
+        \node at (0,-1.7) {(b) 接する：零モード $\epsilon$};
+    \end{scope}
+\end{tikzpicture}
+\caption{ゲージ軌道（赤）とゲージ固定面（青）。(a) 横断的に交わる場合、軌道に沿って動けば必ず面から外れるので $\mathcal{M}_{\mathrm{FP}}$ に零モードはない。(b) 接する場合、接線方向 $\epsilon$ には1次の範囲で面から外れずに動け、$\mathcal{M}_{\mathrm{FP}}\epsilon = 0$ となる。これが無限小Gribovコピーであり、接点の近くで軌道は面と2回交わりうる。}
+\label{fig:gribov-tangent}
+\end{figure}
+
+\paragraph{なぜ $U(1)$ では零モードがないのか}
+$U(1)$ では交換子 $[A_\mu, \epsilon]$ が消えるので $D_\mu \epsilon = \partial_\mu \epsilon$ となり、零モードの方程式は $A$ によらない
+\begin{equation*}
+    -\partial^2 \epsilon = 0
+\end{equation*}
+すなわちLaplace方程式になる。ゲージ変換としては、無限遠で $\epsilon \to 0$ と減衰するもの（無限遠の境界条件を変えないもの）を考える。このとき両辺に $\epsilon$ を掛けて部分積分すると、表面項は消えて
+\begin{equation*}
+    0 = \int d^dx\, \epsilon\,(-\partial^2 \epsilon) = \int d^dx\, (\partial_\mu \epsilon)^2
+\end{equation*}
+となる。右辺は非負の量の積分なので $\partial_\mu \epsilon = 0$、つまり $\epsilon$ は定数であり、無限遠で $0$ なので $\epsilon = 0$ である。よって零モードは存在しない。言い換えれば、$-\partial^2$ は正定値な演算子（固有値がすべて正）であり、しかも $A$ に依存しないので、どんな $A$ に対しても $\det \mathcal{M}_{\mathrm{FP}} \neq 0$ である。（定数の $\epsilon$ は全体の位相回転であり、すべての $A$ を動かさないので、もともとゲージ固定で取り除くべき方向ではない。）
+
+非可換の場合に同じ計算をすると、
+\begin{equation*}
+    \int d^dx\, \mathrm{tr}\bigl(\epsilon\, \mathcal{M}_{\mathrm{FP}}\, \epsilon\bigr) = \int d^dx\, \mathrm{tr}\bigl((\partial_\mu \epsilon)^2\bigr) - ig \int d^dx\, \mathrm{tr}\bigl(\partial^\mu \epsilon\, [A_\mu, \epsilon]\bigr)
+\end{equation*}
+となる（$\epsilon$ は Hermite 行列値、規格化は規約による）。第1項は正だが、第2項は $A$ に比例して符号が定まらない。$A$ が小さいうちは第1項が勝って $\mathcal{M}_{\mathrm{FP}}$ は正定値のままだが、$A$ を大きくしていくと第2項が第1項を打ち消す方向 $\epsilon$ が現れ、最低固有値がゼロに達する。これが本文で述べたGribov地平線である。
+
 玩具模型ではGribov領域への制限によって問題が解消したが、次の定理\cite{singer1978}は、非可換ゲージ理論ではそもそも大域的切断が存在しないことを示している。
 
 \begin{mythm}{Singer, 1978}{}
@@ -1006,9 +1436,22 @@ Gribovコピーの存在は、Faddeev--Popovの処方が摂動論的な枠組み
 
 経路積分において、ある古典解 $\phi_{\text{cl}}$ のまわりでの半古典近似を考えよう。場を $\phi = \phi_{\text{cl}} + \delta\phi$ と分けて作用を展開すると、古典解は停留点であるから1次の項は消え、
 \begin{equation}
-    S[\phi_{\text{cl}} + \delta\phi] = S[\phi_{\text{cl}}] + \frac{1}{2}\int d^dx\, \delta\phi\, \Delta\, \delta\phi + \mathcal{O}(\delta\phi^3)
+    S[\phi_{\text{cl}} + \delta\phi] = S[\phi_{\text{cl}}] + \frac{1}{2}\int d^dx\, \delta\phi\, \Delta\, \delta\phi + \mathcal{O}((\delta\phi)^3)
 \end{equation}
-となる。ここで $\Delta = \left.\frac{\delta^2 S}{\delta\phi\,\delta\phi}\right|_{\phi_{\text{cl}}}$ は2次の揺らぎ演算子（Hessian）である。$\Delta$ の固有値がすべて正であれば、Gauss積分により
+となる。ここで $\Delta = \left.\frac{\delta^2 S}{\delta\phi\,\delta\phi}\right|_{\phi_{\text{cl}}}$ は2次の揺らぎ演算子（Hessian）である。
+\begin{note}
+    右辺の $\mathcal{O}((\delta\phi)^3)$ は「$\delta\phi$ について3次以上の項」を表しており、$\mathcal{O}((\delta\phi)^2)$ ではない。これは作用を汎関数的にTaylor展開すると
+    \begin{equation}
+        S[\phi_{\text{cl}} + \delta\phi]
+        = S[\phi_{\text{cl}}]
+        + \underbrace{\int d^dx\,\left.\frac{\delta S}{\delta\phi(x)}\right|_{\phi_{\text{cl}}}\delta\phi(x)}_{\text{1次：運動方程式より }0}
+        + \underbrace{\frac{1}{2}\int d^dx\,d^dy\,\delta\phi(x)\left.\frac{\delta^2 S}{\delta\phi(x)\,\delta\phi(y)}\right|_{\phi_{\text{cl}}}\delta\phi(y)}_{\text{2次：}\frac{1}{2}\int\delta\phi\,\Delta\,\delta\phi}
+        + \mathcal{O}((\delta\phi)^3)
+    \end{equation}
+    となるからである。2次の項は右辺に明示的に書き出してあるので、残りの誤差は3次から始まる。
+    なお、$\Delta$ は一般には2点 $x,y$ の核 $\Delta(x,y)$ であるが、局所的な作用では $\Delta(x,y)=\Delta_x\,\delta^{(d)}(x-y)$（$\Delta_x$ は微分演算子）の形になり、$y$ 積分を実行すると本文の $\frac{1}{2}\int d^dx\,\delta\phi\,\Delta\,\delta\phi$ の形になる。
+\end{note}
+$\Delta$ の固有値がすべて正であれば、Gauss積分により
 \begin{equation}
     Z \simeq e^{-S[\phi_{\text{cl}}]} \left(\det \Delta\right)^{-1/2}
 \end{equation}
@@ -1019,6 +1462,24 @@ Gribovコピーの存在は、Faddeev--Popovの処方が摂動論的な枠組み
     \delta_i \phi \equiv \frac{\partial \phi_{\text{cl}}}{\partial m^i}
 \end{equation}
 は $\Delta\,\delta_i\phi = 0$ を満たす固有値ゼロの固有関数、すなわち\textbf{零モード}となる。
+
+\begin{note}
+    \textbf{「連続族」の意味。}
+    古典解（運動方程式 $\delta S/\delta\phi=0$ の解で、作用の値が等しいもの）が孤立した1つの関数ではなく、連続的に動かせる実パラメータ $m=(m^1,\dots,m^n)$ をもつ関数の族
+    \[
+        m \longmapsto \phi_{\text{cl}}(x;m)
+    \]
+    として与えられ、$m$ をどう選んでも（少なくともある範囲で）解であり続けることをいう。$m^i$ を\textbf{モジュライ}（集団座標）と呼び、$m$ の動く範囲がモジュライ空間（の局所座標）である。$m$ を連続的に変えても作用は変わらない：$S[\phi_{\text{cl}}(\,\cdot\,;m)]$ は $m$ によらない。
+    \begin{itemize}
+        \item \textbf{キンク}：1+1次元の $\phi^4$ 理論 $V(\phi)=\frac{\lambda}{4}(\phi^2-v^2)^2$ の静的解
+        \[
+            \phi_{\text{cl}}(x;a) = v\tanh\!\left(\sqrt{\tfrac{\lambda}{2}}\,v\,(x-a)\right)
+        \]
+        は、中心位置 $a\in\mathbb{R}$ を任意に選べる1パラメータ族である（$n=1$）。これは並進対称性によるもので、零モードは $\partial\phi_{\text{cl}}/\partial a=-\partial_x\phi_{\text{cl}}$ である。
+        \item \textbf{BPSTインスタントン}：4次元 $SU(2)$ Yang--Mills理論の1-インスタントン解は、中心位置 $a^\mu$（4個）、サイズ $\rho$（1個）、ゲージの向き（$SU(2)$ の3個）の合計 $n=8$ 個のパラメータをもつ連続族である。
+    \end{itemize}
+    これに対し、例えば $\phi^4$ 理論の真空 $\phi=\pm v$ は2つの孤立した解であり連続族ではない（零モードはない）。連続族は、上の例のように理論の連続対称性（並進・ゲージ変換など）を解に作用させたときや、スケール不変性のように解を変形しても作用が変わらない平坦な方向があるときに現れる。
+\end{note}
 
 \begin{note}
 すべての $m$ に対して運動方程式 $\left.\frac{\delta S}{\delta \phi}\right|_{\phi_{\text{cl}}(m)} = 0$ が成り立つ。これを $m^i$ で微分すると
@@ -3677,6 +4138,61 @@ $F(\cdot, t)$ は「時刻 $t$ における写像」であり、ホモトピー�
 \end{tabular}
 \end{center}
 
+\paragraph{例：$\mathbb{C} \to E_\Lambda = \mathbb{C}/\Lambda$ の詳細}
+表の2行目を、1行目 $\mathbb{R} \to S^1$ の2次元版として詳しく見ておく。
+
+\textbf{(1) 格子と同一視。}複素数 $\omega_1, \omega_2$（$\mathbb{R}$ 上1次独立、つまり同じ直線上にない）を取り、
+\begin{equation*}
+    \Lambda = \{\, m\omega_1 + n\omega_2 \mid m, n \in \mathbb{Z} \,\}
+\end{equation*}
+を\textbf{格子}とする。群 $\Gamma = \Lambda \cong \mathbb{Z}^2$ は $\mathbb{C}$ に平行移動 $z \mapsto z + \lambda$（$\lambda \in \Lambda$）で作用する。この作用で移り合う点を同じとみなしたもの、すなわち
+\begin{equation*}
+    z \sim z + m\omega_1 + n\omega_2 \qquad (m, n \in \mathbb{Z})
+\end{equation*}
+で割った商が $E_\Lambda = \mathbb{C}/\Lambda$ である。被覆写像 $p: \mathbb{C} \to E_\Lambda$ は、点 $z$ をその同値類 $[z]$ に送る写像である。
+
+\textbf{(2) なぜトーラスになるか。}どの点 $z$ も、格子の元を引くことで、$0, \omega_1, \omega_1 + \omega_2, \omega_2$ を頂点とする平行四辺形（\textbf{基本領域}）$P$ の中の点に移せる。したがって $E_\Lambda$ は $P$ だけを見ればよいが、$P$ の向かい合う辺は $\omega_1$ や $\omega_2$ だけずれているので同一視される。左右の辺を貼り合わせると筒になり、さらに上下の辺（筒の両端の円）を貼り合わせるとドーナツ面、すなわちトーラスになる（下図）。このとき、左右の辺を貼った段階で $\omega_1$ 方向（赤）が筒の断面を1周する閉じた円になり、上下を貼った段階で $\omega_2$ 方向（青）がドーナツの穴の周りを1周する円になる。すなわち、平行四辺形の赤い辺はトーラス上の $a$ サイクル（小さい円）に、青い辺は $b$ サイクル（大きい円）に写る。$\mathbb{R} \to S^1$ で区間 $[0,1]$ の両端を貼って円を作ったのと同じことを、2方向で行っている。実際、$\omega_1 = 1, \omega_2 = i$ なら $E_\Lambda = \mathbb{R}/\mathbb{Z} \times \mathbb{R}/\mathbb{Z} = S^1 \times S^1$ である。
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+    % 格子点
+    \foreach \m in {-1,0,1} \foreach \n in {-1,0,1} {
+        \fill ($\m*(1.6,0) + \n*(0.5,1.2)$) circle (1.2pt);
+    }
+    % 基本領域
+    \fill[blue!12] (0,0) -- (1.6,0) -- (2.1,1.2) -- (0.5,1.2) -- cycle;
+    \draw[thick,red,->] (0,0) -- (1.6,0) node[midway,below] {\small$\omega_1$};
+    \draw[thick,red,->] (0.5,1.2) -- (2.1,1.2);
+    \draw[thick,blue,->] (0,0) -- (0.5,1.2) node[midway,left] {\small$\omega_2$};
+    \draw[thick,blue,->] (1.6,0) -- (2.1,1.2);
+    \node at (1.45,0.85) {$P$};
+    % 小さな開集合とその持ち上げ
+    \foreach \m in {-1,0,1} \foreach \n in {-1,0} {
+        \draw[green!50!black,thick] ($(0.8,0.35) + \m*(1.6,0) + \n*(0.5,1.2)$) circle (0.15);
+    }
+    \node[green!50!black] at (-1.6,-1.6) {\small$p^{-1}(U)$ の各成分 $\tilde{U} + \lambda$};
+    \draw[->,thick] (3.0,0.6) -- (4.0,0.6) node[midway,above] {$p$};
+    % トーラス
+    \begin{scope}[shift={(5.6,0.6)}]
+        \draw (0,0) ellipse (1.3 and 0.7);
+        \draw (-0.55,0.05) .. controls (-0.2,-0.2) and (0.2,-0.2) .. (0.55,0.05);
+        \draw (-0.45,-0.02) .. controls (-0.2,0.15) and (0.2,0.15) .. (0.45,-0.02);
+        \draw[thick,blue] (0,0) ellipse (0.95 and 0.42);
+        \draw[thick,red] (0,-0.12) ellipse (0.12 and 0.3);
+        \draw[green!50!black,thick] (-0.85,0.25) circle (0.1);
+        \node at (0,-1.0) {\small$E_\Lambda$（赤：$a$ サイクル，青：$b$ サイクル）};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\textbf{(3) 被覆の定義の確認。}$E_\Lambda$ の点 $x = p(z_0)$ の小さな開近傍 $U$ を取る（$U$ を $\mathbb{C}$ に戻したものを $\tilde{U}$ とし、格子の最短ベクトルより十分小さくとる）。その逆像は
+\begin{equation*}
+    p^{-1}(U) = \bigcup_{\lambda \in \Lambda} (\tilde{U} + \lambda)
+\end{equation*}
+であり、平行移動したコピー $\tilde{U} + \lambda$ どうしは $\tilde{U}$ が小さいので交わらない。各 $\tilde{U} + \lambda$ の上では $p$ は単に「平行移動を忘れる」写像なので $U$ と同相である。よって定義の条件を満たし、各 $\tilde{U} + \lambda$ がシートである。シートは格子点と同じだけ（$\mathbb{Z}^2$ 個、すなわち無限個）あるので、これは無限重被覆である。上図の緑の円が、$E_\Lambda$ 上の1つの小円 $U$ の上に並んだシートを表している。
+
+\textbf{(4) ループの持ち上げ。}トーラス上で赤い $a$ サイクルを1周するループは、$\mathbb{C}$ に持ち上げると $z_0$ から $z_0 + \omega_1$ へ向かう線分になる。始点と終点が異なるので $\mathbb{C}$ 上では閉じていないが、$p$ で落とすと $z_0 + \omega_1 \sim z_0$ なので閉じる。一般に、$a$ 方向に $m$ 回、$b$ 方向に $n$ 回巻くループの持ち上げは $z_0$ から $z_0 + m\omega_1 + n\omega_2$ への道であり、終点のずれ $(m, n) \in \mathbb{Z}^2$ がループの巻き方を記録する。これが $\pi_1(E_\Lambda) \cong \Lambda \cong \mathbb{Z}^2$（\ref{sec:topo-pi1}節）の直観的な意味である。また $\mathbb{C}$ は単連結なので、これは普遍被覆である。
+
 \paragraph{持ち上げ}
 被覆の最も重要な性質は\textbf{道の持ち上げ}である。$X$ 上の道 $\gamma: [0, 1] \to X$ と、始点の上の点 $\tilde{x}_0 \in p^{-1}(\gamma(0))$ を与えると、$p \circ \tilde{\gamma} = \gamma$、$\tilde{\gamma}(0) = \tilde{x}_0$ を満たす道 $\tilde{\gamma}$ が\textbf{ただ1つ}存在する（各シートの上では $p$ が同相なので、短い区間ごとに一意に持ち上げられる）。同様にホモトピーも持ち上げられる。例えば $\mathbb{R} \to S^1$、$t \mapsto e^{2\pi i t}$ では、$S^1$ 上のループを $\mathbb{R}$ に持ち上げると、始点と終点の差は整数となり、それがループの巻き付き数である（\ref{sec:topo-pi1}節）。第\ref{ch:intro}章で双正則写像 $E_\Lambda \to E_{\Lambda'}$ を $\mathbb{C}$ 上の正則写像に持ち上げたのも、この性質による。
 
@@ -3708,9 +4224,9 @@ $X$ が弧状連結ならば、$x_0$ から $x_1$ への道で「つないで戻
         \draw[thick] (0,0) circle (1.4);
         \draw[thick] (0,0) circle (0.45);
         \draw[very thick, red!70!black, ->] (0.9,0) arc (0:350:0.9);
-        \draw[very thick, blue!70!black, ->] (1.05,0.35) .. controls (1.3,0.9) and (0.6,1.15) .. (0.75,0.7) .. controls (0.85,0.45) and (1.0,0.2) .. (1.05,0.35);
+        \draw[very thick, green!50!black, ->] (1.05,0.35) .. controls (1.3,0.9) and (0.6,1.15) .. (0.75,0.7) .. controls (0.85,0.45) and (1.0,0.2) .. (1.05,0.35);
         \node[font=\scriptsize, red!70!black] at (0,-1.65) {赤：縮められない（$w = 1$）};
-        \node[font=\scriptsize, blue!70!black] at (1.75,1.25) {縮められる};
+        \node[font=\scriptsize, green!50!black] at (1.75,1.25) {縮められる};
         \node[font=\scriptsize] at (0,-2.05) {円環（穴のあいた円板）$\simeq S^1$};
     \end{scope}
     % トーラスの場合
@@ -3724,7 +4240,7 @@ $X$ が弧状連結ならば、$x_0$ から $x_1$ への道で「つないで戻
         \node[font=\scriptsize] at (1.2,-0.85) {$\pi_1(T^2) \cong \mathbb{Z}^2$（生成元 $a, b$）};
     \end{scope}
 \end{tikzpicture}
-\caption{左：穴のあいた円板（円環）では、穴を1周するループ（赤）は縮められず、穴を囲まないループ（青）は縮められる。右：トーラスを正方形の辺の貼り合わせとして描いたもの。$a$ と $b$ は縮められない独立なループであり、$a$ と $b$ は1点で交わる（$a \cdot b = 1$、\ref{sec:topo-homology}節）。}
+\caption{左：穴のあいた円板（円環）では、穴を1周するループ（赤）は縮められず、穴を囲まないループ（緑）は縮められる。右：トーラスを正方形の辺の貼り合わせとして描いたもの。赤の $a$ と青の $b$ は縮められない独立なループであり（左図の赤・緑とは別のループである）、$a$ と $b$ は1点で交わる（$a \cdot b = 1$、\ref{sec:topo-homology}節）。}
 \label{fig:topo-loops}
 \end{figure}
 
@@ -3767,53 +4283,290 @@ $X \times Y$ 内のループは $X$ 成分と $Y$ 成分のループの組であ
 \section{高次ホモトピー群}
 \label{sec:topo-pin}
 
+\paragraph{動機：ループでは検出できない「穴」}
+基本群は「ループが引っかかる穴」を検出した。しかし、穴にはループでは検出できないものもある。例えば $\mathbb{R}^3 \setminus \{0\}$ では、原点を囲むループは原点の上や下を回り込んで1点に縮められるので、$\pi_1 = 0$ である（\ref{sec:topo-pi1}節の問\ref{ex:topo-pi1}(b)）。ところが、原点を包む球面 $S^2$ は、原点を通過しない限り1点に縮められない。風船の中に針が1本立っていて、風船をしぼませようとすると必ず針に当たる、という状況である。この「包み込む」穴を検出するには、ループ（$S^1$ からの写像）の代わりに球面 $S^2$ からの写像を考えればよい。一般に $S^n$ からの写像を考えたものが $n$ 次ホモトピー群である。
+
+物理では、この区別がそのまま欠陥の種類の区別になる。3次元空間で、点状の磁荷（モノポール）を囲む球面上で場がどう巻き付いているかは $\pi_2$ で、線状の渦（ソレノイドや渦糸）のまわりのループで場がどう巻き付いているかは $\pi_1$ で測られる（本節の最後の表を参照）。
+
+\paragraph{定義}
+\quad
 \begin{mydef}{ホモトピー群}{}
-$n \ge 1$ に対し、球面 $S^n$ の基点を $x_0$ に写す連続写像 $S^n \to X$ の、基点を保つホモトピーによる類の全体を $\pi_n(X, x_0)$ と書き、\textbf{$n$ 次ホモトピー群}と呼ぶ。$n = 1$ は基本群である。
+$n \ge 1$ とし、$S^n$ に基点 $s_0$ を1つ定める。連続写像 $f: S^n \to X$ で $f(s_0) = x_0$ を満たすもの（\textbf{基点付き写像}）を考え、途中の各時刻でも $s_0 \mapsto x_0$ を保つホモトピー（\textbf{基点付きホモトピー}）で移り合うものを同一視する。その類の全体を $\pi_n(X, x_0)$ と書き、\textbf{$n$ 次ホモトピー群}と呼ぶ。$n = 1$ は基本群である。
 \end{mydef}
 
-$S^n$ を「境界を1点に潰した $n$ 次元立方体」とみなし、2つの写像を立方体の第1座標の方向に並べてつなぐことで積が定まる。$n \ge 2$ では、2つの立方体を他の方向に滑らせて入れ替えられるので、$\pi_n$ は\textbf{可換群}になる。基本群と同様に、$\pi_n$ はホモトピー不変であり、
-\begin{equation}
-    \pi_n(X \times Y) \cong \pi_n(X) \times \pi_n(Y), \qquad X \text{ が可縮} \implies \pi_n(X) = 0
-\end{equation}
-が成り立つ。
+群の構造を見るには、$S^n$ の代わりに $n$ 次元立方体 $I^n = [0, 1]^n$ を使うのが便利である。$I^n$ の境界 $\partial I^n$ を1点に潰すと $S^n$ になる（$n = 1$ なら区間の両端を貼って円、$n = 2$ なら正方形の周を1点に絞って袋の口を閉じるように球面になる）。したがって
+\begin{equation*}
+    \begin{aligned}
+        &\text{基点付き写像 } f: (S^n, s_0) \to (X, x_0) \\
+        \longleftrightarrow\quad &\text{写像 } f: I^n \to X \text{ で、境界 } \partial I^n \text{ 全体を } x_0 \text{ に写すもの}
+    \end{aligned}
+\end{equation*}
+という対応がある。以下では後者の見方を用いる。
 
-\paragraph{球面のホモトピー群}
+\textbf{積。}2つの写像 $f, g$ に対し、第1座標 $t_1$ の方向に半分ずつ並べたもの
+\begin{equation}
+    (f + g)(t_1, t_2, \ldots, t_n) =
+    \begin{cases}
+        f(2t_1, t_2, \ldots, t_n) & (0 \le t_1 \le \tfrac{1}{2}) \\
+        g(2t_1 - 1, t_2, \ldots, t_n) & (\tfrac{1}{2} \le t_1 \le 1)
+    \end{cases}
+    \label{eq:pin-product}
+\end{equation}
+を考える（図\ref{fig:pin-cube}左）。境界がすべて $x_0$ に写るので、$t_1 = \frac{1}{2}$ の継ぎ目で $f$ と $g$ はどちらも $x_0$ になり、連続につながる。$n = 1$ ではこれはループを続けてたどる積 $\gamma_1 * \gamma_2$ そのものである。
+
+\textbf{単位元と逆元。}単位元は定値写像 $c(t) = x_0$ であり、$f$ の逆元は第1座標を反転した $\bar{f}(t_1, \ldots, t_n) = f(1 - t_1, t_2, \ldots, t_n)$ である。$f + \bar{f}$ は「行って戻ってくる」写像なので、折り返し点を少しずつ手前に引き戻すことで定値写像に縮められる。これらの演算が類の上で矛盾なく定義され、結合法則を満たすことは、基本群の場合と同様に確かめられる。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0]
+    % 積の定義
+    \begin{scope}
+        \fill[gray!20] (0,0) rectangle (2.4,2.4);
+        \fill[white] (0.08,0.08) rectangle (1.12,2.32);
+        \fill[white] (1.28,0.08) rectangle (2.32,2.32);
+        \draw[very thick] (0,0) rectangle (2.4,2.4);
+        \draw[dashed] (1.2,0) -- (1.2,2.4);
+        \node at (0.6,1.2) {$f$};
+        \node at (1.8,1.2) {$g$};
+        \draw[->] (0,-0.3) -- (2.6,-0.3) node[right, font=\scriptsize] {$t_1$};
+        \draw[->] (-0.3,0) -- (-0.3,2.6) node[above, font=\scriptsize] {$t_2$};
+        \node[font=\scriptsize] at (1.2,-0.75) {$f + g$：$t_1$ 方向に並べる};
+        \node[font=\scriptsize] at (1.2,-1.15) {太線（境界）はすべて $x_0$ に写る};
+    \end{scope}
+    % S^n との対応
+    \begin{scope}[xshift=4.6cm]
+        \draw[very thick, blue!70!black] (0,0) rectangle (2.0,2.0);
+        \node at (1.0,1.0) {$I^2$};
+        \draw[->, thick] (2.3,1.0) -- (3.3,1.0) node[midway, above, font=\scriptsize] {境界を潰す};
+        \shade[ball color=gray!25] (4.4,1.0) circle (0.9);
+        \fill[blue!70!black] (4.4,1.9) circle (2pt) node[above, font=\scriptsize] {$s_0$};
+        \node at (4.4,0.8) {$S^2$};
+        \node[font=\scriptsize, text width=6cm, align=center] at (2.2,-0.85) {正方形の周（青）を1点 $s_0$ に絞ると球面になる。\\ 周を $x_0$ に写す写像 $=$ 基点付き写像 $S^2 \to X$};
+    \end{scope}
+\end{tikzpicture}
+\caption{$\pi_n$ の積（$n = 2$ の場合）。左：2つの写像を $t_1$ 方向に並べたものが積 $f + g$ である。境界（太線）と継ぎ目はすべて基点 $x_0$ に写るので、つなぎ目で連続である。右：立方体の境界を1点に潰すと球面になるので、境界を $x_0$ に写す写像 $I^n \to X$ は基点付き写像 $S^n \to X$ と同じものである。}
+\label{fig:pin-cube}
+\end{figure}
+
+\paragraph{$n \ge 2$ では可換群になる}
+$n = 1$ の基本群は一般に非可換であった（例えば2つの穴をもつ平面）。ところが $n \ge 2$ では、$\pi_n$ は常に\textbf{可換群}になる。理由は図\ref{fig:pin-abelian}のとおりである。
+\begin{enumerate}
+    \item $f + g$ の $f$ の部分を左下の小さな正方形に、$g$ の部分を右上の小さな正方形に縮める。残りの部分（灰色）はすべて $x_0$ に写るようにする。これは連続変形である。
+    \item $f$ の正方形を下側に沿って右へ、$g$ の正方形を上側に沿って左へ滑らせる。2つの正方形は上下にずれているので、すれ違うときにぶつからない。
+    \item それぞれを広げ直すと $g + f$ が得られる。
+\end{enumerate}
+第2段階で「上下にずらしてすれ違う」ために第2の座標 $t_2$ が必要であり、$n = 1$ ではこれができない（1次元の線分の上では2つの区間は互いを追い越せない）。これが $\pi_1$ だけが非可換になりうる理由である。可換なので、$n \ge 2$ では群の演算を $+$ で書き、単位元を $0$ と書く。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.85]
+    \def\s{1.8}
+    % 1
+    \begin{scope}
+        \draw[very thick] (0,0) rectangle (\s,\s);
+        \draw[dashed] (0.9,0) -- (0.9,\s);
+        \node at (0.45,0.9) {$f$}; \node at (1.35,0.9) {$g$};
+        \node[font=\scriptsize] at (0.9,-0.35) {$f + g$};
+    \end{scope}
+    \node at (2.4,0.9) {$\simeq$};
+    \node[font=\scriptsize] at (2.4,1.35) {縮める};
+    % 2
+    \begin{scope}[xshift=3.0cm]
+        \fill[gray!20] (0,0) rectangle (\s,\s);
+        \draw[very thick] (0,0) rectangle (\s,\s);
+        \fill[white] (0.1,0.1) rectangle (0.8,0.8); \draw (0.1,0.1) rectangle (0.8,0.8); \node at (0.45,0.45) {$f$};
+        \fill[white] (1.0,1.0) rectangle (1.7,1.7); \draw (1.0,1.0) rectangle (1.7,1.7); \node at (1.35,1.35) {$g$};
+        \draw[->, red!70!black, thick] (0.85,0.3) -- (1.3,0.3);
+        \draw[->, red!70!black, thick] (0.95,1.5) -- (0.5,1.5);
+    \end{scope}
+    \node at (5.4,0.9) {$\simeq$};
+    \node[font=\scriptsize] at (5.4,1.35) {滑らせる};
+    % 3
+    \begin{scope}[xshift=6.0cm]
+        \fill[gray!20] (0,0) rectangle (\s,\s);
+        \draw[very thick] (0,0) rectangle (\s,\s);
+        \fill[white] (1.0,0.1) rectangle (1.7,0.8); \draw (1.0,0.1) rectangle (1.7,0.8); \node at (1.35,0.45) {$f$};
+        \fill[white] (0.1,1.0) rectangle (0.8,1.7); \draw (0.1,1.0) rectangle (0.8,1.7); \node at (0.45,1.35) {$g$};
+    \end{scope}
+    \node at (8.4,0.9) {$\simeq$};
+    \node[font=\scriptsize] at (8.4,1.35) {広げる};
+    % 4
+    \begin{scope}[xshift=9.0cm]
+        \draw[very thick] (0,0) rectangle (\s,\s);
+        \draw[dashed] (0.9,0) -- (0.9,\s);
+        \node at (0.45,0.9) {$g$}; \node at (1.35,0.9) {$f$};
+        \node[font=\scriptsize] at (0.9,-0.35) {$g + f$};
+    \end{scope}
+\end{tikzpicture}
+\caption{$n \ge 2$ で $f + g \simeq g + f$ となる理由（Eckmann--Hiltonの議論）。灰色の部分はすべて基点 $x_0$ に写る。$f$ と $g$ を小さな正方形に縮めておけば、第2の方向にずれてすれ違うことができる。$n = 1$ では「すれ違うための余分な方向」がないので、この議論は使えない。}
+\label{fig:pin-abelian}
+\end{figure}
+
+\paragraph{$\pi_0$ について}
+$n = 0$ の場合も形式的に考えておくと便利である。$S^0$ は2点 $\{s_0, s_1\}$ なので、基点付き写像 $S^0 \to X$ は点 $f(s_1) \in X$ を1つ選ぶことと同じであり、そのホモトピー類は $X$ の\textbf{弧状連結成分}である。$\pi_0(X)$ は一般には群ではなく、「$x_0$ を含む成分」という特別な元をもつ集合にすぎない。例えば $\pi_0(\mathbb{Z}_2) = \{\pm 1\}$（2点）、$\pi_0(O(3)) = \{\det = +1, \det = -1\}$ である。後で述べるホモトピー完全列は、最後の部分でこの $\pi_0$ に到達する。
+
+\paragraph{基点への依存と、基点を気にしない写像}
+$X$ が弧状連結ならば、基本群のときと同様に $x_0$ と $x_1$ を道 $\gamma$ で結ぶことで $\pi_n(X, x_0) \cong \pi_n(X, x_1)$ となるので、単に $\pi_n(X)$ と書く。ただし、この同型は道 $\gamma$ の選び方に依存しうる。特に $x_0$ を基点とするループ $\gamma$ に沿って「球面を1周運ぶ」ことで、$\pi_1(X)$ は $\pi_n(X)$ に作用する。
+
+物理では、基点を固定しない写像 $S^n \to X$ の連続変形による分類（\textbf{自由ホモトピー類}）が欲しいことが多い。これは $\pi_n(X)$ をこの $\pi_1$ の作用で割ったものになる。したがって
+\begin{quote}
+    $X$ が単連結ならば、基点付きの類と自由ホモトピー類は一致し、どちらも $\pi_n(X)$ で分類される。
+\end{quote}
+本文で用いる $X = S^n$（$n \ge 2$）や $X = SU(N)$ はいずれも単連結なので、推移関数 $g: S^3 \to SU(N)$ のように基点を指定せずに書いた写像も、そのまま $\pi_3(SU(N))$ の元とみなしてよい。
+
+\paragraph{基本的な性質}
+\begin{enumerate}
+    \item \textbf{関手性。}連続写像 $\phi: X \to Y$（$\phi(x_0) = y_0$）は、合成 $f \mapsto \phi \circ f$ によって群の準同型 $\phi_*: \pi_n(X, x_0) \to \pi_n(Y, y_0)$ を誘導する。$(\psi \circ \phi)_* = \psi_* \circ \phi_*$、$(\mathrm{id})_* = \mathrm{id}$ が成り立つ。
+    \item \textbf{ホモトピー不変性。}ホモトピックな写像は（基点の取り替えによる同型を除いて）同じ準同型を誘導する。したがってホモトピー同値 $X \simeq Y$ は同型 $\pi_n(X) \cong \pi_n(Y)$ を与える。特に可縮な空間ではすべての $\pi_n$ が自明である。例えば $\mathbb{R}^3 \setminus \{0\} \simeq S^2$ より $\pi_2(\mathbb{R}^3 \setminus \{0\}) \cong \pi_2(S^2) \cong \mathbb{Z}$ であり、冒頭の「原点を包む風船」はこの $\mathbb{Z}$ の生成元である。
+    \item \textbf{直積。}$S^n \to X \times Y$ は成分ごとの写像の組 $(f_X, f_Y)$ であり、ホモトピーも成分ごとに独立に行えるので
+    \begin{equation}
+        \pi_n(X \times Y) \cong \pi_n(X) \times \pi_n(Y).
+    \end{equation}
+    \item \textbf{被覆。}被覆 $p: \tilde{X} \to X$ に対し、$n \ge 2$ では $p_*: \pi_n(\tilde{X}) \to \pi_n(X)$ は同型である。$n \ge 2$ では $S^n$ が単連結なので、写像 $S^n \to X$ もそのホモトピーも $\tilde{X}$ に持ち上がるからである（\ref{sec:topo-covering}節の持ち上げの性質。単連結な空間からの写像は持ち上がる）。被覆は「ループの巻き付き方」すなわち $\pi_1$ しか変えない、と言ってもよい。この事実から直ちに次が得られる（$S^1$, $T^m$ については普遍被覆 $\mathbb{R}$, $\mathbb{R}^m$ が可縮であることを使う）。
+    \begin{equation}
+        \begin{aligned}
+            &\pi_n(S^1) = 0,\quad \pi_n(T^m) = 0 && (n \ge 2), \\
+            &\pi_n(\mathbb{RP}^m) \cong \pi_n(S^m),\quad \pi_n(SO(3)) \cong \pi_n(SU(2)) && (n \ge 2).
+        \end{aligned}
+        \label{eq:pin-covering}
+    \end{equation}
+\end{enumerate}
+
+\paragraph{球面のホモトピー群 (1)：$k \le n$ の場合}
 \begin{itemize}
-    \item $k < n$ ならば $\pi_k(S^n) = 0$。$S^k$ の像は $S^n$ の1点を避けるように動かせ（$k < n$ なので）、残りは $\mathbb{R}^n$ と同相で可縮だからである（\ref{sec:topo-pi1}節の例2と同じ議論）。
-    \item $\pi_n(S^n) \cong \mathbb{Z}$。写像度で分類される（\ref{sec:topo-degree}節）。
-    \item $k > n$ では一般に非自明で、不規則な振る舞いをする。小さい場合の値は次のとおりである。
+    \item \textbf{$k < n$ ならば $\pi_k(S^n) = 0$。}写像 $f: S^k \to S^n$ を、まずホモトピーで滑らかな写像に変形しておく。$k < n$ ならば、滑らかな写像の像は $S^n$ の中で測度ゼロであり（Sardの定理：次元の低い多様体の滑らかな像は「薄い」）、特に $S^n$ 全体を覆えない。そこで像に入らない点 $p$ をとると、$f$ は $S^n \setminus \{p\} \cong \mathbb{R}^n$（立体射影）への写像とみなせ、$\mathbb{R}^n$ は可縮なので $f$ は定値写像に縮められる。これは\ref{sec:topo-pi1}節の例2（$k = 1$ の場合）を一般の $k$ に拡げたものである。連続写像のままでは「空間を埋め尽くす曲線」（Peano曲線）のように像が全体を覆うことがあるので、最初に滑らかにする一手間が必要になる。
+    \item \textbf{$\pi_n(S^n) \cong \mathbb{Z}$。}写像度で分類される（\ref{sec:topo-degree}節のHopfの定理）。例えば $\mathbb{R}^3 \setminus \{0\}$ 上の「ハリネズミ」型の単位ベクトル場 $\hat{\bm{n}}(\bm{x}) = \bm{x}/|\bm{x}|$ は、原点を囲む球面上で写像 $S^2 \to S^2$ を与え、その写像度は $1$ である。原点にある点電荷・磁荷の電場や磁場の向きがちょうどこの形をしており、Gaussの法則で「囲んだ電荷」を測ることは、写像度を積分公式で測ることにあたる。
 \end{itemize}
+
+\paragraph{球面のホモトピー群 (2)：$k > n$ の場合}
+$k > n$ でも $\pi_k(S^n)$ は一般に自明でない。これはホモロジー（\ref{sec:topo-homology}節）との大きな違いである。ホモロジーでは $H_k(S^n) = 0$（$k \neq 0, n$）であり、$S^n$ は「$n$ 次元の穴を1つもつ」以上の情報をもたないが、ホモトピー群は「高い次元の球面が低い次元の球面にどう巻き付けるか」という、より繊細な情報を拾う。小さい場合の値は次のとおりである。
 \begin{center}
-\begin{tabular}{c|ccccc}
+\begin{tabular}{c|cccccc}
     \hline
-    & $\pi_1$ & $\pi_2$ & $\pi_3$ & $\pi_4$ & $\pi_5$ \\
+    & $\pi_1$ & $\pi_2$ & $\pi_3$ & $\pi_4$ & $\pi_5$ & $\pi_6$ \\
     \hline
-    $S^1$ & $\mathbb{Z}$ & $0$ & $0$ & $0$ & $0$ \\
-    $S^2$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ \\
-    $S^3$ & $0$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ \\
-    $S^4$ & $0$ & $0$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ \\
+    $S^1$ & $\mathbb{Z}$ & $0$ & $0$ & $0$ & $0$ & $0$ \\
+    $S^2$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ & $\mathbb{Z}_{12}$ \\
+    $S^3$ & $0$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ & $\mathbb{Z}_{12}$ \\
+    $S^4$ & $0$ & $0$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ \\
+    $S^5$ & $0$ & $0$ & $0$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ \\
     \hline
 \end{tabular}
 \end{center}
-$S^1$ の高次ホモトピー群が消えるのは、普遍被覆 $\mathbb{R}$ が可縮で、$k \ge 2$ では $S^k$（単連結）からの写像が $\mathbb{R}$ に持ち上がるからである。$\pi_3(S^2) \cong \mathbb{Z}$ は「高い次元の球面から低い次元の球面への写像が縮められない」最初の例であり、その生成元がHopf写像である（\ref{sec:topo-hopf}節）。$\pi_5(S^3) \cong \mathbb{Z}_2$ は第\ref{ch:group-action}章のSingerの定理で用いた。
+表の読み方を整理しておく。
+\begin{itemize}
+    \item 対角線より左下（$k < n$）はすべて $0$、対角線上（$k = n$）はすべて $\mathbb{Z}$ である（上で示した）。
+    \item $S^1$ の行が $k \ge 2$ で $0$ なのは、\eqref{eq:pin-covering} による。
+    \item $S^2$ と $S^3$ の行は $k \ge 3$ で一致している。これはHopf束 $S^1 \to S^3 \to S^2$ から導かれる（下の応用例）。$\pi_3(S^2) \cong \mathbb{Z}$ は「高い次元の球面から低い次元の球面への写像が縮められない」最初の例であり、生成元はHopf写像、整数はHopf不変量（\ref{sec:topo-hopf}節）である。
+    \item 対角線に平行な斜めの列は、右下に行くとやがて一定になる：$\pi_{n+1}(S^n) \cong \mathbb{Z}_2$（$n \ge 3$）、$\pi_{n+2}(S^n) \cong \mathbb{Z}_2$（$n \ge 2$）。これは\textbf{Freudenthalの懸垂定理}（$\pi_{n+k}(S^n) \cong \pi_{n+k+1}(S^{n+1})$、$n > k + 1$）による安定化であり、$\pi_{n+1}(S^n) \cong \mathbb{Z}_2$ の生成元はHopf写像を「懸垂」して次元を上げたものである。
+\end{itemize}
+本文で直接使うのは $\pi_3(S^3) \cong \mathbb{Z}$（インスタントン数）、$\pi_3(S^2) \cong \mathbb{Z}$（Hopf束）、$\pi_5(S^3) \cong \mathbb{Z}_2$（第\ref{ch:group-action}章のSingerの定理）である。また $\pi_4(S^3) \cong \pi_4(SU(2)) \cong \mathbb{Z}_2$ は、$SU(2)$ ゲージ理論に奇数個のWeylフェルミオン2重項を結合させると矛盾が生じるという\textbf{Wittenの $SU(2)$ アノマリー}の起源として知られている。
+
+なお、$k > n$ の $\pi_k(S^n)$ をすべて決定することは現在も未解決の難問である。一方、単連結な空間については\textbf{Hurewiczの定理}「$\pi_1 = \cdots = \pi_{n-1} = 0$（$n \ge 2$）ならば、最初の非自明な群は $\pi_n(X) \cong H_n(X)$」があり、最初に現れるホモトピー群だけはホモロジーで計算できる。$\pi_n(S^n) \cong H_n(S^n) \cong \mathbb{Z}$ はその例である。
 
 \paragraph{ファイバー束のホモトピー完全列}
-ホモトピー群を計算する最も強力な道具が次の定理である。ファイバー $F$ を持つファイバー束 $F \to E \xrightarrow{\pi} B$（$B$ は弧状連結）に対し、群の準同型の列
-\begin{equation}
-    \cdots \to \pi_k(F) \to \pi_k(E) \xrightarrow{\pi_*} \pi_k(B) \xrightarrow{\ \partial\ } \pi_{k-1}(F) \to \pi_{k-1}(E) \to \cdots
-\end{equation}
-は\textbf{完全}である。完全とは、各所で「1つ前の写像の像 $=$ 次の写像の核」となることをいう。特に $0 \to A \to B \to 0$ の部分があれば $A \cong B$ である。境界写像 $\partial$ の直観は次のとおりである。$B$ の中の $k$ 次元球面を $E$ に持ち上げようとすると、一般には球面としては持ち上がらず、境界が1つのファイバーに入った $k$ 次元円板として持ち上がる。その境界（$(k-1)$ 次元球面 $\to F$）の類が $\partial$ の値である。
+ホモトピー群を計算する最も強力な道具が次の定理である。
 
-\paragraph{応用例}
+\begin{mythm}{ホモトピー完全列}{homotopy-les}
+ファイバー束 $F \xrightarrow{\ i\ } E \xrightarrow{\ p\ } B$（$B$ は弧状連結、$b_0 \in B$、$F = p^{-1}(b_0)$）に対し、群の準同型の列
+\begin{equation}
+    \begin{aligned}
+        \cdots \to \pi_k(F) \xrightarrow{\ i_*\ } \pi_k(E) \xrightarrow{\ p_*\ } \pi_k(B) \xrightarrow{\ \partial\ } \pi_{k-1}(F) \xrightarrow{\ i_*\ } \pi_{k-1}(E) \to \cdots \\
+        \cdots \to \pi_1(B) \xrightarrow{\ \partial\ } \pi_0(F) \to \pi_0(E) \to \pi_0(B)
+    \end{aligned}
+    \label{eq:homotopy-les}
+\end{equation}
+は\textbf{完全}である。
+\end{mythm}
+
+\textbf{3種類の写像。}$i_*$ はファイバーへの包含 $i: F \hookrightarrow E$ が誘導する写像、$p_*$ は射影 $p$ が誘導する写像である。問題は\textbf{境界写像} $\partial$ であり、次のように定義する。$\pi_k(B)$ の元を、境界 $\partial I^k$ を $b_0$ に写す写像 $\phi: I^k \to B$ で表す。$I^k$ は可縮なので、$\phi$ は $E$ への写像 $\tilde{\phi}: I^k \to E$ に持ち上げられる（ファイバー束の\textbf{ホモトピー持ち上げ性質}。被覆の道の持ち上げの一般化である）。ところが持ち上げた $\tilde{\phi}$ は、境界 $\partial I^k$ を1点に写すとは限らない。$p \circ \tilde{\phi} = \phi$ は境界で $b_0$ なので、$\tilde{\phi}$ は境界を $b_0$ 上のファイバー $F$ の中に写す、ということしか言えない。境界 $\partial I^k$ は $(k-1)$ 次元球面なので、その像は $\pi_{k-1}(F)$ の元を定める。これが $\partial[\phi]$ である。一言でいえば、
+\begin{quote}
+    $B$ の中の $k$ 次元球面を $E$ に持ち上げようとすると、一般には球面としては閉じず、「口」がファイバーの中に開いた $k$ 次元円板として持ち上がる。その口（$(k-1)$ 次元球面）の類が $\partial$ である。
+\end{quote}
+
+\textbf{例：被覆の場合（$k = 1$）。}最も簡単な例は被覆 $\mathbb{Z} \to \mathbb{R} \xrightarrow{p} S^1$（$p(s) = e^{2\pi i s}$）である。ファイバーは離散集合 $\mathbb{Z}$ である。$S^1$ を2周するループ $\gamma$ を $0$ から持ち上げると、$0$ から $2$ への道になり、閉じない（図\ref{fig:pin-boundary}、問\ref{ex:topo-lift}）。口にあたる $0$ 次元球面（2点 $\{0, 2\}$）の行き先、すなわち終点 $2 \in \mathbb{Z} = \pi_0(F)$ が $\partial[\gamma]$ である。完全列の該当部分は $\pi_1(\mathbb{R}) = 0 \to \pi_1(S^1) \xrightarrow{\partial} \pi_0(\mathbb{Z}) \to \pi_0(\mathbb{R}) = \{*\}$ となり、$\partial$ が全単射、すなわち $\pi_1(S^1) \cong \mathbb{Z}$ を再び得る。高次の $\partial$ は、この「道の終点のずれ」を「円板の口のずれ」に一般化したものである。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0]
+    % R とファイバー
+    \draw[->] (-0.8,2.2) -- (5.0,2.2) node[right] {$E = \mathbb{R}$};
+    \foreach \x in {-0.5,0.5,1.5,2.5,3.5,4.5} {
+        \fill (\x,2.2) circle (1.6pt);
+    }
+    \node[above, font=\scriptsize] at (-0.5,2.25) {$-1$};
+    \node[above, font=\scriptsize] at (0.5,2.25) {$0$};
+    \node[above, font=\scriptsize] at (1.5,2.25) {$1$};
+    \node[above, font=\scriptsize] at (2.5,2.25) {$2$};
+    \node[above, font=\scriptsize] at (3.5,2.25) {$3$};
+    \node[above, font=\scriptsize] at (4.5,2.25) {$4$};
+    \draw[very thick, red!70!black, ->] (0.5,2.05) -- (2.5,2.05);
+    \node[below, font=\scriptsize, red!70!black] at (1.5,2.0) {持ち上げ $\tilde{\gamma}$（閉じない）};
+    \node[font=\scriptsize, anchor=west, align=left] at (4.3,0.4) {黒点：ファイバー $F = p^{-1}(1) = \mathbb{Z}$\\ 口のずれ：$\partial[\gamma] = 2$};
+    % S^1
+    \draw[thick] (2.0,0) circle (0.75);
+    \fill (2.75,0) circle (1.6pt) node[right, font=\scriptsize] {$b_0 = 1$};
+    \draw[very thick, red!70!black, ->] (2.6,0) arc (0:350:0.6);
+    \draw[very thick, red!70!black, ->] (2.45,0) arc (0:350:0.45);
+    \node[font=\scriptsize, red!70!black] at (2.0,-1.05) {$\gamma$：$S^1$ を2周するループ};
+    \node at (0.6,0) {$B = S^1$};
+    \draw[->, thick] (3.8,1.75) -- (3.2,0.6) node[midway, right] {$p$};
+\end{tikzpicture}
+\caption{境界写像 $\partial$ の最も簡単な例。底空間 $S^1$ の閉じたループ $\gamma$ を全空間 $\mathbb{R}$ に持ち上げると、閉じない道になる。その始点と終点はどちらもファイバー $\mathbb{Z}$ の中にあり、終点のずれが $\partial[\gamma] \in \pi_0(\mathbb{Z})$ を与える。高次元では、球面を持ち上げた円板の「口」がファイバーの中に開き、その口の類が $\partial$ を与える。}
+\label{fig:pin-boundary}
+\end{figure}
+
+\textbf{完全性の意味。}「完全」とは、列のどの場所でも
+\begin{equation*}
+    (\text{入ってくる写像の像}) = (\text{出ていく写像の核})
+\end{equation*}
+が成り立つことをいう。各場所での意味を言葉にすると次のとおりである。
 \begin{itemize}
-    \item \textbf{Hopf束} $S^1 \to S^3 \to S^2$：$\pi_k(S^1) = 0$（$k \ge 2$）より、$k \ge 3$ では $0 \to \pi_k(S^3) \to \pi_k(S^2) \to 0$ となり、$\pi_3(S^2) \cong \pi_3(S^3) \cong \mathbb{Z}$ を得る。生成元は $\mathrm{id}_{S^3}$ の像、すなわちHopf写像そのものである。また $\pi_2(S^3) = \pi_1(S^3) = 0$ より $0 \to \pi_2(S^2) \xrightarrow{\partial} \pi_1(S^1) \to 0$ となり、$\pi_2(S^2) \cong \mathbb{Z}$ を得る。
-    \item \textbf{2重被覆} $\mathbb{Z}_2 \to S^n \to \mathbb{RP}^n$：$\pi_1(S^n) = 0$ と $\pi_0(\mathbb{Z}_2)$ が2点であることから、$\pi_1(\mathbb{RP}^n) \cong \mathbb{Z}_2$（$n \ge 2$）が再び得られる。
-    \item \textbf{$\pi_3(SU(N)) \cong \mathbb{Z}$}：$SU(N)$ は $\mathbb{C}^N$ の単位球面 $S^{2N-1}$ に推移的に作用し、点 $e_N$ の固定部分群は $SU(N-1)$ である。軌道・固定部分群定理（第\ref{ch:group-action}章）により $SU(N)/SU(N-1) \cong S^{2N-1}$ であり、ファイバー束 $SU(N-1) \to SU(N) \to S^{2N-1}$ を得る。$N \ge 3$ では $2N - 1 \ge 5$ なので $\pi_4(S^{2N-1}) = \pi_3(S^{2N-1}) = 0$ であり、
-    \begin{equation*}
-        0 \to \pi_3(SU(N-1)) \to \pi_3(SU(N)) \to 0
-    \end{equation*}
-    より $\pi_3(SU(N)) \cong \pi_3(SU(N-1)) \cong \cdots \cong \pi_3(SU(2))$ である。最後に $SU(2) \cong S^3$（下の注）から $\pi_3(SU(N)) \cong \pi_3(S^3) \cong \mathbb{Z}$ となる。この同型は $SU(2)$ を左上のブロックに埋め込む写像で与えられるので、「任意の $SU(N)$ インスタントンは、位相的には $SU(2)$ 部分群の中のインスタントンと同じ」である（第\ref{ch:bundle}章、第\ref{ch:instanton}章）。
+    \item $\pi_k(E)$ での完全性：$E$ の中の球面が、$B$ に射影すると縮められる $\iff$ その球面は（$E$ の中で変形して）ファイバー $F$ の中に押し込める。
+    \item $\pi_k(B)$ での完全性：$B$ の中の球面が $E$ の中の球面の射影になっている $\iff$ 持ち上げたときの口が $F$ の中で閉じられる（$\partial = 0$）。
+    \item $\pi_{k-1}(F)$ での完全性：ファイバーの中の球面が、$E$ の中では縮められる $\iff$ それは $B$ の球面を持ち上げた円板の口になっている。
 \end{itemize}
+計算で特に役立つのは次の2つの形である。
+\begin{itemize}
+    \item 列の中に $0 \to A \xrightarrow{\ \alpha\ } C \to 0$ という部分があれば、$\alpha$ は同型である（左の $0$ から $\alpha$ は単射、右の $0$ から $\alpha$ は全射）。
+    \item 列の中に $0 \to A \to C \to D \to 0$ という部分があれば、$C$ は $D$ を $A$ で「拡大」したものであり、$C$ の大きさは $A$ と $D$ で決まる（有限群なら $|C| = |A|\,|D|$）。
+\end{itemize}
+
+\paragraph{応用例1：Hopf束と $\pi_n(S^2)$}
+Hopf束 $S^1 \to S^3 \to S^2$ の完全列を、$k$ ごとに並べて書くと次のようになる。$\pi_k(S^1) = 0$（$k \ge 2$）と $\pi_1(S^3) = \pi_2(S^3) = 0$ を用いる。
+\begin{center}
+\begin{tabular}{c|ccccccc}
+    \hline
+    $k$ & $\pi_k(S^1)$ & $\to$ & $\pi_k(S^3)$ & $\to$ & $\pi_k(S^2)$ & $\xrightarrow{\partial}$ & $\pi_{k-1}(S^1)$ \\
+    \hline
+    $2$ & $0$ & & $0$ & & $\pi_2(S^2)$ & & $\mathbb{Z}$ \\
+    $3$ & $0$ & & $\mathbb{Z}$ & & $\pi_3(S^2)$ & & $0$ \\
+    $k \ge 4$ & $0$ & & $\pi_k(S^3)$ & & $\pi_k(S^2)$ & & $0$ \\
+    \hline
+\end{tabular}
+\end{center}
+\begin{itemize}
+    \item $k = 2$：$\pi_2(S^3) = 0 \to \pi_2(S^2) \xrightarrow{\partial} \pi_1(S^1) \to \pi_1(S^3) = 0$ より、$\partial$ は同型で $\pi_2(S^2) \cong \mathbb{Z}$。意味を見ると、$S^2$ 全体を覆う球面を $S^3$ に持ち上げようとすると、口が1つのファイバー（円周 $S^1$）を1周する円板になる、ということである。これは $S^2$ 上のHopf束の切断が大域的には取れない（Diracの弦が残る）ことと同じ現象であり、整数 $\partial = 1$ は第\ref{ch:bundle}章の磁荷（推移関数の巻き付き数）にあたる。
+    \item $k \ge 3$：$0 \to \pi_k(S^3) \xrightarrow{p_*} \pi_k(S^2) \to 0$ より $\pi_k(S^2) \cong \pi_k(S^3)$。特に $\pi_3(S^2) \cong \pi_3(S^3) \cong \mathbb{Z}$ であり、生成元は $\mathrm{id}_{S^3}$ の $p_*$ による像、すなわちHopf写像 $p$ そのものである。$\pi_4(S^2) \cong \pi_4(S^3) \cong \mathbb{Z}_2$ など、表の $S^2$ と $S^3$ の行が一致するのはこのためである。
+\end{itemize}
+
+\paragraph{応用例2：被覆と $\pi_0$}
+2重被覆 $\mathbb{Z}_2 \to S^n \to \mathbb{RP}^n$（$n \ge 2$）では、
+\begin{equation*}
+    \pi_1(S^n) = 0 \to \pi_1(\mathbb{RP}^n) \xrightarrow{\ \partial\ } \pi_0(\mathbb{Z}_2) \to \pi_0(S^n) = \{*\}
+\end{equation*}
+より、$\partial$ は全単射で $\pi_1(\mathbb{RP}^n) \cong \mathbb{Z}_2$ が再び得られる。$\partial$ は「$q$ から持ち上げたループの終点が $q$ か $-q$ か」を記録している。同様に $\mathbb{Z}_2 \to SU(2) \to SO(3)$ から $\pi_1(SO(3)) \cong \mathbb{Z}_2$ を得る。$k \ge 2$ では $\pi_k(\mathbb{Z}_2) = \pi_{k-1}(\mathbb{Z}_2) = 0$（離散集合の各点は可縮）なので $\pi_k(S^n) \cong \pi_k(\mathbb{RP}^n)$ となり、\eqref{eq:pin-covering} とも一致する。
+
+\paragraph{応用例3：$\pi_3(SU(N)) \cong \mathbb{Z}$}
+$SU(N)$ は $\mathbb{C}^N$ の単位球面 $S^{2N-1}$ に推移的に作用し、点 $e_N$ の固定部分群は $SU(N-1)$ である。軌道・固定部分群定理（第\ref{ch:group-action}章）により $SU(N)/SU(N-1) \cong S^{2N-1}$ であり、ファイバー束 $SU(N-1) \to SU(N) \to S^{2N-1}$ を得る。完全列の該当部分は
+\begin{equation*}
+    \pi_4(S^{2N-1}) \to \pi_3(SU(N-1)) \to \pi_3(SU(N)) \to \pi_3(S^{2N-1})
+\end{equation*}
+である。$N \ge 3$ では $2N - 1 \ge 5$ なので、両端は $k < n$ の場合として $0$ になり、
+\begin{equation*}
+    0 \to \pi_3(SU(N-1)) \to \pi_3(SU(N)) \to 0
+\end{equation*}
+より $\pi_3(SU(N)) \cong \pi_3(SU(N-1)) \cong \cdots \cong \pi_3(SU(2))$ である。最後に $SU(2) \cong S^3$（下の注）から $\pi_3(SU(N)) \cong \pi_3(S^3) \cong \mathbb{Z}$ となる。この同型は $SU(2)$ を左上のブロックに埋め込む写像で与えられるので、「任意の $SU(N)$ インスタントンは、位相的には $SU(2)$ 部分群の中のインスタントンと同じ」である（第\ref{ch:bundle}章、第\ref{ch:instanton}章）。
 
 \begin{note}
 $SU(2)$ の元は
@@ -3823,14 +4576,78 @@ $SU(2)$ の元は
 と書けるので、$(\alpha, \beta) \in \mathbb{C}^2 = \mathbb{R}^4$ の単位球面と同一視され、$SU(2) \cong S^3$ である。第\ref{ch:instanton}章では、これを単位四元数の群として見直す。
 \end{note}
 
+\paragraph{応用例4：コセット空間 $G/H$ の $\pi_2$}
+$H \subset G$ を閉部分群とすると、$H \to G \to G/H$ はファイバー束である（第\ref{ch:group-action}章）。コンパクトLie群では常に $\pi_2(G) = 0$ が成り立つ（É.~Cartanの定理）ので、完全列
+\begin{equation*}
+    \pi_2(G) = 0 \to \pi_2(G/H) \xrightarrow{\ \partial\ } \pi_1(H) \to \pi_1(G)
+\end{equation*}
+から、$G$ が単連結ならば
+\begin{equation}
+    \pi_2(G/H) \cong \pi_1(H)
+    \label{eq:pi2-coset}
+\end{equation}
+を得る。例えば $SU(2)/U(1) \cong S^2$ では $\pi_2(S^2) \cong \pi_1(U(1)) \cong \mathbb{Z}$ となり、応用例1と一致する。物理的には、ゲージ群 $G$ がHiggs機構で $H$ に破れたとき（第\ref{ch:vacuum}章）、真空多様体 $G/H$ の $\pi_2$ がモノポールの磁荷を分類し、\eqref{eq:pi2-coset} はそれが「残った群 $H$ の中の巻き付き」すなわち $H$ に関する磁荷と同じであることを述べている。$SU(2) \to U(1)$ の破れで現れる 't~Hooft--Polyakovモノポールの磁荷 $\pi_2(S^2) \cong \mathbb{Z}$ は、Diracモノポールの磁荷 $\pi_1(U(1)) \cong \mathbb{Z}$ と、まさにこの同型で対応する。
+
+\paragraph{Lie群のホモトピー群}
+本文に現れるLie群のホモトピー群をまとめておく。
+\begin{center}
+\begin{tabular}{c|ccccc}
+    \hline
+    & $\pi_1$ & $\pi_2$ & $\pi_3$ & $\pi_4$ & $\pi_5$ \\
+    \hline
+    $U(1)$ & $\mathbb{Z}$ & $0$ & $0$ & $0$ & $0$ \\
+    $SU(2) \cong S^3$ & $0$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ \\
+    $SO(3) \cong \mathbb{RP}^3$ & $\mathbb{Z}_2$ & $0$ & $\mathbb{Z}$ & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ \\
+    $SU(N)$（$N \ge 3$） & $0$ & $0$ & $\mathbb{Z}$ & $0$ & $\mathbb{Z}$ \\
+    $U(N)$（$N \ge 3$） & $\mathbb{Z}$ & $0$ & $\mathbb{Z}$ & $0$ & $\mathbb{Z}$ \\
+    \hline
+\end{tabular}
+\end{center}
+\begin{itemize}
+    \item $U(1)$ は $S^1$ なので、$\pi_1$ 以外は消える。
+    \item $SO(3)$ は $SU(2)$ の2重被覆の像なので、$\pi_1$ だけが異なり、$k \ge 2$ では $SU(2)$ と同じである（\eqref{eq:pin-covering}）。
+    \item $U(N)$ は、$\det: U(N) \to U(1)$ をファイバー束 $SU(N) \to U(N) \to U(1)$ とみなすと、$\pi_1(U(N)) \cong \pi_1(U(1)) \cong \mathbb{Z}$ であり、$k \ge 2$ では $SU(N)$ と同じになる（実は $U(N) \cong SU(N) \times U(1)$ は位相空間としては成り立つ）。
+    \item $\pi_2 = 0$ と、単純なコンパクトLie群で $\pi_3 \cong \mathbb{Z}$ は一般的な事実である。後者がインスタントン数の整数性を支えている。
+    \item $SU(N)$（$N \ge 3$）の $\pi_4 = 0$、$\pi_5 \cong \mathbb{Z}$ は、応用例3と同じ完全列で $SU(3)$ から先は $N$ によらないことと、$SU(2) \to SU(3) \to S^5$ の完全列から得られる（境界写像 $\partial: \pi_5(S^5) \to \pi_4(SU(2))$ が全射であることの確認が必要なので、ここでは結果だけを記す）。$N$ を大きくすると $\pi_k(U(N))$ は $k$ が奇数で $\mathbb{Z}$、偶数で $0$ に安定する（\textbf{Bottの周期性}）。
+\end{itemize}
+Singerの定理（第\ref{ch:group-action}章）では $\pi_1(\mathcal{G}_0) \cong \pi_5(G)$ を用いたが、上の表から $G = SU(2)$ では $\mathbb{Z}_2$、$G = SU(N)$（$N \ge 3$）では $\mathbb{Z}$ となり、いずれにせよ $0$ でない。したがってSingerの議論は任意の $SU(N)$ に対して成り立つ。
+
 \paragraph{写像空間のホモトピー群}
-第\ref{ch:group-action}章のSingerの定理では、基点付きゲージ群 $\mathcal{G}_0 = \{ g: S^4 \to G \mid g(*) = e \}$ について $\pi_k(\mathcal{G}_0) \cong \pi_{k+4}(G)$ を用いた。これは次のように理解できる。$S^k$ から $\mathcal{G}_0$ への写像とは、$S^k$ の各点ごとに写像 $S^4 \to G$ が与えられたもの、すなわち2変数の写像 $S^k \times S^4 \to G$ のことである。基点の条件により、部分集合 $S^k \vee S^4 = (S^k \times \{*\}) \cup (\{*\} \times S^4)$ は $e$ に写る。これを1点に潰した空間（\textbf{スマッシュ積}）$S^k \wedge S^4 = S^k \times S^4 / (S^k \vee S^4)$ は $S^{k+4}$ と同相である。例えば $S^1 \times S^1 = T^2$ から $a, b$ サイクルを潰すと、正方形の内部だけが残って $S^2$ になる（図\ref{fig:topo-loops}右）。したがって $\pi_k(\mathcal{G}_0)$ は $S^{k+4}$ から $G$ への写像の類 $\pi_{k+4}(G)$ と同一視される。
+第\ref{ch:group-action}章のSingerの定理では、基点付きゲージ群 $\mathcal{G}_0 = \{ g: S^4 \to G \mid g(*) = e \}$ について $\pi_k(\mathcal{G}_0) \cong \pi_{k+4}(G)$ を用いた。これは次のように理解できる。$S^k$ から $\mathcal{G}_0$ への写像とは、$S^k$ の各点ごとに写像 $S^4 \to G$ が与えられたもの、すなわち2変数の写像 $S^k \times S^4 \to G$ のことである。基点の条件により、部分集合 $S^k \vee S^4 = (S^k \times \{*\}) \cup (\{*\} \times S^4)$ は $e$ に写る。これを1点に潰した空間（\textbf{スマッシュ積}）$S^k \wedge S^4 = S^k \times S^4 / (S^k \vee S^4)$ は $S^{k+4}$ と同相である。例えば $S^1 \times S^1 = T^2$ から $a, b$ サイクルを潰すと、正方形の内部だけが残って $S^2$ になる（図\ref{fig:topo-loops}右）。立方体の言葉で言えば、$I^k \times I^4 = I^{k+4}$ であり、「$I^k$ の境界または $I^4$ の境界で $e$」は「$I^{k+4}$ の境界で $e$」と同じことである。したがって $\pi_k(\mathcal{G}_0)$ は $S^{k+4}$ から $G$ への写像の類 $\pi_{k+4}(G)$ と同一視される。
+
+同じ考え方で、次の対応も得られる。
+\begin{itemize}
+    \item $k = 0$ の場合：$\pi_0(\mathcal{G}_0) \cong \pi_4(G)$。$S^4$ 上のゲージ変換が連続変形で恒等変換につながらない成分をもつかどうかは $\pi_4(G)$ で決まる（$G = SU(2)$ では $\mathbb{Z}_2$。これがWittenの $SU(2)$ アノマリーの舞台である）。
+    \item 空間 $\mathbb{R}^3 \cup \{\infty\} = S^3$ 上の基点付きゲージ変換の群では $\pi_0 \cong \pi_3(G) \cong \mathbb{Z}$ であり、恒等変換につながらないゲージ変換（\textbf{大きなゲージ変換}）が巻き付き数で分類される。これが第\ref{ch:instanton}章の $\theta$ 真空の $|n\rangle$ の起源である。
+\end{itemize}
+
+\paragraph{物理での使われ方：位相欠陥とソリトンの分類}
+秩序変数（Higgs場、スピンの向き、など）が真空多様体 $\mathcal{M}$（例えば $G/H$）に値をとる系では、エネルギー有限の配位の位相的な分類がホモトピー群で与えられる。$d = 3$ 次元空間で、余次元 $c$ の欠陥（点なら $c = 3$、線なら $c = 2$、面なら $c = 1$）を囲む $S^{c-1}$ 上で秩序変数がどう巻き付くかを見ると、次の表のようになる。
+\begin{center}
+\begin{tabular}{llll}
+    \hline
+    欠陥・ソリトン & 囲む球面 & 分類 & 例 \\
+    \hline
+    ドメインウォール（面） & $S^0$（2点） & $\pi_0(\mathcal{M})$ & 離散対称性の破れ（$\mathbb{Z}_2$） \\
+    渦・宇宙ひも（線） & $S^1$ & $\pi_1(\mathcal{M})$ & 超流動の渦 $\pi_1(U(1)) \cong \mathbb{Z}$ \\
+    モノポール（点） & $S^2$ & $\pi_2(\mathcal{M})$ & 't~Hooft--Polyakov $\pi_2(S^2) \cong \mathbb{Z}$ \\
+    テクスチャ（非特異） & $\mathbb{R}^3 \cup \{\infty\}$ & $\pi_3(\mathcal{M})$ & Skyrmion $\pi_3(SU(2)) \cong \mathbb{Z}$ \\
+    \hline
+\end{tabular}
+\end{center}
+最後の行は、欠陥を囲むのではなく、空間全体（無限遠で場が一定値になるので $S^3$ とみなせる）からの写像を分類しており、Skyrme模型ではこの整数がバリオン数と解釈される。同じ考え方を4次元ユークリッド時空に適用し、無限遠 $S^3$ でのゲージ変換の巻き付きを数えたものがインスタントン数 $\pi_3(SU(N)) \cong \mathbb{Z}$ である（第\ref{ch:bundle}章）。また2次元の強磁性体のスピン配位 $\hat{\bm{n}}: \mathbb{R}^2 \cup \{\infty\} = S^2 \to S^2$ は $\pi_2(S^2) \cong \mathbb{Z}$ で分類され（2次元Skyrmion）、その整数は写像度の積分公式で $\frac{1}{4\pi}\int \hat{\bm{n}} \cdot (\partial_x \hat{\bm{n}} \times \partial_y \hat{\bm{n}})\,dx\,dy$ と書ける。
 
 \paragraph{練習問題}（解答は\ref{sec:topo-solutions}節）
 \exprob{ex:topo-pin}次のホモトピー群を求めよ。
 (a) $\pi_2(S^2 \times S^1)$　(b) $\pi_3(S^2 \times S^3)$　(c) $\pi_3(T^n)$
 
 \exprob{ex:topo-sun}ファイバー束 $SU(N-1) \to SU(N) \to S^{2N-1}$ のホモトピー完全列を用いて、$SU(N)$（$N \ge 2$）が単連結であることを示せ。
+
+\exprob{ex:topo-pi2-r3}次の空間の $\pi_2$ を求め、問\ref{ex:topo-pi1}(b)(c) の $\pi_1$ の結果と比べよ。
+(a) $\mathbb{R}^3 \setminus \{0\}$　(b) $\mathbb{R}^3$ から $z$ 軸を除いた空間
+
+\exprob{ex:topo-gh}\eqref{eq:pi2-coset} を用いて、次のコセット空間の $\pi_2$ を求めよ。
+(a) $SU(3)/SU(2) \cong S^5$　(b) $SU(3)/T^2$（$T^2 = U(1) \times U(1)$ は対角行列からなる極大トーラス）　(c) $SU(3)/U(2) \cong \mathbb{CP}^2$
 
 %==============================================================
 \section{写像度と巻き付き数}
@@ -4158,6 +4975,17 @@ $p(\tilde{\gamma}(t)) = e^{2\pi i \tilde{\gamma}(t)} = e^{4\pi i t}$ かつ $\ti
     \pi_1(SU(N-1)) \to \pi_1(SU(N)) \to \pi_1(S^{2N-1})
 \end{equation*}
 である。$N \ge 2$ では $2N - 1 \ge 3$ なので $\pi_1(S^{2N-1}) = 0$。完全性より、2番目の写像の核（$=\pi_1(SU(N))$ 全体）は1番目の写像の像に等しいので、$\pi_1(SU(N-1)) \to \pi_1(SU(N))$ は全射である。$\pi_1(SU(2)) = \pi_1(S^3) = 0$ から出発して帰納的に $\pi_1(SU(N)) = 0$ を得る。一方、$U(N)$ は $\det: U(N) \to U(1)$ を通じて $\pi_1(U(N)) \cong \mathbb{Z}$ となり、単連結でない。
+
+\exsol{ex:topo-pi2-r3}
+(a) $\mathbb{R}^3 \setminus \{0\} \simeq S^2$ なので $\pi_2 \cong \pi_2(S^2) \cong \mathbb{Z}$。生成元は原点を1回包む球面であり、整数は「原点を何回（向きを込めて）包んでいるか」を表す。
+(b) $\mathbb{R}^3 \setminus (z\text{軸}) \simeq S^1$（問\ref{ex:topo-pi1}(c)の解答）なので $\pi_2 \cong \pi_2(S^1) = 0$。
+$\pi_1$ と比べると、(a) は $\pi_1 = 0$、$\pi_2 = \mathbb{Z}$、(b) は $\pi_1 = \mathbb{Z}$、$\pi_2 = 0$ であり、ちょうど逆になっている。点を除いた穴は球面で包めるがループは引っかからず、直線を除いた穴はループが引っかかるが球面は（直線に沿って上下にずらして）外せる。これが、点状の欠陥（モノポール）は $\pi_2$ で、線状の欠陥（渦）は $\pi_1$ で分類されることの最も簡単な例である。
+
+\exsol{ex:topo-gh}
+いずれも $G = SU(3)$ は単連結なので、\eqref{eq:pi2-coset} より $\pi_2(G/H) \cong \pi_1(H)$ である。
+(a) $\pi_1(SU(2)) = 0$ より $\pi_2(S^5) = 0$。$k < n$ ならば $\pi_k(S^n) = 0$ という結果と一致する。
+(b) $\pi_1(U(1) \times U(1)) \cong \mathbb{Z}^2$ より $\pi_2(SU(3)/T^2) \cong \mathbb{Z}^2$。物理的には、$SU(3)$ が極大トーラス $U(1)^2$ に破れると、2種類の独立な $U(1)$ 磁荷をもつモノポールが現れる。
+(c) $\pi_1(U(2)) \cong \mathbb{Z}$（$\det$ による。問\ref{ex:topo-sun}の解答）より $\pi_2(\mathbb{CP}^2) \cong \mathbb{Z}$。これは $\mathbb{CP}^2$ 上の Hopf束 $S^1 \to S^5 \to \mathbb{CP}^2$ の完全列 $0 = \pi_2(S^5) \to \pi_2(\mathbb{CP}^2) \xrightarrow{\partial} \pi_1(S^1) \to \pi_1(S^5) = 0$ からも得られる。
 
 \exsol{ex:topo-deg-s1}
 (a) 正則値として $1$ をとる。$\bar{z}^3 = 1$ の解は $z = 1, e^{\pm 2\pi i/3}$ の3点。$z = e^{i\varphi}$ とすると $f = e^{-3i\varphi}$ であり、偏角は $\varphi$ の $-3$ 倍で動くので、各点で $f$ は向きを反転する。よって $\deg f = -1 - 1 - 1 = -3$。
