@@ -1513,6 +1513,191 @@ $\Delta$ の固有値がすべて正であれば、Gauss積分により
 
 接ベクトルとは、「物理的に等価でない無限小変形」のことである。接続の微小変形 $A \to A + \delta A$ を考える。接続空間 $\mathcal{A}$ はアフィン空間であるため、二つの接続の差 $\delta A$ は $M$ 上の $\mathrm{ad}(P)$ に値をとる1次微分形式（$\delta A \in \Omega^1(M, \mathrm{ad}(P))$）となる。
 
+\paragraph{「アフィン空間である」とはどういう意味か}
+\textbf{ベクトル空間}では、元どうしの和 $v + w$ とスカラー倍 $\lambda v$ が定義され、特別な元として原点 $0$ がある。これに対し\textbf{アフィン空間}とは、大雑把に言えば「原点を忘れたベクトル空間」である。正確には、ベクトル空間 $V$ が与えられていて、集合 $\mathcal{A}$ の点について
+\begin{enumerate}
+    \item 2点の差 $A_1 - A_0$ は $V$ の元（変位ベクトル）として定義される、
+    \item 点 $A_0$ に $V$ の元 $\eta$ を足した $A_0 + \eta$ は再び $\mathcal{A}$ の点である、
+    \item しかし点どうしの和 $A_0 + A_1$ やスカラー倍 $2A_0$ は（一般に）$\mathcal{A}$ の点にならない、
+\end{enumerate}
+という構造をもつものをいう。日常的な例は「黒板の上の点の集合」である。2点を結ぶ矢印（変位）はベクトルだが、「点 $P$ ＋ 点 $Q$」には意味がない。どこかに原点 $A_0$ を\textbf{勝手に}選べば $\mathcal{A} = A_0 + V$ とベクトル空間と同一視できるが、その原点には特別な意味がない（図\ref{fig:affine-connection}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.2]
+    % アフィン空間（原点なし）
+    \begin{scope}
+        \fill[gray!10] (-0.3,-0.3) -- (4.2,-0.3) -- (4.8,2.7) -- (0.3,2.7) -- cycle;
+        \draw[gray!60] (-0.3,-0.3) -- (4.2,-0.3) -- (4.8,2.7) -- (0.3,2.7) -- cycle;
+        \node[gray!70!black] at (4.25,2.45) {$\mathcal{A}$};
+        \coordinate (A0) at (0.8,0.5);
+        \coordinate (A1) at (3.6,1.9);
+        \coordinate (A) at (2.0,2.0);
+        \draw[thick, red!70!black] (A0) -- (A1);
+        \fill[red!70!black] ($(A0)!0.4!(A1)$) circle (0.045)
+            node[below right, font=\small] {$A_t=(1-t)A_0+tA_1$};
+        \draw[->, very thick, blue!70!black, shorten >=2pt] (A0) -- (A)
+            node[midway, left, font=\small] {$\eta = A - A_0$};
+        \fill (A0) circle (0.06) node[below left] {$A_0$};
+        \fill (A1) circle (0.06) node[right] {$A_1$};
+        \fill (A) circle (0.06) node[above] {$A$};
+        \node[font=\small, align=center] at (2.2,-0.85) {(A) 接続の空間：点（接続）の差だけが\\ベクトル $\eta\in\Omega^1(M,\mathrm{ad}(P))$};
+    \end{scope}
+    % ベクトル空間（原点あり）
+    \begin{scope}[xshift=6.3cm]
+        \draw[->, gray] (-0.3,0) -- (3.5,0);
+        \draw[->, gray] (0,-0.3) -- (0,2.7);
+        \fill (0,0) circle (0.06) node[below left] {$0$};
+        \draw[->, very thick, blue!70!black] (0,0) -- (1.2,1.5) node[midway, left, font=\small] {$\eta$};
+        \draw[->, very thick, green!50!black] (0,0) -- (2.0,0.5) node[midway, below, font=\small] {$\eta'$};
+        \draw[->, thick, dashed] (0,0) -- (3.2,2.0) node[above, font=\small] {$\eta+\eta'$};
+        \node[gray!70!black] at (3.0,2.5) {$\Omega^1(M,\mathrm{ad}(P))$};
+        \node[font=\small, align=center] at (1.6,-0.85) {(B) 差の空間：原点 $0$ があり\\和・スカラー倍が自由};
+    \end{scope}
+\end{tikzpicture}
+\caption{アフィン空間 $\mathcal{A}$（左）とそのモデルとなるベクトル空間 $\Omega^1(M,\mathrm{ad}(P))$（右）。左には特別な原点がなく、$A_0$ は任意に選んだ基準点にすぎない。2点を結ぶ線分 $A_t$ は $\mathcal{A}$ 内にとどまる（可縮性）。}
+\label{fig:affine-connection}
+\end{figure}
+
+ゲージ場がまさにこの構造をもつことは、ゲージ変換則を見ればわかる。局所的には、ゲージ場は（本章の規約で）
+\begin{equation}
+    A \;\longmapsto\; A^U = U^{-1} A U + U^{-1} dU
+    \label{eq:affine-transf-ch3}
+\end{equation}
+と変換する。右辺第2項 $U^{-1}dU$ は $A$ によらない\textbf{非斉次項}であり、これがアフィン構造の源である。
+\begin{itemize}
+    \item \textbf{和は接続にならない}：$A_0, A_1$ がともに \eqref{eq:affine-transf-ch3} に従うとき、$A_0 + A_1$ は $U^{-1}(A_0 + A_1)U + 2\,U^{-1}dU$ と変換し、非斉次項が2倍になってしまう。スカラー倍 $\lambda A$ も同様に $\lambda\, U^{-1}dU$ となる。したがって $A_0 + A_1$ や $\lambda A$ はゲージ場（接続）としての変換則を満たさない。
+    \item \textbf{差はベクトルになる}：$\eta = A_1 - A_0$ は $U^{-1}\eta\, U$ と非斉次項なしに変換する。これは $\mathfrak{g}$ に値をとる1形式が随伴表現で変換するという意味で、大域的には $\eta \in \Omega^1(M, \mathrm{ad}(P))$ である。$\Omega^1(M, \mathrm{ad}(P))$ は和もスカラー倍も自由にとれる普通の（無限次元）ベクトル空間である。
+    \item \textbf{接続＋ベクトル＝接続}：$A_0$ が接続で $\eta \in \Omega^1(M,\mathrm{ad}(P))$ ならば $A_0 + \eta$ は $U^{-1}(A_0+\eta)U + U^{-1}dU$ と変換し、再び接続である。
+\end{itemize}
+
+\textbf{「ベクトル」と「随伴表現」について。}上で「差はベクトルになる」と言ったときの「ベクトル」は、\textbf{ベクトル空間の元}（足したりスカラー倍したりできるもの）という意味であり、表現論でいう「ベクトル表現」のことではない。差 $\eta$ がどの表現で変換するかを指定するのが\textbf{随伴表現}という言葉である。
+
+随伴表現とは、群 $G$ が\textbf{自分自身のリー代数 $\mathfrak{g}$} に共役で作用する表現
+\begin{equation*}
+    \mathrm{Ad}_g : \mathfrak{g} \to \mathfrak{g}, \qquad X \longmapsto g\,X\,g^{-1}
+    \qquad(\text{本節の規約では } \eta \mapsto U^{-1}\eta\,U)
+\end{equation*}
+のことである。表現空間は $\mathfrak{g}$ そのものなので、次元は $\dim G$ に等しい。生成子 $T^a$ で $\eta = \eta^a T^a$ と展開すると、$U^{-1}T^aU = R(U)^a{}_b\, T^b$ で定まる $\dim G$ 次の実行列 $R(U)$ によって、成分は $\eta^a \mapsto \eta^b R(U)_b{}^a$ と線形に混ざる。ゲージ場 $A = A^aT^a$ も $\mathfrak{g}$ 値なので、「ゲージボソンは随伴表現に属する」と言われるのはこの意味である（ただし $A$ 自身は非斉次項 $U^{-1}dU$ のために随伴表現で\textbf{斉次には}変換しない。斉次に随伴変換するのは差 $\eta$ や曲率 $F$ である）。
+
+随伴表現と、物質場が属する\textbf{基本表現}やいわゆる\textbf{ベクトル表現}は一般には別物である。偶然一致する場合があるので混同しやすい：
+\begin{center}
+\begin{tabular}{c|c|c|l}
+    $G$ & 随伴表現の次元 $=\dim G$ & 基本（定義）表現の次元 & 備考 \\ \hline
+    $U(1)$ & $1$ & $1$ & 可換なので $\mathrm{Ad}$ は自明：$\eta$ は不変 \\
+    $SU(2)$ & $3$ & $2$ & 随伴 $=$ スピン1（3重項） \\
+    $SO(3)$ & $3$ & $3$ & 随伴 $\cong$ ベクトル表現（偶然の一致） \\
+    $SU(3)$ & $8$ & $3$ & 8個のグルーオン vs 3色のクォーク \\
+    $SO(N)$ & $N(N-1)/2$ & $N$ & 随伴 $\cong$ 反対称2階テンソル
+\end{tabular}
+\end{center}
+$SO(3)$ では $\mathfrak{so}(3)$ の元（反対称行列）が $\epsilon_{ijk}$ により3次元ベクトルと同一視でき、共役作用がちょうど回転になるので「随伴＝ベクトル」となる。$SU(2)$ の随伴表現がスピン1（＝$SO(3)$ のベクトル表現）になるのも同じ理由である。しかし $SU(3)$ や一般の $SO(N)$（$N\neq 3$）では一致しない。したがって「$\eta$ は随伴表現で変換する」は「$\eta$ は $\mathfrak{g}$ に値をとり、$G$ が共役で作用する」という意味に読むのが正しい。$\mathrm{ad}(P) = P\times_G\mathfrak{g}$ はこの表現から作った\textbf{ベクトル束}（ファイバーがベクトル空間 $\mathfrak{g}$ の束）であり、ここでも「ベクトル」はベクトル空間の意味である。
+
+\begin{note}
+$SO(3)$ で随伴＝ベクトルとなることを確かめる。$\mathfrak{so}(3)$ の基底 $(T^i)_{jk} = -\epsilon_{ijk}$ をとり、$X = x^iT^i$ と書くと、任意の $\bm{v}\in\mathbb{R}^3$ に対し $X\bm{v} = \bm{x}\times\bm{v}$ である。$R \in SO(3)$ に対し
+\begin{equation*}
+    (RXR^{-1})\bm{v} = R\bigl(\bm{x}\times R^{-1}\bm{v}\bigr) = (R\bm{x})\times\bm{v}
+\end{equation*}
+（回転は外積を保つ：$R(\bm{a}\times\bm{b}) = R\bm{a}\times R\bm{b}$）なので、$\mathrm{Ad}_R$ は成分ベクトル $\bm{x}$ に $\bm{x}\mapsto R\bm{x}$ と作用する。これはちょうどベクトル表現である。一方 $SU(3)$ では随伴表現は8次元、基本表現は3次元なので、両者は次元からして異なる。
+\end{note}
+以上から、接続を1つ $A_0$ 固定すれば
+\begin{equation*}
+    \mathcal{A} = A_0 + \Omega^1(M, \mathrm{ad}(P)) = \{\, A_0 + \eta \mid \eta \in \Omega^1(M, \mathrm{ad}(P)) \,\}
+\end{equation*}
+と書け、これが「$\mathcal{A}$ は $\Omega^1(M, \mathrm{ad}(P))$ をモデルとするアフィン空間である」という主張の中身である（大域的な証明は第\ref{ch:bundle}章で接続形式を用いて与える）。
+
+\textbf{なぜ原点がないのか。}「$A = 0$ を原点にすればよい」と思うかもしれないが、$A = 0$ はゲージ変換で $0^U = U^{-1}dU \neq 0$ に移るので、ゲージ不変な意味での特別な点ではない。さらに $P$ が非自明な束（例えばDiracモノポールやインスタントン数 $k \neq 0$ の束）では、$M$ 全体で $A = 0$ となる接続はそもそも存在しない。各パッチ上の局所表示 $A_\alpha$ はあっても、それらを全部 $0$ にすると貼り合わせ条件 $A_\beta = g_{\alpha\beta}^{-1}A_\alpha g_{\alpha\beta} + g_{\alpha\beta}^{-1}dg_{\alpha\beta}$ が破れるからである。したがって $\mathcal{A}$ は自然な原点をもたず、ベクトル空間ではなくアフィン空間と呼ぶのが正確である（自明な $U(1)$ 束のように $A=0$ が大域的に存在する場合でも、それを原点に選ぶことはゲージ固定の一種にすぎない）。
+
+\textbf{なぜゲージ変換 \eqref{eq:affine-transf-ch3} と貼り合わせ条件は同じ形なのか。}
+ゲージ変換則 $A^U = U^{-1}AU + U^{-1}dU$ と、パッチの重なりでの貼り合わせ条件
+\begin{equation}
+    A_\beta = g_{\alpha\beta}^{-1}A_\alpha\, g_{\alpha\beta} + g_{\alpha\beta}^{-1}dg_{\alpha\beta}
+    \label{eq:patch-gluing-ch3}
+\end{equation}
+が同じ形をしているのは偶然ではない。\textbf{両者は同じ操作、すなわち「ファイバーの基準（局所標構・局所切断）の取り替え」を、異なる状況で書いたもの}だからである。
+
+まず、局所的なゲージ場 $A_\alpha$ が何であったかを思い出す。主束 $P$ 上には基準によらない接続形式 $\omega$ が1つあり、パッチ $U_\alpha$ 上で局所切断 $s_\alpha: U_\alpha \to P$（各点のファイバーで「どの元を単位元 $e$ とみなすか」の選択、物理的には内部空間の標構の選択）を1つ選ぶと、それを $M$ 側に引き戻した $A_\alpha = s_\alpha^*\omega$ が局所的なゲージ場である。したがって $A_\alpha$ は「$\omega$ を基準 $s_\alpha$ で読んだ成分」であり、基準を $s \to s\,h$（$h: U \to G$）と取り替えると成分は
+\begin{equation}
+    (s\,h)^*\omega = h^{-1}(s^*\omega)\,h + h^{-1}dh
+    \label{eq:section-change-ch3}
+\end{equation}
+と変わる（導出は第\ref{ch:bundle}章の \eqref{eq:local-gauge-transf} の注を参照）。式 \eqref{eq:affine-transf-ch3} と \eqref{eq:patch-gluing-ch3} はどちらもこの1つの公式の特殊な場合である（図\ref{fig:gauge-vs-gluing}）。
+\begin{itemize}
+    \item \textbf{ゲージ変換}：\textbf{同じ}領域の上で基準を $s \to s' = s\,U$ と取り替える。$U: M \to G$ は自由に選んでよい（物理的には「各点で内部空間の座標軸を好きに回し直す」）。\eqref{eq:section-change-ch3} で $h = U$ とすれば \eqref{eq:affine-transf-ch3} になる。
+    \item \textbf{貼り合わせ}：\textbf{異なる}パッチ $U_\alpha, U_\beta$ でそれぞれ選んだ基準を、重なり $U_\alpha \cap U_\beta$ 上で比べる。$s_\beta = s_\alpha\, g_{\alpha\beta}$ なので、\eqref{eq:section-change-ch3} で $h = g_{\alpha\beta}$ とすれば \eqref{eq:patch-gluing-ch3} になる。$g_{\alpha\beta}$ は束 $P$ によって（ゲージ変換を除いて）決まっていて、コサイクル条件 $g_{\alpha\beta}g_{\beta\gamma} = g_{\alpha\gamma}$ を満たさねばならない。
+\end{itemize}
+つまり違いは「$h$ が自由に選べる変換か、束の構造として与えられた比較か」だけであり、$A$ の成分がどう変わるかを決める式は共通である。言い換えれば、\textbf{推移関数とは「隣のパッチとの間で強制的に行うゲージ変換」}であり、逆に（自明な束での）ゲージ変換とは「全体を1枚のパッチと見たときの基準の取り替え」である。この見方では、非自明な束とは「どうゲージ変換しても推移関数を $g_{\alpha\beta} \equiv e$ にできない束」であり、そのとき $A_\alpha$ たちを1つの大域的な1形式にまとめることはできない。
+
+\textbf{物理的な理由づけ。}同じ形は「物質場の共変微分がきちんと共変になる」という要請からも強制される。物質場 $\psi$（$G$ の表現に値をとる）の成分は基準を $s \to s\,h$ と変えると $\psi \to h^{-1}\psi$ と変わる。このとき共変微分 $D\psi = d\psi + A\psi$ も $D\psi \to h^{-1}D\psi$ と変わってほしい（そうでなければ $D\psi$ を使った作用が基準の選び方に依存してしまう）。この要請を満たす $A$ の変換則は $A \to h^{-1}Ah + h^{-1}dh$ の1つしかない（下の注）。$h$ がゲージ変換 $U$ であっても推移関数 $g_{\alpha\beta}$ であっても要請は同じなので、同じ形になるのである。非斉次項 $h^{-1}dh$ は、$d$ が $h^{-1}$ にも作用して出る余分な項 $d(h^{-1})\psi$ を打ち消すために必要な項であり、これが前述のアフィン構造の源でもある。
+
+\begin{note}
+$\psi' = h^{-1}\psi$、$A'$ を未知として $D'\psi' = h^{-1}D\psi$ を要請する。$d(h^{-1}) = -h^{-1}(dh)h^{-1}$ を用いると
+\begin{align*}
+    D'\psi' &= d(h^{-1}\psi) + A'h^{-1}\psi
+    = -h^{-1}(dh)h^{-1}\psi + h^{-1}d\psi + A'h^{-1}\psi .
+\end{align*}
+これが $h^{-1}D\psi = h^{-1}d\psi + h^{-1}A\psi$ に等しいためには、任意の $\psi$ に対し
+\begin{equation*}
+    A'h^{-1} - h^{-1}(dh)h^{-1} = h^{-1}A
+    \quad\Longleftrightarrow\quad
+    A' = h^{-1}Ah + h^{-1}dh
+\end{equation*}
+でなければならない。$h = U$ とおけば \eqref{eq:affine-transf-ch3}、$h = g_{\alpha\beta}$、$\psi_\beta = g_{\alpha\beta}^{-1}\psi_\alpha$ とおけば \eqref{eq:patch-gluing-ch3} である。
+\end{note}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    % (A) ゲージ変換：同じ領域で切断を取り替える
+    \begin{scope}
+        \draw[thick] (0,0) -- (4,0) node[right] {$U$};
+        \foreach \x in {0.5,1.25,...,3.5} \draw[gray!50] (\x,0.4) -- (\x,3.0);
+        \draw[very thick, blue!70!black] plot[domain=0.3:3.7, samples=40, smooth] (\x, {1.2 + 0.15*sin(90*\x)});
+        \node[blue!70!black, left] at (0.3,1.2) {$s$};
+        \draw[very thick, red!70!black] plot[domain=0.3:3.7, samples=40, smooth] (\x, {2.1 + 0.35*sin(120*\x+40)});
+        \node[red!70!black, left] at (0.3,2.4) {$s' = s\,U$};
+        \draw[->, thick] (2.0,{1.2+0.15*sin(180)}) -- (2.0,{2.1+0.35*sin(280)}) node[midway, right, font=\small] {$U(x)$};
+        \node[font=\small, align=center] at (2.0,-0.75) {(A) ゲージ変換：同じ領域で\\基準を自由に取り替える};
+    \end{scope}
+    % (B) 貼り合わせ：重なりで2つの切断を比べる
+    \begin{scope}[xshift=6.2cm]
+        \draw[thick, blue!70!black] (0,-0.05) -- (2.6,-0.05);
+        \draw[thick, red!70!black] (1.4,0.05) -- (4,0.05);
+        \node[blue!70!black, below, font=\small] at (0.6,-0.05) {$U_\alpha$};
+        \node[red!70!black, below, font=\small] at (3.4,-0.05) {$U_\beta$};
+        \fill[gray!15] (1.4,0.4) rectangle (2.6,3.0);
+        \node[font=\scriptsize, gray!60!black] at (2.0,3.2) {$U_\alpha\cap U_\beta$};
+        \foreach \x in {0.5,1.25,...,3.5} \draw[gray!50] (\x,0.4) -- (\x,3.0);
+        \draw[very thick, blue!70!black] plot[domain=0.3:2.6, samples=30, smooth] (\x, {1.2 + 0.15*sin(90*\x)});
+        \node[blue!70!black, left] at (0.3,1.2) {$s_\alpha$};
+        \draw[very thick, red!70!black] plot[domain=1.4:3.7, samples=30, smooth] (\x, {2.2 + 0.3*sin(110*\x)});
+        \node[red!70!black, right] at (3.7,{2.2+0.3*sin(407)}) {$s_\beta$};
+        \draw[->, thick] (2.0,{1.2+0.15*sin(180)}) -- (2.0,{2.2+0.3*sin(220)}) node[midway, right, font=\small] {$g_{\alpha\beta}(x)$};
+        \node[font=\small, align=center] at (2.0,-0.75) {(B) 貼り合わせ：重なりで\\2つの基準を比べる};
+    \end{scope}
+\end{tikzpicture}
+\caption{ゲージ変換と貼り合わせ条件。どちらもファイバー（灰色の縦線）の中で基準となる切断を $s \to s\,h$ と取り替える操作であり、ゲージ場の成分は同じ公式 \eqref{eq:section-change-ch3} で変わる。(A) では $h = U$ を自由に選べ、(B) では $h = g_{\alpha\beta}$ が束によって与えられている。}
+\label{fig:gauge-vs-gluing}
+\end{figure}
+
+\textbf{この事実から何が従うか。}本節以降で使うのは次の2点である。
+\begin{enumerate}
+    \item \textbf{接空間は場所によらない}：$A$ を通る $\mathcal{A}$ 内の曲線 $A(t)$ の速度 $\dot A(0)$ は2点の差の極限なので $\Omega^1(M, \mathrm{ad}(P))$ の元であり、$T_A\mathcal{A} \cong \Omega^1(M, \mathrm{ad}(P))$ がすべての $A$ で成り立つ。冒頭で「微小変形 $\delta A$ は $\Omega^1(M,\mathrm{ad}(P))$ の元」と書いたのはこの意味であり、以下の変形複体はこのベクトル空間の上で組み立てられる。
+    \item \textbf{$\mathcal{A}$ は可縮}：2つの接続 $A_0, A_1$ に対し $A_t = (1-t)A_0 + tA_1 = A_0 + t(A_1 - A_0)$ は（係数の和が $1$ なので）すべての $t \in [0,1]$ で接続である。よって任意の2点が線分で結べ、$\mathcal{A}$ は1点に縮められる。$\mathcal{A}$ 自身にはトポロジー的な情報がなく、モジュライ空間 $\mathcal{A}/\mathcal{G}$ の非自明なトポロジーはすべてゲージ群 $\mathcal{G}$ の作用から来る（第\ref{ch:group-action}章のGribov問題・Singerの定理を参照）。
+\end{enumerate}
+一般相対論のChristoffel記号 $\Gamma^\rho_{\mu\nu}$ が「それ自身はテンソルではないが、2つの接続の差はテンソル」であるのと全く同じ構造である。
+
+
+\begin{note}
+上の変換則を確かめる。$A_i^U = U^{-1}A_iU + U^{-1}dU$（$i=0,1$）とすると、
+\begin{align*}
+    A_1^U - A_0^U &= U^{-1}(A_1 - A_0)U, \\
+    A_0^U + A_1^U &= U^{-1}(A_0 + A_1)U + 2\,U^{-1}dU, \\
+    (1-t)A_0^U + tA_1^U &= U^{-1}\bigl((1-t)A_0 + tA_1\bigr)U + \underbrace{(1-t+t)}_{=1}\,U^{-1}dU .
+\end{align*}
+1行目は差が非斉次項をもたないこと、2行目は和では非斉次項が2倍になり接続の変換則 \eqref{eq:affine-transf-ch3} を満たさないこと、3行目は係数の和が $1$ の組み合わせ（アフィン結合）なら非斉次項がちょうど1倍になり再び接続になることを示している。一般に $\sum_i c_iA_i$ が接続になる条件は $\sum_i c_i = 1$ である。
+\end{note}
+
 ここで、我々が興味を持つのは、運動方程式（例えば反自己双対方程式 $F^+ = 0$ や平坦接続 $F = 0$）を満たす解のモジュライである。簡単のため、平坦接続のモジュライを例にとる。
 
 \begin{note}
