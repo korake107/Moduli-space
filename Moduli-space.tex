@@ -1682,10 +1682,80 @@ $\psi' = h^{-1}\psi$、$A'$ を未知として $D'\psi' = h^{-1}D\psi$ を要請
 
 \textbf{この事実から何が従うか。}本節以降で使うのは次の2点である。
 \begin{enumerate}
-    \item \textbf{接空間は場所によらない}：$A$ を通る $\mathcal{A}$ 内の曲線 $A(t)$ の速度 $\dot A(0)$ は2点の差の極限なので $\Omega^1(M, \mathrm{ad}(P))$ の元であり、$T_A\mathcal{A} \cong \Omega^1(M, \mathrm{ad}(P))$ がすべての $A$ で成り立つ。冒頭で「微小変形 $\delta A$ は $\Omega^1(M,\mathrm{ad}(P))$ の元」と書いたのはこの意味であり、以下の変形複体はこのベクトル空間の上で組み立てられる。
+    \item \textbf{接空間は場所によらない}：すべての $A \in \mathcal{A}$ で $T_A\mathcal{A} \cong \Omega^1(M, \mathrm{ad}(P))$ が成り立つ（下の詳しい説明を参照）。冒頭で「微小変形 $\delta A$ は $\Omega^1(M,\mathrm{ad}(P))$ の元」と書いたのはこの意味であり、以下の変形複体はこのベクトル空間の上で組み立てられる。
     \item \textbf{$\mathcal{A}$ は可縮}：2つの接続 $A_0, A_1$ に対し $A_t = (1-t)A_0 + tA_1 = A_0 + t(A_1 - A_0)$ は（係数の和が $1$ なので）すべての $t \in [0,1]$ で接続である。よって任意の2点が線分で結べ、$\mathcal{A}$ は1点に縮められる。$\mathcal{A}$ 自身にはトポロジー的な情報がなく、モジュライ空間 $\mathcal{A}/\mathcal{G}$ の非自明なトポロジーはすべてゲージ群 $\mathcal{G}$ の作用から来る（第\ref{ch:group-action}章のGribov問題・Singerの定理を参照）。
 \end{enumerate}
 一般相対論のChristoffel記号 $\Gamma^\rho_{\mu\nu}$ が「それ自身はテンソルではないが、2つの接続の差はテンソル」であるのと全く同じ構造である。
+
+\paragraph{「接空間は場所によらない」の詳しい説明}
+まず言葉の注意をしておく。ここでいう「場所」は\textbf{時空 $M$ の点 $x$ ではなく、接続の空間 $\mathcal{A}$ の点}、すなわち1つのゲージ場の配位 $A$ 全体（$M$ 上の場の配置まるごと）のことである。$\mathcal{A}$ を「点の1つ1つが場の配位であるような巨大な空間」と思い、その上で接空間を考えている。
+
+\textbf{(1) 接ベクトルとは「配位の無限小変化」である。}$\mathcal{A}$ の中の曲線 $t \mapsto A(t)$（場の配位の1パラメータ族）を考えると、その $t = 0$ での速度
+\begin{equation*}
+    \delta A \equiv \dot A(0) = \lim_{t\to 0}\frac{A(t) - A(0)}{t}
+\end{equation*}
+が点 $A(0)$ における接ベクトルである。分子 $A(t) - A(0)$ は\textbf{2つの接続の差}なので、上で見たように非斉次項が消えて $\Omega^1(M, \mathrm{ad}(P))$ の元になる。それを $t$ で割って極限をとっても性質は変わらないから、$\delta A \in \Omega^1(M, \mathrm{ad}(P))$ である。逆に任意の $\eta \in \Omega^1(M,\mathrm{ad}(P))$ に対し $A(t) = A + t\eta$ は接続の曲線で、速度は $\eta$ である。よって
+\begin{equation*}
+    T_A\mathcal{A} = \Omega^1(M, \mathrm{ad}(P)) \quad (\text{すべての } A \in \mathcal{A})
+\end{equation*}
+となる。右辺に $A$ が現れていないことが「場所によらない」の意味である。
+
+\textbf{(2) 対比：球面では接空間が場所による。}$\mathbb{R}^2$ のような平らな空間では、どの点の接空間も同じ $\mathbb{R}^2$ であり、点 $p$ での接ベクトルと点 $q$ での接ベクトルをそのまま比べたり足したりできる。一方、球面 $S^2$ では点 $x$ での接空間は $T_xS^2 = \{v \mid x\cdot v = 0\}$ であり、$x$ が変わると平面の向きが変わる（図\ref{fig:tangent-flat-vs-sphere}）。$\mathcal{A}$ はアフィン空間なので前者の型であり、どの $A$ でも同じベクトル空間 $\Omega^1(M,\mathrm{ad}(P))$ が接空間になる。これに対し、方程式で切り出した $\mathcal{Z} = \{F = 0\}$ やモジュライ空間 $\mathcal{M}$ は後者の型であり、接空間 $\ker d_A$ や $H^1(M, d_A)$ は点 $A$ に依存する（$d_A$ が $A$ を含むため）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    % (A) 平らな空間
+    \begin{scope}
+        \fill[gray!10] (0,0) -- (3.6,0) -- (4.4,1.8) -- (0.8,1.8) -- cycle;
+        \draw[gray!60] (0,0) -- (3.6,0) -- (4.4,1.8) -- (0.8,1.8) -- cycle;
+        \foreach \p in {(1.0,0.5),(2.2,1.2),(3.3,0.6)} {
+            \fill \p circle (0.05);
+            \draw[->, thick, blue!70!black] \p -- ++(0.6,0.15);
+            \draw[->, thick, red!70!black] \p -- ++(0.2,0.45);
+        }
+        \node[gray!60!black, font=\small] at (4.0,0.25) {$\mathcal{A}$};
+        \node[font=\small, align=center] at (2.2,-0.7) {(A) アフィン空間 $\mathcal{A}$：\\どの点でも接空間は同じ $\Omega^1(M,\mathrm{ad}P)$};
+    \end{scope}
+    % (B) 球面
+    \begin{scope}[xshift=7.2cm, yshift=0.9cm]
+        \shade[ball color=gray!20] (0,0) circle (1.2);
+        \draw (0,0) circle (1.2);
+        \draw[gray!60] (-1.2,0) arc (180:360:1.2 and 0.35);
+        \draw[gray!40, dashed] (1.2,0) arc (0:180:1.2 and 0.35);
+        % 北極付近の接平面
+        \fill (0,1.2) circle (0.05);
+        \draw[blue!70!black, fill=blue!10, opacity=0.8] (-0.7,1.05) -- (0.5,1.05) -- (0.7,1.35) -- (-0.5,1.35) -- cycle;
+        \node[blue!70!black, font=\small, anchor=west] at (0.75,1.4) {$T_xS^2$};
+        % 赤道付近の接平面
+        \fill (1.2,0) circle (0.05);
+        \draw[red!70!black, fill=red!10, opacity=0.8] (1.1,-0.6) -- (1.1,0.5) -- (1.3,0.65) -- (1.3,-0.45) -- cycle;
+        \node[red!70!black, font=\small, anchor=west] at (1.35,-0.3) {$T_yS^2$};
+        \node[font=\small, align=center] at (0,-1.6) {(B) 球面（$\mathcal{Z}$ や $\mathcal{M}$ の類似）：\\接平面の向きが点ごとに違う};
+    \end{scope}
+\end{tikzpicture}
+\caption{接空間が場所によらない空間（左）と、場所による空間（右）。$\mathcal{A}$ はアフィン空間なので左の型であり、どの配位 $A$ でも接ベクトル（無限小変化 $\delta A$）は同じベクトル空間に属する。}
+\label{fig:tangent-flat-vs-sphere}
+\end{figure}
+
+\textbf{(3) 随伴表現で変換するのは $A$ ではなく $\delta A$。}ここが混乱しやすい点である。ゲージ変換のもとで
+\begin{center}
+\begin{tabular}{l|l|l}
+    対象 & 変換則 & 属する空間 \\ \hline
+    $A$（接続そのもの） & $A \mapsto U^{-1}AU + U^{-1}dU$（非斉次） & アフィン空間 $\mathcal{A}$ の点 \\
+    $\delta A$（接ベクトル） & $\delta A \mapsto U^{-1}\,\delta A\, U$（随伴，斉次） & ベクトル空間 $\Omega^1(M,\mathrm{ad}P)$ \\
+    $F$（曲率） & $F \mapsto U^{-1}FU$（随伴，斉次） & $\Omega^2(M,\mathrm{ad}P)$
+\end{tabular}
+\end{center}
+である。$A$ 自身は $\mathfrak{g}$ に値をとる1形式として局所的に書けるが、非斉次項 $U^{-1}dU$ があるので $\Omega^1(M,\mathrm{ad}P)$ の元では\textbf{ない}。「$T_A\mathcal{A} = \Omega^1(M,\mathrm{ad}P)$」は「$A$ が随伴表現で変換する」という主張ではなく、「$A$ を\textbf{動かす向き} $\delta A$ が随伴表現で変換する」という主張である。点そのものは特別な変換則をもつが、点の間の変位は素直に変換する——これは(1)で見た「差の極限」という構造からの帰結である。
+
+\begin{note}
+$\delta A$ の変換則を確かめる。曲線 $A(t)$ の各点をゲージ変換すると $A(t)^U = U^{-1}A(t)U + U^{-1}dU$ であり、$U$ は $t$ によらないので、$t$ で微分すると非斉次項 $U^{-1}dU$ は消える：
+\begin{equation*}
+    \frac{d}{dt}A(t)^U\Big|_{t=0} = U^{-1}\,\dot A(0)\,U .
+\end{equation*}
+すなわち、ゲージ変換 $A \mapsto A^U$ は $\mathcal{A}$ からそれ自身への写像であり、その微分（接空間の間の写像 $T_A\mathcal{A} \to T_{A^U}\mathcal{A}$）が $\delta A \mapsto U^{-1}\delta A\,U$ という随伴作用で与えられる。点 $A$ は $A^U$ に移るので「場所」も変わるが、どちらの接空間も同じ $\Omega^1(M,\mathrm{ad}P)$ なので、この写像は $\Omega^1(M,\mathrm{ad}P)$ 上の線形変換として読める。
+\end{note}
 
 
 \begin{note}
@@ -1718,6 +1788,69 @@ F(A + \delta A) &= d(A + \delta A) + (A + \delta A) \wedge (A + \delta A) \\
 
 しかし、方程式 $d_A(\delta A) = 0$ を満たす変形の中には、単なるゲージ変換による物理的に自明な変形が含まれている。無限小ゲージパラメータ $\epsilon \in \Omega^0(M, \mathrm{ad}(P))$ による変換を考えよう。
 
+\paragraph{$\Omega^k(M, \mathrm{ad}(P))$ とは何か}
+記号 $\Omega^k(M, \mathrm{ad}(P))$ は2つの情報を組み合わせたものである。
+\begin{itemize}
+    \item $\Omega^k$：$M$ 上の\textbf{$k$ 次微分形式}であること（時空の添字を $k$ 個もつ反対称な量）。$k=0$ なら添字なしの関数、$k=1$ なら $\eta_\mu dx^\mu$、$k=2$ なら $\frac12\eta_{\mu\nu}dx^\mu\wedge dx^\nu$。
+    \item $(M, \mathrm{ad}(P))$：その成分が数ではなく\textbf{リー代数 $\mathfrak{g}$ の元}（行列）であり、ゲージ変換で随伴表現 $\eta \mapsto U^{-1}\eta\,U$ に従って変換すること。
+\end{itemize}
+したがって $\Omega^0(M,\mathrm{ad}(P))$ の元とは、物理の言葉で言えば\textbf{「随伴表現に属するスカラー場」}
+\begin{equation*}
+    \epsilon(x) = \epsilon^a(x)\, T^a \qquad (a = 1, \dots, \dim G), \qquad \epsilon(x) \mapsto U(x)^{-1}\epsilon(x)\,U(x)
+\end{equation*}
+のことである。$M$ の各点 $x$ に $\mathfrak{g}$ の元（$SU(2)$ なら $3$ 成分、$SU(3)$ なら $8$ 成分）が1つずつ割り当てられていて、時空の添字はもたない。例えば $SU(2)$ では「各点に3次元ベクトル $\epsilon^a(x)$ が置かれた場」、すなわちGeorgi--Glashow模型の随伴Higgs場 $\phi^a(x)$ と同じ種類の量である。同様に
+\begin{center}
+\begin{tabular}{c|l|l}
+    空間 & 成分表示 & 本節での例 \\ \hline
+    $\Omega^0(M,\mathrm{ad}P)$ & $\epsilon^a(x)\,T^a$ & 無限小ゲージパラメータ $\epsilon$、随伴Higgs場 \\
+    $\Omega^1(M,\mathrm{ad}P)$ & $\eta^a_\mu(x)\,T^a\,dx^\mu$ & 接続の変形 $\delta A$（2つの接続の差） \\
+    $\Omega^2(M,\mathrm{ad}P)$ & $\tfrac12 F^a_{\mu\nu}(x)\,T^a\,dx^\mu\wedge dx^\nu$ & 曲率 $F$
+\end{tabular}
+\end{center}
+であり、$d_A$ はこの表を1段ずつ下に移す写像（$\epsilon \mapsto d_A\epsilon$, $\delta A \mapsto d_A\delta A$）になっている。
+
+\textbf{なぜ $\epsilon$ がこの空間に属するのか。}有限のゲージ変換は各点 $x$ に群の元 $U(x) \in G$ を割り当てる写像 $U: M \to G$ である。これを恒等変換の近くで $U(x) = e^{\epsilon(x)} \simeq 1 + \epsilon(x)$ と書くと、$\epsilon(x)$ は各点で群 $G$ の単位元での接ベクトル、すなわちリー代数 $\mathfrak{g}$ の元になる。$U$ が点ごとに独立に選べる（局所ゲージ変換）ので $\epsilon$ も点ごとに独立で、時空の関数になる。つまり
+\begin{equation*}
+    \text{ゲージ群 } \mathcal{G} = \{U: M \to G\} \quad \text{のリー代数} \quad = \quad \Omega^0(M, \mathrm{ad}P) = \{\epsilon: M \to \mathfrak{g}\}
+\end{equation*}
+であり、「有限次元の $G$ とそのリー代数 $\mathfrak{g}$」の関係を時空の各点に並べたものが「無限次元の $\mathcal{G}$ と $\Omega^0(M,\mathrm{ad}P)$」の関係である（図\ref{fig:omega0-adP}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    % 底空間 M
+    \draw[thick] (0,0) -- (7,0) node[right] {$M$};
+    % 各点のファイバー g
+    \foreach \x in {0.6,1.6,...,6.6} {
+        \draw[gray!60] (\x,0.3) -- (\x,3.0);
+    }
+    \node[gray!60!black, font=\small] at (6.6,3.3) {$\mathfrak{g}$};
+    \node[gray!60!black, font=\small] at (0.6,3.3) {$\mathfrak{g}$};
+    % 零切断
+    \draw[gray, dashed] (0.3,1.4) -- (6.9,1.4) node[right, font=\small] {$\epsilon = 0$};
+    % 切断 epsilon
+    \draw[very thick, blue!70!black] plot[domain=0.3:6.9, samples=60, smooth] (\x, {1.4 + 0.7*sin(70*\x) + 0.2*sin(200*\x)});
+    \node[blue!70!black, font=\small] at (2.8,2.65) {$\epsilon(x)$};
+    % 1点での値
+    \fill (3.6,0) circle (0.05) node[below] {$x$};
+    \fill[blue!70!black] (3.6,{1.4 + 0.7*sin(70*3.6) + 0.2*sin(200*3.6)}) circle (0.06);
+    \draw[->, thick, red!70!black] (3.6,1.4) -- (3.6,{1.4 + 0.7*sin(70*3.6) + 0.2*sin(200*3.6)});
+    \node[red!70!black, font=\small, anchor=east] at (3.5,0.55) {$\epsilon(x) \in \mathfrak{g}$};
+\end{tikzpicture}
+\caption{$\Omega^0(M,\mathrm{ad}P)$ の元のイメージ。$M$ の各点 $x$ の上に「その点での無限小ゲージ変換の向き」を表すベクトル空間 $\mathfrak{g}$（灰色の縦線）が立っていて、$\epsilon$ は各点でその中の1点を選ぶ（青い曲線）。$\epsilon = 0$（破線）は「何もしないゲージ変換」である。足し算・スカラー倍は点ごとに行えるので、$\Omega^0(M,\mathrm{ad}P)$ は（無限次元の）ベクトル空間になる。}
+\label{fig:omega0-adP}
+\end{figure}
+
+\textbf{なぜ単に「$\mathfrak{g}$ 値関数」と言わず $\mathrm{ad}P$ と書くのか。}$P$ が自明な束なら、$\Omega^0(M,\mathrm{ad}P)$ は文字どおり $\mathfrak{g}$ 値関数 $M \to \mathfrak{g}$ の全体と同じである。しかし非自明な束（モノポールやインスタントン数 $k\neq 0$ の束）では、$\epsilon$ はパッチごとの $\mathfrak{g}$ 値関数 $\epsilon_\alpha$ の集まりで、重なりで
+\begin{equation*}
+    \epsilon_\beta = g_{\alpha\beta}^{-1}\,\epsilon_\alpha\, g_{\alpha\beta}
+\end{equation*}
+と貼り合わさっていなければならない（先に見た「推移関数は強制されたゲージ変換」の随伴版）。このため一般には $M$ 全体で1つの $\mathfrak{g}$ 値関数として書けるとは限らない。$\mathrm{ad}P = P\times_G\mathfrak{g}$ はこの貼り合わせを込めて定義したベクトル束であり、$\Omega^0(M,\mathrm{ad}P)$ はその\textbf{切断}（各点のファイバー $\mathfrak{g}$ から1つずつ元を選ぶ滑らかな選び方）の空間である。局所的な計算では「随伴表現で変換する $\mathfrak{g}$ 値の場」と思って差し支えない。
+
+\begin{note}
+$\epsilon$ の変換則 $\epsilon \mapsto U^{-1}\epsilon\,U$ がなぜ随伴になるかを確かめる。無限小ゲージ変換 $V = 1 + \epsilon$ を、別のゲージ変換 $U$ で基準を取り替えた後に見ると $U^{-1}VU = 1 + U^{-1}\epsilon\,U$ となる。すなわち、基準を $U$ で回すと無限小ゲージ変換を表すリー代数の元は $\epsilon \to U^{-1}\epsilon\,U$ と変わる。貼り合わせ条件 $\epsilon_\beta = g_{\alpha\beta}^{-1}\epsilon_\alpha g_{\alpha\beta}$ は $U = g_{\alpha\beta}$ とした場合である。また $d_A\epsilon = d\epsilon + [A,\epsilon]$ はこの変換で $d_{A^U}(U^{-1}\epsilon U) = U^{-1}(d_A\epsilon)U$ と共変に変換する（\ref{sec:smoothness-flat}節の注を参照）ので、$d_A\epsilon$ は確かに $\Omega^1(M,\mathrm{ad}P)$ の元である。
+\end{note}
+
 \begin{note}
 有限ゲージ変換は $A \to A^U = U^{-1} A U + U^{-1} d U$ で与えられる（本講義の規約に合わせる）。
 $U = e^\epsilon \simeq 1 + \epsilon$ と展開すると、
@@ -1740,6 +1873,115 @@ $A$ を平坦接続とし、平坦接続のモジュライ空間 $\mathcal{M}$ �
 \end{mythm}
 
 このコホモロジーの各元が、経路積分における「ゲージ不変な零モード」に1対1対応する。
+
+\paragraph{定理の読み方：2段階の操作}
+定理の主張は「$\mathcal{M}$ の接ベクトル＝（方程式を保つ変形）÷（ゲージ変換による変形）」である。これは $\mathcal{M}$ を作る2段階の操作
+\begin{equation*}
+    \mathcal{A} \ \supset\ \mathcal{Z} \equiv \{A \mid F(A) = 0\} \quad\xrightarrow{\ \ \text{$\mathcal{G}$ で割る}\ \ }\quad \mathcal{M} = \mathcal{Z}/\mathcal{G}
+\end{equation*}
+をそれぞれ線形化したものになっている。
+\begin{enumerate}
+    \item \textbf{方程式で切り出す（部分多様体をとる）}：平坦接続全体 $\mathcal{Z}$ は「$F = 0$」という方程式で $\mathcal{A}$ から切り出された部分集合である。一般に、方程式 $f(x) = 0$ で定まる曲面の接空間は線形化 $df_x(v) = 0$ の解空間である（例：球面 $|x|^2 = 1$ の接空間は $x\cdot v = 0$）。いまの場合、$F$ の線形化が $d_A$ であったから
+    \begin{equation*}
+        T_A\mathcal{Z} = \ker(d_A : \Omega^1 \to \Omega^2) .
+    \end{equation*}
+    \item \textbf{群で割る（商をとる）}：$F(A^U) = U^{-1}F(A)U$ なので、平坦接続をゲージ変換しても平坦であり、$\mathcal{G}$ は $\mathcal{Z}$ に作用する。$A$ を通るゲージ軌道 $\mathcal{O}_A = \{A^U \mid U \in \mathcal{G}\} \subset \mathcal{Z}$ の接空間は、無限小ゲージ変換の全体
+    \begin{equation*}
+        T_A\mathcal{O}_A = \mathrm{im}(d_A : \Omega^0 \to \Omega^1)
+    \end{equation*}
+    である。商空間 $\mathcal{Z}/\mathcal{G}$ では軌道全体が1点に潰れるので、軌道に沿う方向は「動いていない」ことになる。したがって商の接空間は $T_A\mathcal{Z}$ を $T_A\mathcal{O}_A$ で割ったものになる。
+\end{enumerate}
+この2つを合わせると $T_{[A]}\mathcal{M} = T_A\mathcal{Z}/T_A\mathcal{O}_A = \ker d_A / \mathrm{im}\, d_A$ となり、定理の式が得られる（図\ref{fig:flat-tangent}）。$T_A\mathcal{O}_A \subset T_A\mathcal{Z}$、すなわち $\mathrm{im}\,d_A \subset \ker d_A$ であることは、ゲージ軌道が $\mathcal{Z}$ の中に収まっていることの無限小版であり、代数的には $d_A^2 = [F, \cdot\,] = 0$（下の変形複体の節）に対応する。
+
+\paragraph{分子は $\delta A$、分母は $\epsilon$？}
+定理の式を見ると、分子 $\ker(d_A:\Omega^1\to\Omega^2)$ は変形 $\delta A$ の条件なのに、分母 $\mathrm{im}(d_A:\Omega^0\to\Omega^1)$ にはゲージパラメータ $\epsilon \in \Omega^0$ が現れていて、異なるものを比べているように見えるかもしれない。しかし分母は \textbf{$\epsilon$ の空間ではなく、$\epsilon$ が生み出す $\delta A$ の空間}である：
+\begin{equation*}
+    \underbrace{\ker d_A}_{\substack{\text{方程式を保つ } \delta A}}
+    = \{\,\delta A \in \Omega^1 \mid d_A\delta A = 0\,\},
+    \qquad
+    \underbrace{\mathrm{im}\,d_A}_{\substack{\text{ゲージ変換で作れる } \delta A}}
+    = \{\,\delta A \in \Omega^1 \mid \delta A = d_A\epsilon \text{ となる } \epsilon \text{ がある}\,\}.
+\end{equation*}
+どちらも同じベクトル空間 $\Omega^1(M,\mathrm{ad}P)$（＝$T_A\mathcal{A}$）の部分空間であり、商は「$\delta A$ たちを $\delta A$ たちで割る」という同種どうしの操作になっている。$\epsilon$ は分母に属する $\delta A$ を作るための\textbf{パラメータ（名札）}として登場するだけで、商をとる段階では $d_A\epsilon$ という1形式に変換されてしまっている（図\ref{fig:ker-im-same-space}）。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.1]
+    % Omega^0
+    \draw[thick, fill=orange!8] (0,0) ellipse (1.1 and 1.4);
+    \node[font=\small] at (0,1.7) {$\Omega^0(M,\mathrm{ad}P)$};
+    \node[font=\scriptsize, orange!60!black] at (0,-1.75) {ゲージパラメータ $\epsilon$};
+    \fill[orange!70!black] (0,0.3) circle (0.05) node[left, font=\small] {$\epsilon$};
+    \fill[gray!60!black] (0,-0.6) ellipse (0.45 and 0.2);
+    \node[font=\scriptsize, white] at (0,-0.6) {$H^0$};
+    % Omega^1
+    \begin{scope}[xshift=5cm]
+        \draw[thick, fill=blue!5] (0,0) ellipse (2.0 and 1.6);
+        \node[font=\small] at (0,1.9) {$\Omega^1(M,\mathrm{ad}P) = T_A\mathcal{A}$};
+        \node[font=\scriptsize, blue!60!black] at (0,-1.95) {変形 $\delta A$};
+        \draw[thick, fill=green!12] (0.15,0) ellipse (1.35 and 1.0);
+        \node[font=\scriptsize, green!40!black] at (0.85,0.7) {$\ker d_A$};
+        \draw[thick, fill=red!15] (-0.2,-0.05) ellipse (0.65 and 0.45);
+        \node[font=\scriptsize, red!60!black] at (-0.2,-0.25) {$\mathrm{im}\,d_A$};
+        \fill[red!70!black] (-0.3,0.15) circle (0.05) node[above, font=\scriptsize] {$d_A\epsilon$};
+        \fill (-0.2,-0.05) circle (0.04) node[right, font=\scriptsize] {$0$};
+    \end{scope}
+    % Omega^2
+    \begin{scope}[xshift=9.5cm]
+        \draw[thick, fill=gray!6] (0,0) ellipse (1.1 and 1.4);
+        \node[font=\small] at (0,1.7) {$\Omega^2(M,\mathrm{ad}P)$};
+        \fill (0,0) circle (0.05) node[below, font=\small] {$0$};
+    \end{scope}
+    % arrows
+    \draw[->, thick, orange!70!black] (0.05,0.3) to[bend left=20] node[above, font=\small] {$d_A$} (4.7,0.15);
+    \draw[->, thick, gray!60!black] (0.45,-0.6) to[bend right=15] node[below, font=\scriptsize] {$0$ に行く} (4.75,-0.07);
+    \draw[->, thick, green!40!black] (6.3,0.3) to[bend left=15] node[above, font=\small] {$d_A$} (9.45,0.05);
+\end{tikzpicture}
+\caption{変形複体の各空間。分子 $\ker d_A$（緑）と分母 $\mathrm{im}\,d_A$（赤）はともに真ん中の $\Omega^1 = \{\delta A\}$ の部分空間であり、商 $\ker d_A/\mathrm{im}\,d_A$ はこの空間の中で取られる。左の $\Omega^0$ は赤い部分を作るための「パラメータ空間」にすぎない。$\epsilon$ のうち $H^0 = \ker(d_A:\Omega^0\to\Omega^1)$（灰色）に属するものは $\delta A = 0$ を生むので、分母には何も寄与しない。}
+\label{fig:ker-im-same-space}
+\end{figure}
+
+分母を「$\epsilon$ の空間 $\Omega^0$」ではなく「その像 $\mathrm{im}\,d_A$」としなければならない理由がもう1つある。異なる $\epsilon, \epsilon'$ が同じ変形 $d_A\epsilon = d_A\epsilon'$ を与えることがある（差 $\epsilon - \epsilon'$ が $H^0$ に属するとき）。$\Omega^0$ そのもので数えるとこれを二重に数えてしまうが、像をとれば「実際に生じる $\delta A$」だけが残る。これは下の「有限次元の類似」の例でも同じで、球面の緯線方向の接ベクトルは $v = \epsilon\,\hat{z}\times x$ と回転角 $\epsilon \in \mathbb{R}$（$SO(2)$ のリー代数の元）で書けるが、商をとるときに割るのは $\epsilon$ ではなく接ベクトル $v$ の方であり、北極では $\hat z \times x = 0$ となってどんな $\epsilon$ も $v = 0$ を与える。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.15]
+    % 平坦接続の空間 Z（斜めの平面として描く）
+    \fill[blue!6] (0,0) -- (6,0) -- (7.4,2.4) -- (1.4,2.4) -- cycle;
+    \draw[blue!50!black] (0,0) -- (6,0) -- (7.4,2.4) -- (1.4,2.4) -- cycle;
+    \node[blue!50!black, anchor=west] at (6.3,0.15) {$\mathcal{Z} = \{F = 0\}$};
+    % ゲージ軌道（横方向の線）
+    \foreach \y in {0.4,0.9,1.4,1.9} {
+        \draw[gray!70, thick] ({0.2+0.583*\y},\y) -- ({6.0+0.583*\y-0.2},\y);
+    }
+    \node[gray!60!black, font=\small, anchor=west] at (7.4,1.9) {ゲージ軌道 $\mathcal{O}$};
+    % 点 A とその軌道
+    \coordinate (A) at (3.2,1.4);
+    \draw[very thick, red!70!black] ({0.2+0.583*1.4},1.4) -- ({5.8+0.583*1.4},1.4);
+    \node[red!70!black, font=\small, anchor=west] at (7.1,1.4) {$\mathcal{O}_A$};
+    \fill (A) circle (0.06);
+    \node[below left] at (A) {$A$};
+    % ゲージ方向 im d_A
+    \draw[->, very thick, red!70!black] (A) -- ++(1.3,0) node[above=2pt, font=\small] {$d_A\epsilon$};
+    % 物理的方向 H^1
+    \draw[->, very thick, green!45!black] (A) -- ++(0.35,0.6) node[above left, font=\small] {$H^1$ の代表元};
+    % 方程式を破る方向
+    \draw[->, very thick, dashed, black!60] (A) -- ++(-0.6,1.6) node[above, font=\small, align=center] {$d_A\delta A \neq 0$\\（$\mathcal{Z}$ から出る）};
+    % 商空間 M
+    \draw[thick] (1.0,-1.6) -- (7.0,-1.6) node[right] {$\mathcal{M} = \mathcal{Z}/\mathcal{G}$};
+    \fill (4.0,-1.6) circle (0.06) node[below] {$[A]$};
+    \draw[->, thick, green!45!black] (4.0,-1.6) -- (5.0,-1.6) node[below, font=\small] {$T_{[A]}\mathcal{M}$};
+    \draw[->, gray, thick] (3.6,-0.15) -- (3.6,-1.4) node[midway, right, font=\small] {軌道を1点に潰す};
+\end{tikzpicture}
+\caption{定理\ref{thm:flat-tangent}の幾何学的な意味。$\mathcal{A}$ の中で平坦接続のなす部分空間 $\mathcal{Z}$（青）に接する変形が $\ker d_A$、そのうちゲージ軌道（横線）に沿う変形が $\mathrm{im}\,d_A$ である。破線の方向は線形化方程式を破るので除外され、軌道に沿う赤い方向は商 $\mathcal{M}$ では潰れる。残る緑の方向（軌道を横切る方向）が $\mathcal{M}$ の接ベクトルである。}
+\label{fig:flat-tangent}
+\end{figure}
+
+\paragraph{有限次元の類似}
+同じ構造は有限次元でも見られる。$\mathbb{R}^3\setminus\{0\}$ に $\mathcal{Z} = \{\,x \mid |x| = 1\,\}$ をとり、$SO(2)$ を $z$ 軸まわりの回転として作用させると、$\mathcal{Z}/SO(2)$ は「緯度」を座標とする区間である。北極・南極以外の点 $x$ で、$T_x\mathcal{Z}$ は2次元（$x\cdot v = 0$）、軌道（緯線）の接空間は1次元（$v = \epsilon\, \hat{z}\times x$）であり、商の接空間は $2 - 1 = 1$ 次元（経線方向）になる。定理の $\ker d_A$ が $T_x\mathcal{Z}$、$\mathrm{im}\,d_A$ が緯線方向に対応する。北極・南極では回転で動かない（固定部分群が $SO(2)$ 全体）ので軌道が1点に退化し、商はそこで端点（境界）をもつ。これは後で扱う $H^0 \neq 0$ の状況（\ref{sec:smoothness-flat}節）の有限次元版である。
+
+\paragraph{滑らかさの仮定について}
+上の導出では、$\mathcal{Z}$ が $A$ の近くで滑らかであること（$H^2 = 0$）と、ゲージ群が $A$ に自由に作用すること（$H^0 = 0$）を暗に仮定している。これらが破れるとき何が起こるか（具体例を含む）は、$H^0, H^2$ の意味を説明したあとで\ref{sec:smoothness-flat}節で扱う。当面は「典型的な点では $\mathcal{M}$ の接空間は $H^1$」とだけ理解しておけばよい。
 
 \subsection{変形複体とHodge理論によるゲージ固定}
 
@@ -2016,6 +2258,49 @@ Serre双対性により $H^1(\Sigma, T_\Sigma) \cong H^0(\Sigma, K^2)^*$ であ�
 \end{mythm}
 
 これは物理的に、「Calabi--Yau空間の複素構造モジュライは常に障害を持たず、局所的に滑らかな多様体をなす」という極めて強力な事実を保証している。3次元の場合には、このモジュライ空間はさらに特殊K\"ahler多様体の構造を持つ（第\ref{ch:calabi-yau}章）。
+
+\subsection{平坦接続のモジュライの滑らかさ：仮定の意味と具体例}
+\label{sec:smoothness-flat}
+
+定理\ref{thm:flat-tangent}（$T_{[A]}\mathcal{M} \cong H^1$）の導出には、暗に2つの仮定が入っていた。本節で見た $H^0, H^2$ の意味を使ってそれを整理する。
+\begin{itemize}
+    \item \textbf{$H^2 = 0$（障害がない）}：「方程式 $F = 0$ の解集合の接空間が線形化方程式の解空間に等しい」というのは、陰関数定理が使えるとき、つまり線形化 $d_A$ が（値域として許される範囲に）全射であるときに限る。$H^2 \neq 0$ だと、1次の変形 $\delta A \in \ker d_A$ が2次以降で解に延長できないことがあり（倉西写像 $\kappa$ による障害）、$\ker d_A$ は実際の解集合より大きくなってしまう。
+    \item \textbf{$H^0 = 0$（自己同型がない）}：$H^0 = \ker(d_A:\Omega^0 \to \Omega^1)$ は $d_A\epsilon = 0$、すなわち $A$ を動かさない無限小ゲージ変換であり、$A$ の固定部分群 $\mathcal{G}_A$ のLie代数である。$H^0 \neq 0$ だと $\mathcal{G}_A$ が連続群になり、$\mathcal{G}$ の作用は $A$ で自由でない。第\ref{ch:group-action}章で見たように、このとき商は $[A]$ で特異点（錐状の点）をもち、「接空間」は $H^1$ をさらに $\mathcal{G}_A$ で割ったものになって、ベクトル空間ではなくなる。
+\end{itemize}
+両方の条件が満たされる点では $\mathcal{M}$ は $[A]$ の近傍で $\dim H^1$ 次元の多様体となり、定理がそのまま成り立つ。なお、$H^1$ は代表元 $A$ の選び方によらない：$A$ を $A^U$ に取り替えると $d_{A^U} = U^{-1}(d_A\,\cdot\,)U$（$\mathrm{Ad}_U$ による共役）なので、$\delta A \mapsto U^{-1}\delta A\,U$ が $H^1(M, d_A) \cong H^1(M, d_{A^U})$ を与える。
+
+\begin{note}
+$d_{A^U}$ と $d_A$ の関係を確かめる。$\eta \in \Omega^p(M, \mathrm{ad}P)$ に対し、$U^{-1}\eta U$ に $d_{A^U}$ を作用させる。$d(U^{-1}) = -U^{-1}dU\,U^{-1}$ と $A^U = U^{-1}AU + U^{-1}dU$ を用いると
+\begin{align*}
+    d_{A^U}(U^{-1}\eta U)
+    &= d(U^{-1}\eta U) + [A^U, U^{-1}\eta U] \\
+    &= U^{-1}(d\eta)U - U^{-1}dU\,U^{-1}\eta U + (-1)^p U^{-1}\eta\, dU \\
+    &\quad + U^{-1}[A, \eta]U + U^{-1}dU\, U^{-1}\eta U - (-1)^p U^{-1}\eta U\, U^{-1}dU \\
+    &= U^{-1}(d_A\eta)U .
+\end{align*}
+ここで $[\alpha, \beta] = \alpha\wedge\beta - (-1)^{|\alpha||\beta|}\beta\wedge\alpha$（$\alpha$ は1形式）を用いた。$dU$ を含む項はすべて打ち消し合う。したがって $\eta \mapsto U^{-1}\eta U$ は $\ker d_A \to \ker d_{A^U}$、$\mathrm{im}\,d_A \to \mathrm{im}\,d_{A^U}$ をそれぞれ同型に写し、コホモロジーの同型を誘導する。
+\end{note}
+
+\paragraph{仮定が破れる例：$T^2$ 上の自明な $SU(2)$ 接続}
+2次元トーラス $T^2$（座標 $x, y$）上の $SU(2)$ 束で、自明な接続 $A = 0$ を考える。このとき $d_A = d$ なので、変形複体は「$\mathfrak{su}(2) \cong \mathbb{R}^3$ に値をとるde Rham複体」であり
+\begin{equation*}
+    H^k(T^2, d_A) = H^k_{\mathrm{dR}}(T^2) \otimes \mathfrak{su}(2), \qquad
+    (\dim H^0, \dim H^1, \dim H^2) = (1\cdot 3,\ 2\cdot 3,\ 1\cdot 3) = (3, 6, 3)
+\end{equation*}
+となる。定理を素朴に適用すると $\mathcal{M}$ は6次元に見えるが、実際の平坦接続のモジュライは
+\begin{equation*}
+    \mathcal{M}_{\text{flat}}(T^2, SU(2)) \cong \{(W_x, W_y) \in SU(2)^2 \mid W_xW_y = W_yW_x\}/SU(2) \cong T^2/\mathbb{Z}_2
+\end{equation*}
+で2次元である（可換な2元は同時に対角化でき、$W_x = \mathrm{diag}(e^{i\alpha}, e^{-i\alpha})$, $W_y = \mathrm{diag}(e^{i\beta}, e^{-i\beta})$ と書ける。$\mathbb{Z}_2$ は Weyl 群による $(\alpha, \beta) \to (-\alpha, -\beta)$ である）。6次元と2次元の食い違いは、$H^2$ と $H^0$ の両方から来ている。
+\begin{itemize}
+    \item \textbf{$H^2$ による障害}：定数の変形 $\delta A = u\,dx + v\,dy$（$u, v \in \mathfrak{su}(2)$）は1次では平坦条件を満たすが、2次の項 $\delta A \wedge \delta A = [u, v]\,dx\wedge dy$ が残る。これが消えるには $[u, v] = 0$、すなわち $\mathbb{R}^3$ のベクトルとして $u \times v = 0$（平行）でなければならない。この条件で6次元が4次元（共通の向き2自由度＋2つの長さ）に減る。$[u,v]\,dx\wedge dy$ はちょうど $H^2 = \mathfrak{su}(2)\,dx\wedge dy$ に値をとっており、$H^2$ が「障害の行き先」であることが見てとれる。
+    \item \textbf{$H^0$ による商}：$A = 0$ は定数ゲージ変換 $SU(2)$ 全体で固定されている（$H^0 = \mathfrak{su}(2)$）。この残留対称性は $(u, v)$ を同時に回転させるので、共通の向き（2自由度）が割られ、$4 - 2 = 2$ 次元が残る。さらに向きの反転 $(u,v) \to (-u,-v)$ も回転で実現されるため、$[A]$ の近傍は $\mathbb{R}^2/\mathbb{Z}_2$（錐）という特異点になる。
+\end{itemize}
+つまり $[A = 0]$ は $\mathcal{M}$ の特異点であり、そこでは $H^1$ は接空間ではなく、より大きな「Zariski接空間」を与えるにすぎない。一方、$\alpha, \beta$ が一般の値（Weyl群の固定点以外）の点では、$\mathrm{ad}P$ は対角成分 $\mathfrak{u}(1)$（ホロノミーが自明に作用）と非対角成分（ホロノミー $e^{\pm 2i\alpha}, e^{\pm 2i\beta}$ が非自明に作用し、コホモロジーをもたない）に分かれ、$H^k = H^k_{\mathrm{dR}}(T^2)\otimes\mathfrak{u}(1)$、すなわち $(\dim H^0, \dim H^1, \dim H^2) = (1, 2, 1)$ となる。$H^1$ は実際の次元2と一致する。ここでも $H^0 \neq 0$ だが、固定部分群 $U(1)$ は近くのすべての点で共通で $H^1$ に自明に作用するので、商は滑らかなままである。倉西の局所モデル（定理\ref{thm:kuranishi}）の言葉で言えば、$A = 0$ では倉西写像が $\kappa(u\,dx + v\,dy) = [u, v]\,dx\wedge dy$ であり、$\mathcal{M} \underset{\text{loc}}{\cong} \kappa^{-1}(0)/SU(2)$ が上の $6 \to 4 \to 2$ の数え上げをそのまま表している。
+
+\begin{note}
+可換な $W_x, W_y \in SU(2)$ が同時対角化できること：$W_x \neq \pm 1$ なら $W_x$ の固有空間は1次元ずつで、$W_y$ は $W_x$ と可換なので各固有空間を保つ。よって $W_x$ を対角化する基底で $W_y$ も対角になる。$W_x = \pm 1$ なら $W_y$ だけ対角化すればよい。対角化に使う $SU(2)$ 元はゲージ変換（共役）なので、モジュライとしては $(\alpha, \beta) \in T^2$ を選ぶことと、残る Weyl 群 $\mathbb{Z}_2$（2つの固有値の入れ替え $\alpha \to -\alpha$, $\beta \to -\beta$）を割ることに帰着する。$\mathbb{Z}_2$ の固定点 $(\alpha,\beta) \in \{0, \pi\}^2$ の4点が錐状の特異点であり、$A = 0$ はその1つ $(\alpha, \beta) = (0, 0)$ である。
+\end{note}
 
 \section{指数定理とモジュライの仮想次元}
 
